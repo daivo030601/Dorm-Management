@@ -33,25 +33,25 @@ public class DataConnection extends Config {
         }
         return dbconnection;
     }
-    //phần comment này dùng để test connect
-//    public static void main(String[] args) {
-//        
-//        try {
-//            String user="root";
-//            String password="000";
-//            String url="jdbc:mysql://localhost:3306/quanlyktx";
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection c=DriverManager.getConnection(url, user, password);
-//            if (c != null) {
-//                System.out.print("Success");
-//            } else {
-//                System.out.print("fail");
-//            }
-//            
-//            } catch (ClassNotFoundException ex) {
-//                Logger.getLogger(DataConnection.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DataConnection.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    
+    public static void main(String[] args) {
+       
+       try {
+           String user="root";
+           String password="000";
+           String url="jdbc:mysql://localhost:3306/quanlyktx";
+           Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection c=DriverManager.getConnection(url, user, password);
+            if (c != null) {
+                System.out.print("Success");
+            } else {
+                System.out.print("fail");
+            }
+            
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DataConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
