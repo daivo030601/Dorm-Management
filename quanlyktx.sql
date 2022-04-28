@@ -27,7 +27,7 @@ CREATE TABLE `account` (
   `Username` varchar(40) NOT NULL,
   `Password` varchar(20) NOT NULL,
   `Permission` varchar(12) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -51,7 +51,7 @@ CREATE TABLE `apartment` (
   `NoRoom` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Gender` varchar(4) NOT NULL,
   `IDEmployee` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,7 +79,7 @@ CREATE TABLE `contract` (
   `Createday` date DEFAULT NULL,
   `Startday` datetime DEFAULT NULL,
   `Endday` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,19 +104,19 @@ CREATE TABLE `electricityandwaterbill` (
   `IDRoom` varchar(10) NOT NULL,
   `IDApartment` varchar(10) NOT NULL,
   `Createday` date DEFAULT NULL,
-  `ChiSoDauDien` int DEFAULT NULL,
-  `ChiSoCuoiDien` int DEFAULT NULL,
-  `ChiSoDauNuoc` int DEFAULT NULL,
-  `ChiSoCuoiNuoc` int DEFAULT NULL,
-  `Total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `ChiSoDauDien` double DEFAULT NULL,
+  `ChiSoCuoiDien` double DEFAULT NULL,
+  `ChiSoDauNuoc` double DEFAULT NULL,
+  `ChiSoCuoiNuoc` double DEFAULT NULL,
+  `Total` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `electricityandwaterbill`
 --
 
-LOCK TABLES `electricityandwaterbill` WRITE;
+-- LOCK TABLES `electricityandwaterbill` WRITE;
 /*!40000 ALTER TABLE `electricityandwaterbill` DISABLE KEYS */;
 /*!40000 ALTER TABLE `electricityandwaterbill` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -130,13 +130,13 @@ DROP TABLE IF EXISTS `employee`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
   `IDEmployee` varchar(10) NOT NULL,
-  `Fullname` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `Fullname` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Birthday` date DEFAULT NULL,
   `Address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Position` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `PhoneNumber` varchar(12) NOT NULL,
   `IDAccount` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `facilities` (
   `Name` varchar(40) NOT NULL,
   `Amount` int DEFAULT NULL,
   `Discripition` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,8 +189,8 @@ CREATE TABLE `rentbill` (
   `IDApartment` varchar(10) NOT NULL,
   `IDStudent` varchar(10) NOT NULL,
   `Createday` date DEFAULT NULL,
-  `Total` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Total` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,14 +211,12 @@ DROP TABLE IF EXISTS `room`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `room` (
   `IDRoom` varchar(10) NOT NULL,
-  `IDRapartmentoom` varchar(10) NOT NULL,
   `IDApartment` varchar(10) NOT NULL,
-  `IDStudent` varchar(10) NOT NULL,
   `NoStudent` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Status` varchar(40) NOT NULL,
   `Type` varchar(40) NOT NULL,
   `RentingPrice` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -239,14 +237,14 @@ DROP TABLE IF EXISTS `student`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `student` (
   `IDStudent` varchar(10) NOT NULL,
-  `Fullname` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `Fullname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Birthday` date DEFAULT NULL,
   `Gender` varchar(4) NOT NULL,
   `IDCard` varchar(20) NOT NULL,
   `PhoneNumber` varchar(12) NOT NULL,
   `University` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Grade` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
