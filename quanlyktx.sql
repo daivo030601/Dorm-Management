@@ -23,10 +23,11 @@ DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account` (
-  `IDAccount` varchar(10) NOT NULL,
-  `Username` varchar(40) NOT NULL,
-  `Password` varchar(20) NOT NULL,
-  `Permission` varchar(12) NOT NULL
+  `IDAccount` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Username` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Password` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Permission` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`IDAccount`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,6 +37,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
+INSERT INTO `account` VALUES ('AC1','admin','admin','admin'),('AC2','admin2','admin','admin');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -47,10 +49,13 @@ DROP TABLE IF EXISTS `apartment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `apartment` (
-  `IDApartment` varchar(10) NOT NULL,
+  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `NoRoom` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Gender` varchar(4) NOT NULL,
-  `IDEmployee` varchar(10) NOT NULL
+  `Gender` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`IDApartment`),
+  KEY `fk_employee` (`IDEmployee`),
+  CONSTRAINT `fk_employee` FOREIGN KEY (`IDEmployee`) REFERENCES `employee` (`IDEmployee`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,6 +65,7 @@ CREATE TABLE `apartment` (
 
 LOCK TABLES `apartment` WRITE;
 /*!40000 ALTER TABLE `apartment` DISABLE KEYS */;
+INSERT INTO `apartment` VALUES ('A','20','Nam','TN1'),('B','20','Nữ','TN2');
 /*!40000 ALTER TABLE `apartment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,14 +77,23 @@ DROP TABLE IF EXISTS `contract`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contract` (
-  `IDContract` varchar(10) NOT NULL,
-  `IDRoom` varchar(10) NOT NULL,
-  `IDApartment` varchar(10) NOT NULL,
-  `IDEmployee` varchar(10) NOT NULL,
-  `IDStudent` varchar(10) NOT NULL,
+  `IDContract` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDStudent` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Createday` date DEFAULT NULL,
   `Startday` datetime DEFAULT NULL,
-  `Endday` datetime DEFAULT NULL
+  `Endday` datetime DEFAULT NULL,
+  PRIMARY KEY (`IDContract`),
+  KEY `fk_room` (`IDRoom`),
+  KEY `fk_apartment` (`IDApartment`),
+  KEY `fk_employee_contract` (`IDEmployee`),
+  KEY `fk_student_contract` (`IDStudent`),
+  CONSTRAINT `fk_apartment` FOREIGN KEY (`IDApartment`) REFERENCES `apartment` (`IDApartment`),
+  CONSTRAINT `fk_employee_contract` FOREIGN KEY (`IDEmployee`) REFERENCES `employee` (`IDEmployee`),
+  CONSTRAINT `fk_room` FOREIGN KEY (`IDRoom`) REFERENCES `room` (`IDRoom`),
+  CONSTRAINT `fk_student_contract` FOREIGN KEY (`IDStudent`) REFERENCES `student` (`IDStudent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -88,6 +103,7 @@ CREATE TABLE `contract` (
 
 LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
+INSERT INTO `contract` VALUES ('CT1','A101','A','TN1','ST1','2021-05-01','2021-05-01 00:00:00','2022-05-01 00:00:00'),('CT2','A101','A','TN1','ST3','2021-05-03','2021-05-03 00:00:00','2022-05-03 00:00:00'),('CT3','B101','B','TN2','ST2','2021-05-03','2021-05-03 00:00:00','2022-05-03 00:00:00');
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,16 +115,24 @@ DROP TABLE IF EXISTS `electricityandwaterbill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `electricityandwaterbill` (
-  `IDEWBill` varchar(10) NOT NULL,
-  `IDEmployee` varchar(10) NOT NULL,
-  `IDRoom` varchar(10) NOT NULL,
-  `IDApartment` varchar(10) NOT NULL,
+  `IDEWBill` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Createday` date DEFAULT NULL,
   `ChiSoDauDien` double DEFAULT NULL,
   `ChiSoCuoiDien` double DEFAULT NULL,
   `ChiSoDauNuoc` double DEFAULT NULL,
   `ChiSoCuoiNuoc` double DEFAULT NULL,
-  `Total` double DEFAULT NULL
+  `Total` double DEFAULT NULL,
+  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`IDEWBill`),
+  KEY `fk_employee_electricityandwaterbill` (`IDEmployee`),
+  KEY `fk_room_electricityandwaterbill` (`IDRoom`),
+  KEY `fk_apartment_electricityandwaterbill` (`IDApartment`),
+  CONSTRAINT `fk_apartment_electricityandwaterbill` FOREIGN KEY (`IDApartment`) REFERENCES `apartment` (`IDApartment`),
+  CONSTRAINT `fk_employee_electricityandwaterbill` FOREIGN KEY (`IDEmployee`) REFERENCES `employee` (`IDEmployee`),
+  CONSTRAINT `fk_room_electricityandwaterbill` FOREIGN KEY (`IDRoom`) REFERENCES `room` (`IDRoom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -116,8 +140,9 @@ CREATE TABLE `electricityandwaterbill` (
 -- Dumping data for table `electricityandwaterbill`
 --
 
--- LOCK TABLES `electricityandwaterbill` WRITE;
+LOCK TABLES `electricityandwaterbill` WRITE;
 /*!40000 ALTER TABLE `electricityandwaterbill` DISABLE KEYS */;
+INSERT INTO `electricityandwaterbill` VALUES ('EW1','TN1','A101','A','2022-05-30',0,100,0,10,1000000,'Đã thu'),('EW2','TN2','B101','B','2022-05-30',0,200,0,10,1000000,'Chưa thu'),('EW3','TN1','A102','A','2022-05-30',0,200,0,10,1000000,'Chưa thu');
 /*!40000 ALTER TABLE `electricityandwaterbill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,13 +154,16 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `IDEmployee` varchar(10) NOT NULL,
+  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Fullname` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Birthday` date DEFAULT NULL,
   `Address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Position` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `PhoneNumber` varchar(12) NOT NULL,
-  `IDAccount` varchar(10) NOT NULL
+  `PhoneNumber` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDAccount` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`IDEmployee`),
+  KEY `fk_account_employee` (`IDAccount`),
+  CONSTRAINT `fk_account_employee` FOREIGN KEY (`IDAccount`) REFERENCES `account` (`IDAccount`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -145,6 +173,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES ('TN1','Minh','2001-12-09','Vietnam','Trưởng nhà','0888734218','AC1'),('TN2','Đại','2001-01-01','Vietnam','Trưởng nhà','0123456789','AC2');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,13 +185,18 @@ DROP TABLE IF EXISTS `facilities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `facilities` (
-  `IDFacilities` varchar(10) NOT NULL,
-  `IDRoom` varchar(10) NOT NULL,
-  `IDApartment` varchar(10) NOT NULL,
-  `Status` varchar(40) NOT NULL,
-  `Name` varchar(40) NOT NULL,
+  `IDFacilities` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Status` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Name` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Amount` int DEFAULT NULL,
-  `Discripition` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `Discripition` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`IDFacilities`),
+  KEY `fk_room_facilities` (`IDRoom`),
+  KEY `fk_aparment_facilities` (`IDApartment`),
+  CONSTRAINT `fk_aparment_facilities` FOREIGN KEY (`IDApartment`) REFERENCES `apartment` (`IDApartment`),
+  CONSTRAINT `fk_room_facilities` FOREIGN KEY (`IDRoom`) REFERENCES `room` (`IDRoom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -183,13 +217,23 @@ DROP TABLE IF EXISTS `rentbill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rentbill` (
-  `IDTBill` varchar(10) NOT NULL,
-  `IDEmployee` varchar(10) NOT NULL,
-  `IDRoom` varchar(10) NOT NULL,
-  `IDApartment` varchar(10) NOT NULL,
-  `IDStudent` varchar(10) NOT NULL,
+  `IDRBill` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDStudent` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Createday` date DEFAULT NULL,
-  `Total` double NOT NULL
+  `Total` double NOT NULL,
+  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`IDRBill`),
+  KEY `fk_room_rentbill` (`IDRoom`),
+  KEY `fk_employee_rentbill` (`IDEmployee`),
+  KEY `fk_apartment_rentbill` (`IDApartment`),
+  KEY `fk_student_rentbill` (`IDStudent`),
+  CONSTRAINT `fk_apartment_rentbill` FOREIGN KEY (`IDApartment`) REFERENCES `apartment` (`IDApartment`),
+  CONSTRAINT `fk_employee_rentbill` FOREIGN KEY (`IDEmployee`) REFERENCES `employee` (`IDEmployee`),
+  CONSTRAINT `fk_room_rentbill` FOREIGN KEY (`IDRoom`) REFERENCES `room` (`IDRoom`),
+  CONSTRAINT `fk_student_rentbill` FOREIGN KEY (`IDStudent`) REFERENCES `student` (`IDStudent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -199,6 +243,7 @@ CREATE TABLE `rentbill` (
 
 LOCK TABLES `rentbill` WRITE;
 /*!40000 ALTER TABLE `rentbill` DISABLE KEYS */;
+INSERT INTO `rentbill` VALUES ('RB1','TN2','B101','B','ST2','2021-05-03',6000000,'Đã thu'),('RB2','TN1','A101','A','ST1','2021-05-01',6000000,'Đã thu'),('RB3','TN1','A101','A','ST3','2021-05-03',6000000,'Chưa thu');
 /*!40000 ALTER TABLE `rentbill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,12 +255,15 @@ DROP TABLE IF EXISTS `room`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `room` (
-  `IDRoom` varchar(10) NOT NULL,
-  `IDApartment` varchar(10) NOT NULL,
+  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `NoStudent` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Status` varchar(40) NOT NULL,
-  `Type` varchar(40) NOT NULL,
-  `RentingPrice` int DEFAULT NULL
+  `Status` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `RentingPrice` int DEFAULT NULL,
+  PRIMARY KEY (`IDRoom`),
+  KEY `fk_apartment_room` (`IDApartment`),
+  CONSTRAINT `fk_apartment_room` FOREIGN KEY (`IDApartment`) REFERENCES `apartment` (`IDApartment`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -225,6 +273,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
+INSERT INTO `room` VALUES ('A101','A','2','Còn chỗ','4',500000),('A102','A','0','Còn chỗ','4',500000),('B101','B','1','Còn chỗ','4',500000);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,14 +285,18 @@ DROP TABLE IF EXISTS `student`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `student` (
-  `IDStudent` varchar(10) NOT NULL,
+  `IDStudent` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Fullname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Birthday` date DEFAULT NULL,
-  `Gender` varchar(4) NOT NULL,
-  `IDCard` varchar(20) NOT NULL,
-  `PhoneNumber` varchar(12) NOT NULL,
+  `Gender` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDCard` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `PhoneNumber` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
   `University` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Grade` varchar(20) NOT NULL
+  `Grade` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Syear` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Eyear` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`IDStudent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -253,6 +306,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
+INSERT INTO `student` VALUES ('ST1','Nguyễn Văn A','2003-09-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025'),('ST2','Nguyễn Thị B','2003-09-10','Nữ','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025'),('ST3','Nguyễn Văn C','2003-02-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -265,4 +319,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-25 15:10:33
+-- Dump completed on 2022-05-07 17:09:57
