@@ -4,6 +4,9 @@
  */
 package com.mycompany.dormmanagement.Model;
 
+import java.sql.Date;
+import javafx.collections.ObservableList;
+
 /**
  *
  * @author Mayy
@@ -11,7 +14,7 @@ package com.mycompany.dormmanagement.Model;
 public class Student {
     private String studentID;
     private String fullName;
-    private String birthday;
+    private Date birthday;
     private String Gender;
     private String IDCard;
     private String phoneNum;
@@ -21,7 +24,7 @@ public class Student {
     public Student() {
         this.studentID = "";
         this.fullName = "";
-        this.birthday = "";
+        this.birthday = null;
         this.Gender = "";
         this.IDCard = "";
         this.phoneNum = "";
@@ -30,7 +33,7 @@ public class Student {
     }
 
     
-    public Student(String studentID, String fullName, String birthday, String Gender, String IDCard, String phoneNum, String university, String grade) {
+    public Student(String studentID, String fullName, Date birthday, String Gender, String IDCard, String phoneNum, String university, String grade) {
         this.studentID = studentID;
         this.fullName = fullName;
         this.birthday = birthday;
@@ -57,11 +60,11 @@ public class Student {
         this.fullName = fullName;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -105,6 +108,6 @@ public class Student {
         this.grade = grade;
     }
     
-    
+//    public ObservableList<Map<String >>
     
 }

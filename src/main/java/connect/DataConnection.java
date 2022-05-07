@@ -28,6 +28,11 @@ public class DataConnection extends Config {
         }
         try {
             dbconnection = DriverManager.getConnection(connectionString, Config.dbuser, Config.dbpass);
+            if (dbconnection != null) {
+                System.out.print("Success .......");
+            } else {
+                System.out.print("fail");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DataConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -35,21 +40,20 @@ public class DataConnection extends Config {
     }
     
 //    public static void main(String[] args) {
-//       
-//       try {
-//           String user="root";
-//           String password="000";
-//           String url="jdbc:mysql://localhost:3306/quanlyktx";
-//           Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection c=DriverManager.getConnection(url, user, password);
-//            if (c != null) {
-//                System.out.print("Success");
+//        Connection dbconnection;
+//        String connectionString = "jdbc:mysql://"+ Config.dbhost+ ":"+ Config.dbport+ "/"+ Config.dbname;
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(DataConnection.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        try {
+//            dbconnection = DriverManager.getConnection(connectionString, Config.dbuser, Config.dbpass);
+//            if (dbconnection != null) {
+//                System.out.print("Success .......");
 //            } else {
 //                System.out.print("fail");
 //            }
-//            
-//            } catch (ClassNotFoundException ex) {
-//                Logger.getLogger(DataConnection.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (SQLException ex) {
 //            Logger.getLogger(DataConnection.class.getName()).log(Level.SEVERE, null, ex);
 //        }
