@@ -33,9 +33,14 @@
     left: 0;
     margin: auto;
 }
-.button{
+.appBtn{
     -fx-background-color: #2CA8E9; 
     -fx-background-radius: 40px;
+    -fx-text-fill: white;
+}
+.buttonindashboard{
+    -fx-background-color: #2CA8E9; 
+    -fx-background-radius: 5px;
     -fx-text-fill: white;
 }
 .tabButton{
@@ -55,3 +60,9 @@
 .line{
     -fx-opacity: 47%;
 }
+.combobox, .searchField{
+    -fx-background-color: white;
+    -fx-border-color: #8C8C8C;
+    -fx-border-radius: 2px;
+}
+
