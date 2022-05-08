@@ -94,7 +94,7 @@ public class RoomPaneController implements Initializable {
             dataTableView.getItems().clear();
             if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,2);
-            else dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 1,keyWord));
+            else dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 2,keyWord));
         }
         if(event.getSource()==unDoneBox){
             doneBox.setSelected(false);
@@ -102,7 +102,7 @@ public class RoomPaneController implements Initializable {
             dataTableView.getItems().clear();
             if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,3);
-            else dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 1, keyWord));
+            else dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 3, keyWord));
         } 
     }
     @FXML
