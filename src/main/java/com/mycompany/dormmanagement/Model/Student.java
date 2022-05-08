@@ -4,8 +4,19 @@
  */
 package com.mycompany.dormmanagement.Model;
 
+import connect.DataConnection;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 
 /**
  *
@@ -20,6 +31,7 @@ public class Student {
     private String phoneNum;
     private String university;
     private String grade;
+    protected Button btnDetail, btnEdit, btnDelete;
 
     public Student() {
         this.studentID = "";
@@ -108,6 +120,63 @@ public class Student {
         this.grade = grade;
     }
     
-//    public ObservableList<Map<String >>
+    
+    public ObservableList<Map<String, Object>> getStudent(int option){
+        ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="" ;
+            switch (option) {
+                case 1:
+                    query = "Select * from student";
+                    break;
+                case 2:
+                    query = "Select * from student where status = 'ĐX'";
+                    break;
+                case 3:
+                    query = "Select * from student where status = 'CX'";
+                    break;
+                default:
+                    query = "Select * from student";
+                    break;
+            }
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("id", resultSet.getString(1));
+            item.put("name", resultSet.getString(2));
+            item.put("gender", resultSet.getString(4));
+            item.put("status", resultSet.getString(9));
+            item.put("university", resultSet.getString(7));
+            item.put("sYear", resultSet.getString(10));
+            item.put("eYear", resultSet.getString(11));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    }
     
 }
