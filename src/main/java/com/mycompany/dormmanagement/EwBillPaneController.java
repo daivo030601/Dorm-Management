@@ -25,16 +25,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -64,44 +68,93 @@ public class EwBillPaneController implements Initializable {
     private CheckBox allBox,doneBox,unDoneBox;
     @FXML
     private HBox box;
+    @FXML
+    private TextField searchText;
+    @FXML
+    private Button showAllBtn;
+    
+    private YearMonthPicker picker;
     //event of apartmentCombobox
     @FXML
-    void selectHandle(ActionEvent event){
-        if(allBox.isSelected()){
+    void selectHandle(ActionEvent event){ 
+        if(searchText.getText().isEmpty()){
         dataTableView.getItems().clear();
+        if(allBox.isSelected()){       
         addDataToTable(dataTableView,1);
         }
-        if(doneBox.isSelected()){
-        dataTableView.getItems().clear();
+        if(doneBox.isSelected()){     
         addDataToTable(dataTableView,2);
         }
-        if(unDoneBox.isSelected()){
-        dataTableView.getItems().clear();
+        if(unDoneBox.isSelected()){      
         addDataToTable(dataTableView,3);
         }
+        }else tableSearch();
     }
     @FXML
     void checkBoxHandles(ActionEvent event){
+        String keyWord = searchText.getText();
+        ewBill = new ElectricAndWaterBill();
+        String monthYear, month, year;
+        monthYear = picker.getValue().toString();
+        month = monthYear.substring(5);
+        year = monthYear.substring(0,4);
+        String crApartment = apartmentComboBox.getValue().toString().substring(4);
       if(event.getSource()== allBox){
             doneBox.setSelected(false);
             unDoneBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,1);
+            else dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 1, keyWord, month, year));
+            
       }
       if(event.getSource()== doneBox){
             allBox.setSelected(false);
             unDoneBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,2);
+            else dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 2, keyWord, month, year));
       }
       if(event.getSource()==unDoneBox){
             doneBox.setSelected(false);
             allBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,3);
+            else dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 3, keyWord, month, year));
       } 
     }
+    @FXML
+    void textChange(KeyEvent event){
+       tableSearch();
+       showAllBtn.setVisible(true);
+       
+    }
+    @FXML
+    void showAll(ActionEvent event){
+          dataTableView.getItems().clear();
+          if(allBox.isSelected()) addDataToTable(dataTableView, 1);
+          else if(doneBox.isSelected()) addDataToTable(dataTableView, 2);
+          else addDataToTable(dataTableView, 3);
+          searchText.clear();
+          showAllBtn.setVisible(false);
+    }
     
+    private void tableSearch(){
+       String keyWord = searchText.getText();
+       dataTableView.getItems().clear();
+       ewBill = new ElectricAndWaterBill();
+       String monthYear, month, year;
+       monthYear = picker.getValue().toString();
+       month = monthYear.substring(5);
+       year = monthYear.substring(0,4);
+       String crApartment = apartmentComboBox.getValue().toString().substring(4);
+       if(allBox.isSelected()) { dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 1, keyWord, month, year));
+       } else if(doneBox.isSelected()){ dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 2, keyWord, month, year));
+       } else { dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 3, keyWord, month, year));
+       }
+    }
     private void initTableView(TableView table){
         
         indexCol.setCellValueFactory(new MapValueFactory<>("id"));
@@ -124,22 +177,26 @@ public class EwBillPaneController implements Initializable {
     }
     private void addDataToTable(TableView table,int option){      
         ewBill = new ElectricAndWaterBill();
+        String monthYear, month, year;
+        monthYear = picker.getValue().toString();
+        month = monthYear.substring(5);
+        year = monthYear.substring(0,4);
         String crApartment = apartmentComboBox.getValue().toString().substring(4);    
         switch (option) {
                 case 1:
-                    table.getItems().addAll(ewBill.getEWBill(crApartment,option));
+                    table.getItems().addAll(ewBill.getEWBill(crApartment,option, month, year));
                     addButtonToTable();
                     break;
                 case 2:
-                    table.getItems().addAll(ewBill.getEWBill(crApartment,option));
+                    table.getItems().addAll(ewBill.getEWBill(crApartment,option, month, year));
                     addButtonToTable();
                     break;
                 case 3:
-                    table.getItems().addAll(ewBill.getEWBill(crApartment,option));
+                    table.getItems().addAll(ewBill.getEWBill(crApartment,option, month, year));
                     addButtonToTable();
                     break;
                 default:
-                    table.getItems().addAll(ewBill.getEWBill(crApartment,1));
+                    table.getItems().addAll(ewBill.getEWBill(crApartment,1, month, year));
                     addButtonToTable();
                     break;
             }
@@ -194,21 +251,33 @@ public class EwBillPaneController implements Initializable {
     }
     
     private void addYearMonthPicker(){
-        YearMonthPicker picker = new YearMonthPicker(); 
+        picker = new YearMonthPicker(); 
         picker.getStylesheets().add("/styles/yearmonthpicker.css");
         picker.setPrefSize(93, 45);
         picker.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         picker.setId("yearMonthPicker");
+        picker.setValue(YearMonth.now());
+        picker.setOnAction((ActionEvent event) -> {
+          
+          if(searchText.getText().isEmpty()){
+          dataTableView.getItems().clear();
+          if(allBox.isSelected()) addDataToTable(dataTableView, 1);
+          else if(doneBox.isSelected()) addDataToTable(dataTableView, 2);
+          else addDataToTable(dataTableView, 3);
+          }else{
+              tableSearch();
+          }
+        });
         box.getChildren().add(2, picker);
+        
     }
+   
     private void DrawUI(){
         allBox.setSelected(true);
         addDataToCombobox(apartmentComboBox);
         apartmentComboBox.getSelectionModel().select(0);
-        initTableView(dataTableView);
         addYearMonthPicker();
-        
-        
+        initTableView(dataTableView); 
         
     }
     @Override
