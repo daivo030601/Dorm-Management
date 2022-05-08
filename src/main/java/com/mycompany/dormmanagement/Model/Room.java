@@ -164,5 +164,58 @@ protected Button btnDetail, btnEdit, btnDelete;
         }
         return items;
     }
+public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int option, String keyWord){
+        ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="" ;
+            switch (option) {
+                case 1:
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and IDRoom LIKE '%" + keyWord +"%'";
+                    break;
+                case 2:
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ' and IDRoom LIKE '%" + keyWord +"%' ";
+                    break;
+                case 3:
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Đầy' and IDRoom LIKE '%" + keyWord +"%' ";
+                    break;
+                default:
+                    query = "Select * from room where IDApartment ='"+ apartment+"'and IDRoom LIKE '%" + keyWord +"%'";
+                    break;
+            }
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("idroom", resultSet.getString(1));
+            item.put("nostudent", resultSet.getString(3));
+            item.put("status", resultSet.getString(4));
+            item.put("type", resultSet.getString(5));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
 
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    }
 }

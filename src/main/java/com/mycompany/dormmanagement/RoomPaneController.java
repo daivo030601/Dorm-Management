@@ -5,6 +5,7 @@
 package com.mycompany.dormmanagement;
 
 import com.mycompany.dormmanagement.Model.Apartment;
+import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
 import com.mycompany.dormmanagement.Model.Room;
 
 import java.net.URL;
@@ -21,8 +22,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import se.alipsa.ymp.YearMonthPicker;
@@ -50,7 +53,14 @@ public class RoomPaneController implements Initializable {
     @FXML
     private HBox box;
     @FXML
+    private TextField searchText;
+    @FXML
+    private Button showAllBtn;
+    
+    @FXML
     void selectHandle(ActionEvent event){
+        if(searchText.getText().isEmpty()){
+        dataTableView.getItems().clear();
         if(allBox.isSelected()){
         dataTableView.getItems().clear();
         addDataToTable(dataTableView,1);
@@ -63,29 +73,63 @@ public class RoomPaneController implements Initializable {
         dataTableView.getItems().clear();
         addDataToTable(dataTableView,3);
         }
+        }else tableSearch();
     }
     @FXML
     void checkBoxHandles(ActionEvent event){
-      if(event.getSource()== allBox){
+        String keyWord = searchText.getText();
+        room = new Room();
+        String crApartment = apartmentComboBox.getValue().toString().substring(4);
+        if(event.getSource()== allBox){
             doneBox.setSelected(false);
             unDoneBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,1);
-      }
-      if(event.getSource()== doneBox){
+            else dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 1,keyWord));
+        }
+        if(event.getSource()== doneBox){
             allBox.setSelected(false);
             unDoneBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,2);
-      }
-      if(event.getSource()==unDoneBox){
+            else dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 1,keyWord));
+        }
+        if(event.getSource()==unDoneBox){
             doneBox.setSelected(false);
             allBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,3);
-      } 
+            else dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 1, keyWord));
+        } 
     }
-    
+    @FXML
+    void textChange(KeyEvent event){
+       tableSearch();
+       showAllBtn.setVisible(true);
+       
+    }
+    @FXML
+    void showAll(ActionEvent event){
+          dataTableView.getItems().clear();
+          if(allBox.isSelected()) addDataToTable(dataTableView, 1);
+          else if(doneBox.isSelected()) addDataToTable(dataTableView, 2);
+          else addDataToTable(dataTableView, 3);
+          searchText.clear();
+          showAllBtn.setVisible(false);
+    }
+    private void tableSearch(){
+       String keyWord = searchText.getText();
+       dataTableView.getItems().clear();
+       room = new Room();
+       String crApartment = apartmentComboBox.getValue().toString().substring(4);
+       if(allBox.isSelected()) { dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 1, keyWord));
+       } else if(doneBox.isSelected()){ dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 2, keyWord));
+       } else { dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 3, keyWord));
+       }
+    }
     private void initTableView(TableView table){
         
         indexCol.setCellValueFactory(new MapValueFactory<>("idroom"));
