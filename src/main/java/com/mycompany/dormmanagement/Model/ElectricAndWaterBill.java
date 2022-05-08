@@ -208,6 +208,7 @@ public class ElectricAndWaterBill extends Bill {
                     query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDEWBill LIKE '%"+keyWord+"%')";
                     break;
             }
+            
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
             item = new HashMap<>();

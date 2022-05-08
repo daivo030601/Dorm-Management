@@ -35,7 +35,22 @@
 }
 .appBtn{
     -fx-background-color: #2CA8E9; 
-    -fx-background-radius: 40px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 2px;
+    -fx-text-fill: white;
+}
+
+.appBtn-red{
+    -fx-background-color: #E04006; 
+    -fx-background-radius: 10px;
+    -fx-border-radius: 2px;
+    -fx-text-fill: white;
+}
+
+.appBtn-green{
+    -fx-background-color: #1FCB5E; 
+    -fx-background-radius: 10px;
+    -fx-border-radius: 2px;
     -fx-text-fill: white;
 }
 .buttonindashboard{

@@ -29,7 +29,7 @@ public class DataConnection extends Config {
         try {
             dbconnection = DriverManager.getConnection(connectionString, Config.dbuser, Config.dbpass);
             if (dbconnection != null) {
-                System.out.print("Success .......");
+                
             } else {
                 System.out.print("fail");
             }

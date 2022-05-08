@@ -26,9 +26,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
@@ -49,6 +51,10 @@ public class StudentPaneController implements Initializable {
     @FXML
     private HBox box;
     @FXML
+    private Button showAllBtn;
+    @FXML
+    private TextField searchText;
+    @FXML
     void checkBoxHandles(ActionEvent event){
       if(event.getSource()== allBox){
             doneBox.setSelected(false);
@@ -68,6 +74,33 @@ public class StudentPaneController implements Initializable {
             dataTableView.getItems().clear();
             addDataToTable(dataTableView,3);
       } 
+    }
+    
+    @FXML
+    void textChange(KeyEvent event){
+       tableSearch();
+       showAllBtn.setVisible(true);
+       
+    }
+    
+    @FXML
+    void showAll(ActionEvent event){
+          dataTableView.getItems().clear();
+          if(allBox.isSelected()) addDataToTable(dataTableView, 1);
+          else if(doneBox.isSelected()) addDataToTable(dataTableView, 2);
+          else addDataToTable(dataTableView, 3);
+          searchText.clear();
+          showAllBtn.setVisible(false);
+    }
+    
+    private void tableSearch(){
+       String keyWord = searchText.getText();
+       dataTableView.getItems().clear();
+       student = new Student();
+       if(allBox.isSelected()) { dataTableView.getItems().addAll(student.getSearchStudent(1, keyWord));
+       } else if(doneBox.isSelected()){ dataTableView.getItems().addAll(student.getSearchStudent(2, keyWord));
+       } else { dataTableView.getItems().addAll(student.getSearchStudent(3, keyWord));
+       }
     }
     
     private void DrawUI(){
