@@ -28,7 +28,7 @@
                   <HBox fx:id="box" prefHeight="45.0" prefWidth="1000.0">
                      <children>
                         <ComboBox fx:id="apartmentComboBox" onAction="#selectHandle" prefHeight="45.0" prefWidth="200.0" styleClass="combobox" />
-                        <TextField fx:id="searchText" onKeyReleased="#textChange" prefHeight="45.0" prefWidth="480.0" promptText="Tìm kiếm theo số phòng" styleClass="searchField">
+                        <TextField fx:id="searchText" onKeyReleased="#textChange" prefHeight="45.0" prefWidth="515.0" promptText="Tìm kiếm theo số phòng" styleClass="searchField">
                            <HBox.margin>
                               <Insets left="35.0" />
                            </HBox.margin>
@@ -41,7 +41,7 @@
                               <Font name="Segoe UI Bold" size="18.0" />
                            </font>
                            <padding>
-                              <Insets bottom="10.0" left="48" right="48" top="10.0" />
+                              <Insets bottom="10.0" left="55.0" right="55.0" top="10.0" />
                            </padding>
                         </Button>                                    
                      </children>
