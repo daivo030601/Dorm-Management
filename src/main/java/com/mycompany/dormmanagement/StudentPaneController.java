@@ -134,10 +134,10 @@ public class StudentPaneController implements Initializable {
         nameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.17));
         genderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12)); 
         statusCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13)); 
-        universityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13)); 
+        universityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.15)); 
         sYearCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12));
         eYearCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12));
-        toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
+        toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13));
         addDataToTable(table,1);
     }
     
