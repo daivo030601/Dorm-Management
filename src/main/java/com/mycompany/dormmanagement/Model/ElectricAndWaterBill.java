@@ -127,7 +127,7 @@ public class ElectricAndWaterBill extends Bill {
         return btnDelete;
     }
     
-    public ObservableList<Map<String, Object>> getEWBill(String apartment, int option){
+    public ObservableList<Map<String, Object>> getEWBill(String apartment, int option, String month,String year){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
         Connection con = DataConnection.getConnection(); 
@@ -139,16 +139,16 @@ public class ElectricAndWaterBill extends Bill {
             String query ="" ;
             switch (option) {
                 case 1:
-                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"'";
+                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"'";
                     break;
                 case 2:
-                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and status = 'Đã thu'";
+                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Đã thu'";
                     break;
                 case 3:
-                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and status = 'Chưa thu'";
+                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Chưa thu'";
                     break;
                 default:
-                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"'";
+                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"'";
                     break;
             }
             resultSet = statement.executeQuery(query);
@@ -183,6 +183,64 @@ public class ElectricAndWaterBill extends Bill {
         }
         return items;
     }
+    
+    public ObservableList<Map<String, Object>> getSearchEWBill(String apartment, int option, String keyWord, String month,String year){
+        ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="" ;
+            switch (option) {
+                case 1:
+                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDEWBill LIKE '%"+keyWord+"%')";
+                    break;
+                case 2:
+                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Đã thu' and (IDRoom LIKE '%" + keyWord +"%' or IDEWBill LIKE '%"+keyWord+"%')";
+                    break;
+                case 3:
+                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Chưa thu' and (IDRoom LIKE '%" + keyWord +"%' or IDEWBill LIKE '%"+keyWord+"%')";
+                    break;
+                default:
+                    query = "Select * from electricityandwaterbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDEWBill LIKE '%"+keyWord+"%')";
+                    break;
+            }
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("id", resultSet.getString(1));
+            item.put("room", resultSet.getString(3));
+            item.put("electric", calElectricFee(resultSet.getDouble(6), resultSet.getDouble(7)));
+            item.put("water", calWaterFee(resultSet.getDouble(8), resultSet.getDouble(9)));
+            item.put("total", resultSet.getDouble(10));
+            item.put("status", resultSet.getString(11));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    }
+    
     public double calElectricFee(double chiSoDau, double chiSoCuoi){
     return 3*(chiSoCuoi-chiSoDau);
     }
