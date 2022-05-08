@@ -56,23 +56,30 @@ public class StudentPaneController implements Initializable {
     private TextField searchText;
     @FXML
     void checkBoxHandles(ActionEvent event){
+      String keyWord = searchText.getText();
       if(event.getSource()== allBox){
             doneBox.setSelected(false);
             unDoneBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,1);
+            else dataTableView.getItems().addAll(student.getSearchStudent(1, keyWord));
       }
       if(event.getSource()== doneBox){
             allBox.setSelected(false);
             unDoneBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,2);
+            else dataTableView.getItems().addAll(student.getSearchStudent(2, keyWord));
       }
       if(event.getSource()==unDoneBox){
             doneBox.setSelected(false);
             allBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,3);
+            else dataTableView.getItems().addAll(student.getSearchStudent(3, keyWord));
       } 
     }
     
@@ -127,10 +134,10 @@ public class StudentPaneController implements Initializable {
         nameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.17));
         genderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12)); 
         statusCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13)); 
-        universityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13)); 
+        universityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.15)); 
         sYearCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12));
         eYearCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12));
-        toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
+        toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13));
         addDataToTable(table,1);
     }
     

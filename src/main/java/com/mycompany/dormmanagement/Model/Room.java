@@ -140,7 +140,7 @@ protected Button btnDetail, btnEdit, btnDelete;
             item.put("idroom", resultSet.getString(1));
             item.put("nostudent", resultSet.getString(3));
             item.put("status", resultSet.getString(4));
-            item.put("type", resultSet.getString(5));
+            item.put("type", "Phòng " + resultSet.getString(5));
             items.add(item);
             }
         } catch (SQLException ex) {
@@ -194,7 +194,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
             item.put("idroom", resultSet.getString(1));
             item.put("nostudent", resultSet.getString(3));
             item.put("status", resultSet.getString(4));
-            item.put("type", resultSet.getString(5));
+            item.put("type","Phòng " + resultSet.getString(5));
             items.add(item);
             }
         } catch (SQLException ex) {
