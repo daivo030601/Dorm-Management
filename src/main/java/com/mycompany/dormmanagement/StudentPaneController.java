@@ -56,23 +56,30 @@ public class StudentPaneController implements Initializable {
     private TextField searchText;
     @FXML
     void checkBoxHandles(ActionEvent event){
+      String keyWord = searchText.getText();
       if(event.getSource()== allBox){
             doneBox.setSelected(false);
             unDoneBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,1);
+            else dataTableView.getItems().addAll(student.getSearchStudent(1, keyWord));
       }
       if(event.getSource()== doneBox){
             allBox.setSelected(false);
             unDoneBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,2);
+            else dataTableView.getItems().addAll(student.getSearchStudent(2, keyWord));
       }
       if(event.getSource()==unDoneBox){
             doneBox.setSelected(false);
             allBox.setSelected(false);
             dataTableView.getItems().clear();
+            if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,3);
+            else dataTableView.getItems().addAll(student.getSearchStudent(3, keyWord));
       } 
     }
     
