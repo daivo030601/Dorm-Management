@@ -4,6 +4,21 @@
  */
 package com.mycompany.dormmanagement.Model;
 
+import connect.DataConnection;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+
 /**
  *
  * @author Mayy
@@ -11,26 +26,33 @@ package com.mycompany.dormmanagement.Model;
 public class Student {
     private String studentID;
     private String fullName;
-    private String birthday;
+    private Date birthday;
     private String Gender;
     private String IDCard;
     private String phoneNum;
     private String university;
     private String grade;
+    protected Button btnDetail, btnEdit, btnDelete;
 
     public Student() {
         this.studentID = "";
         this.fullName = "";
-        this.birthday = "";
+        this.birthday = null;
         this.Gender = "";
         this.IDCard = "";
         this.phoneNum = "";
         this.university = "";
         this.grade = "";
+        this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
+        this.btnDetail.setStyle("-fx-background-color: transparent;");
+        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
+        this.btnEdit.setStyle("-fx-background-color: transparent;");
+        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
+        this.btnDelete.setStyle("-fx-background-color: transparent;");
     }
 
     
-    public Student(String studentID, String fullName, String birthday, String Gender, String IDCard, String phoneNum, String university, String grade) {
+    public Student(String studentID, String fullName, Date birthday, String Gender, String IDCard, String phoneNum, String university, String grade) {
         this.studentID = studentID;
         this.fullName = fullName;
         this.birthday = birthday;
@@ -39,6 +61,12 @@ public class Student {
         this.phoneNum = phoneNum;
         this.university = university;
         this.grade = grade;
+        this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
+        this.btnDetail.setStyle("-fx-background-color: transparent;");
+        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
+        this.btnEdit.setStyle("-fx-background-color: transparent;");
+        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
+        this.btnDelete.setStyle("-fx-background-color: transparent;");
     }
 
     public String getStudentID() {
@@ -57,11 +85,11 @@ public class Student {
         this.fullName = fullName;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -106,5 +134,120 @@ public class Student {
     }
     
     
+    public ObservableList<Map<String, Object>> getStudent(int option){
+        ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="" ;
+            switch (option) {
+                case 1:
+                    query = "Select * from student";
+                    break;
+                case 2:
+                    query = "Select * from student where status = 'ĐX'";
+                    break;
+                case 3:
+                    query = "Select * from student where status = 'CX'";
+                    break;
+                default:
+                    query = "Select * from student";
+                    break;
+            }
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("id", resultSet.getString(1));
+            item.put("name", resultSet.getString(2));
+            item.put("gender", resultSet.getString(4));
+            item.put("status", resultSet.getString(9));
+            item.put("university", resultSet.getString(7));
+            item.put("sYear", resultSet.getString(10));
+            item.put("eYear", resultSet.getString(11));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    }
     
+    
+    public ObservableList<Map<String, Object>> getSearchStudent(int option, String keyWord){
+        ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="" ;
+            switch (option) {
+                case 1:
+                    query = "Select * from student where IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%'";
+                    break;
+                case 2:
+                    query = "Select * from student where status = 'ĐX' and (IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%')";
+                    break;
+                case 3:
+                    query = "Select * from student where status = 'CX' and (IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%')";
+                    break;
+                default:
+                    query = "Select * from student where IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%'";
+                    break;
+            }
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("id", resultSet.getString(1));
+            item.put("name", resultSet.getString(2));
+            item.put("gender", resultSet.getString(4));
+            item.put("status", resultSet.getString(9));
+            item.put("university", resultSet.getString(7));
+            item.put("sYear", resultSet.getString(10));
+            item.put("eYear", resultSet.getString(11));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    }
 }
