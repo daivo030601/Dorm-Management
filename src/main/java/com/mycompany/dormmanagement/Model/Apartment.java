@@ -105,4 +105,73 @@ public class Apartment {
         return listApartment;
     }
     
+    public ArrayList<String> getRoomNameBaseApartment(String apartment){
+    ArrayList<String> listRoom = new ArrayList<>();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select IDRoom from apartment,room where apartment.IDApartment = room.IDApartment and room.IDApartment = '"+apartment+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              listRoom.add(resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return listRoom;
+    }
+    
+    public void getInfo(String apartment){
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from apartment where IDApartment ='"+apartment+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              this.IDApartment = resultSet.getString(1);
+              this.NoRoom = resultSet.getString(2);
+              this.Gender = resultSet.getString(3);
+              this.IDEmployee = resultSet.getString(4);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+    }
+    
 }
