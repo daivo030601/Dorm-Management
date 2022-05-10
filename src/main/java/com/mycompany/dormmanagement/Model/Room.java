@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -217,5 +218,41 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
             }
         }
         return items;
+    }
+public void getInfo(String room){
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from room where IDRoom ='"+room+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              this.roomID = resultSet.getString(1);
+              this.apartment.getInfo(resultSet.getString(2));
+              this.noStudent = resultSet.getString(3);
+              this.status = resultSet.getString(4);
+              this.type = resultSet.getString(5);
+              this.rentingPrice = resultSet.getInt(6);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
     }
 }

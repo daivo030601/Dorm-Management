@@ -4,6 +4,9 @@
  */
 package com.mycompany.dormmanagement.Model;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 /**
  *
  * @author Mayy
@@ -13,16 +16,18 @@ public class Bill {
    protected Employee employee;
    protected Apartment apartment;
    protected Room room;
-   protected String createDay;
+   protected Date createDay;
    protected String total;
+   protected String status;
 
-    public Bill(String BillID, Employee employee, Apartment apartment, Room room, String createDay, String total) {
+    public Bill(String BillID, Employee employee, Apartment apartment, Room room, Date createDay, String total,String status) {
         this.billID = BillID;
         this.employee = employee;
         this.apartment = apartment;
         this.room = room;
         this.createDay = createDay;
         this.total = total;
+        this.status = status;
     }
 
     public Bill() {
@@ -30,8 +35,9 @@ public class Bill {
         this.employee = new Employee();
         this.apartment = new Apartment();
         this.room = new Room();
-        this.createDay = "";
+        this.createDay =  new Date();
         this.total = "0";
+        this.status = "Chưa thu";
     }
 
     public String getBillID() {
@@ -66,11 +72,11 @@ public class Bill {
         this.room = room;
     }
 
-    public String getCreateDay() {
+    public Date getCreateDay() {
         return createDay;
     }
 
-    public void setCreateDay(String createDay) {
+    public void setCreateDay(Date createDay) {
         this.createDay = createDay;
     }
 
@@ -82,6 +88,12 @@ public class Bill {
         this.total = total;
     }
     
+    public String getStatus(){
+        return status;
+    }
    
-   
+    public void setStatus(String status){
+        this.status=status;
+    }
 }
+

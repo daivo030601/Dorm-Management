@@ -20,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
 import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +29,11 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -43,6 +47,7 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import se.alipsa.ymp.*;
@@ -140,7 +145,20 @@ public class EwBillPaneController implements Initializable {
           searchText.clear();
           showAllBtn.setVisible(false);
     }
-    
+    @FXML
+    void addEWBill(ActionEvent event){
+ 
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/addEWbill.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Add electricity and water bill");
+        stage.setScene(new Scene(root));
+        stage.show();   
+        } catch (IOException e) {
+        }
+        
+    }
     private void tableSearch(){
        String keyWord = searchText.getText();
        dataTableView.getItems().clear();
@@ -218,12 +236,16 @@ public class EwBillPaneController implements Initializable {
                         Button btnDelete = new Button("",new ImageView("/Image/delete.png"));
                         btnDelete.setStyle("-fx-background-color: transparent;");
                         btnDetail.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            System.out.println("A"+i);
+                            int index = getIndex();                         
+                            String data = (String) indexCol.getCellObservableValue(index).getValue();
+                            sendDetailData(data);
                         });
                         btnEdit.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            System.out.println("B"+i);
+                            int index = getIndex();
+                            String path = "/View/editEWBill.fxml";
+                            String stageTitle = "Edit electricity and water bill";
+                            String data = (String) indexCol.getCellObservableValue(index).getValue();
+                            sendEditData(data);
                         });
                         btnDelete.setOnAction((ActionEvent event) -> {
                             int i = getIndex();
@@ -239,6 +261,36 @@ public class EwBillPaneController implements Initializable {
         };
 
         toolCol.setCellFactory(cellFactory);
+    }
+    private void sendDetailData(String data){
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailEWBill.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Electricity and water bill detail");
+        DetailEWBillController detailEWBillController = loader.getController();
+        detailEWBillController.reciveData(data);
+        stage.setScene(new Scene(root));
+        stage.show();   
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println("success");
+    }
+    private void sendEditData(String data){
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/editEWBill.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Edit electricity and water bill");
+        EditEWBillController editEWBillController = loader.getController();
+        editEWBillController.reciveData(data);
+        stage.setScene(new Scene(root));
+        stage.show();   
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println("success");
     }
     private void addDataToCombobox(ComboBox comboBox){
         apartment = new Apartment();
