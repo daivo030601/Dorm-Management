@@ -8,14 +8,21 @@ import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
 import com.mycompany.dormmanagement.Model.Room;
 
+import com.mycompany.dormmanagement.DetailRoomPaneController;
+import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -27,6 +34,7 @@ import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import se.alipsa.ymp.YearMonthPicker;
 
@@ -186,6 +194,7 @@ public class RoomPaneController implements Initializable {
                         btnDelete.setStyle("-fx-background-color: transparent;");
                         btnDetail.setOnAction((ActionEvent event) -> {
                             int i = getIndex();
+                            //changeRoomDetail(ActionEvent event);
                             System.out.println("A"+i);
                         });
                         btnEdit.setOnAction((ActionEvent event) -> {
@@ -216,7 +225,16 @@ public class RoomPaneController implements Initializable {
         comboBox.getItems().addAll(items);
         
     }
-    
+    public void changeRoomDetail(ActionEvent event) throws IOException
+    {
+        Stage stage =(Stage)((Node)event.getSource()).getScene().getWindow();
+        FXMLLoader loader =new FXMLLoader();
+        loader.setLocation(getClass().getResource("/View/detailRoomPane.fxml"));
+        Parent roomViewParent = loader.load();
+        Scene scene = new Scene(roomViewParent); 
+        stage.setScene(scene);
+       
+    }
 
     private void DrawUI(){
         allBox.setSelected(true);

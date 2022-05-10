@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="420.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="com.mycompany.dormmanagement.DetailRoomPaneController">
+    <stylesheets>
+        <URL value="@/styles/main.css" />
+    </stylesheets>
+   <children>
+      <VBox layoutY="113.0" prefHeight="300.0" prefWidth="120.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Label prefHeight="40.0" prefWidth="120.0" text="Tòa:">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="40.0" prefWidth="120.0" text="Số Phòng:">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="40.0" prefWidth="120.0" text="Loại phòng:">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="40.0" prefWidth="120.0" text="Số lượng đã ở:">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="40.0" prefWidth="120.0" text="Tình trạng:">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="40.0" prefWidth="120.0" text="Giá Thuê:">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <Label prefHeight="100.0" prefWidth="420.0" text="Chi tiết thông tin phòng" textAlignment="CENTER" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="Segoe UI Bold" size="24.0" />
+         </font>
+      </Label>
+      <VBox prefHeight="300.0" prefWidth="220.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Label fx:id="apartmentLabel" prefHeight="40.0" prefWidth="220.0">
+               <font>
+                  <Font name="Segoe UI" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="roomLabel" prefHeight="40.0" prefWidth="220.0" textAlignment="RIGHT">
+               <font>
+                  <Font name="Segoe UI" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="typeLable" prefHeight="40.0" prefWidth="220.0" textAlignment="RIGHT">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="nostudentLable" prefHeight="40.0" prefWidth="220.0" textAlignment="RIGHT">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="statusLable" prefHeight="40.0" prefWidth="220.0" textAlignment="RIGHT">
+               <font>
+                  <Font name="Segoe UI" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="rentingpriceLable" prefHeight="40.0" prefWidth="220.0">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <Button fx:id="combackbtn" layoutX="177.0" layoutY="435.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Quay lại" textAlignment="CENTER" AnchorPane.bottomAnchor="54.6" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="435.0">
+         <font>
+            <Font name="Segoe UI Bold" size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
