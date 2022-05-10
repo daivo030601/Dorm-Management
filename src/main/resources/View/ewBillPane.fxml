@@ -32,7 +32,7 @@
                               <Insets left="35.0" right="35.0" />
                            </HBox.margin>
                         </TextField> 
-                        <Button mnemonicParsing="false" styleClass="buttonindashboard" text="Thêm">
+                        <Button fx:id="addBtn" onAction="#addEWBill" mnemonicParsing="false" styleClass="buttonindashboard" text="Thêm">
                            <HBox.margin>
                               <Insets left="35.0" />
                            </HBox.margin>
