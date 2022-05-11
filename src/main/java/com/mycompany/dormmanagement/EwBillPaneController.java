@@ -82,18 +82,7 @@ public class EwBillPaneController implements Initializable {
     //event of apartmentCombobox
     @FXML
     void selectHandle(ActionEvent event){ 
-        if(searchText.getText().isEmpty()){
-        dataTableView.getItems().clear();
-        if(allBox.isSelected()){       
-        addDataToTable(dataTableView,1);
-        }
-        if(doneBox.isSelected()){     
-        addDataToTable(dataTableView,2);
-        }
-        if(unDoneBox.isSelected()){      
-        addDataToTable(dataTableView,3);
-        }
-        }else tableSearch();
+        refreshTable();
     }
     @FXML
     void checkBoxHandles(ActionEvent event){
@@ -153,11 +142,27 @@ public class EwBillPaneController implements Initializable {
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
         stage.setTitle("Add electricity and water bill");
+        AddEWBillController addEWBillController = loader.getController();
+        addEWBillController.receiveData(this);
         stage.setScene(new Scene(root));
         stage.show();   
         } catch (IOException e) {
         }
         
+    }
+    public void refreshTable(){
+        if(searchText.getText().isEmpty()){
+            dataTableView.getItems().clear();
+        if(allBox.isSelected()){       
+            addDataToTable(dataTableView,1);
+        }
+        if(doneBox.isSelected()){     
+            addDataToTable(dataTableView,2);
+        }
+        if(unDoneBox.isSelected()){      
+            addDataToTable(dataTableView,3);
+        }
+        }else tableSearch();   
     }
     private void tableSearch(){
        String keyWord = searchText.getText();
@@ -231,27 +236,12 @@ public class EwBillPaneController implements Initializable {
                     } else {
                         Button btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
                         btnDetail.setStyle("-fx-background-color: transparent;");
-                        Button btnEdit = new Button("",new ImageView("/Image/edit.png"));
-                        btnEdit.setStyle("-fx-background-color: transparent;");
-                        Button btnDelete = new Button("",new ImageView("/Image/delete.png"));
-                        btnDelete.setStyle("-fx-background-color: transparent;");
                         btnDetail.setOnAction((ActionEvent event) -> {
-                            int index = getIndex();                         
+                            int index = getIndex();  
                             String data = (String) indexCol.getCellObservableValue(index).getValue();
                             sendDetailData(data);
                         });
-                        btnEdit.setOnAction((ActionEvent event) -> {
-                            int index = getIndex();
-                            String path = "/View/editEWBill.fxml";
-                            String stageTitle = "Edit electricity and water bill";
-                            String data = (String) indexCol.getCellObservableValue(index).getValue();
-                            sendEditData(data);
-                        });
-                        btnDelete.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            System.out.println("C"+i);
-                        });
-                        HBox btnManage = new HBox(btnDetail, btnEdit, btnDelete);
+                        HBox btnManage = new HBox(btnDetail);
                         btnManage.setStyle("-fx-alignment:center");                   
                         setGraphic(btnManage);
                     }
@@ -263,35 +253,23 @@ public class EwBillPaneController implements Initializable {
         toolCol.setCellFactory(cellFactory);
     }
     private void sendDetailData(String data){
+        
         try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailEWBill.fxml"));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
         stage.setTitle("Electricity and water bill detail");
-        DetailEWBillController detailEWBillController = loader.getController();
-        detailEWBillController.reciveData(data);
         stage.setScene(new Scene(root));
-        stage.show();   
+        DetailEWBillController detailEWBillController = loader.getController(); 
+        detailEWBillController.reciveData(data,this);
+        stage.show(); 
         } catch (IOException e) {
             System.out.println(e);
         }
         System.out.println("success");
+        
     }
-    private void sendEditData(String data){
-        try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/editEWBill.fxml"));
-        Parent root = (Parent) loader.load();
-        Stage stage = new Stage();
-        stage.setTitle("Edit electricity and water bill");
-        EditEWBillController editEWBillController = loader.getController();
-        editEWBillController.reciveData(data);
-        stage.setScene(new Scene(root));
-        stage.show();   
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        System.out.println("success");
-    }
+    
     private void addDataToCombobox(ComboBox comboBox){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
