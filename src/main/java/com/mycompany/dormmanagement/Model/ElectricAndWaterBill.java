@@ -22,6 +22,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import java.sql.PreparedStatement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -103,7 +105,54 @@ public class ElectricAndWaterBill extends Bill {
     public void setChiSoCuoiNuoc(double ChiSoCuoiNuoc) {
         this.ChiSoCuoiNuoc = ChiSoCuoiNuoc;
     }
-   
+    public void getInfoBaseID(String ID){
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from electricityandwaterbill where IDEWBill ='"+ID+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              this.billID = resultSet.getString(1);   
+                System.out.println(this.billID);
+              this.employee.getInfoBaseID(resultSet.getString(2));
+              this.room.getInfo(resultSet.getString(3));
+              this.apartment.getInfo(resultSet.getString(4));
+                try {
+                    this.createDay = formatter.parse(resultSet.getString(5));
+                } catch (ParseException ex) {
+                    Logger.getLogger(ElectricAndWaterBill.class.getName()).log(Level.SEVERE, null, ex);
+                }
+              this.ChiSoDauDien = resultSet.getDouble(6);
+              this.ChiSoCuoiDien = resultSet.getDouble(7);
+              this.ChiSoDauNuoc = resultSet.getDouble(8);
+              this.ChiSoCuoiNuoc = resultSet.getDouble(9);
+              this.total = resultSet.getString(10);
+              this.status = resultSet.getString(11);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }      
+    
+    }
     public ObservableList<Map<String, Object>> getEWBill(String apartment, int option, String month,String year){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -225,7 +274,7 @@ public class ElectricAndWaterBill extends Bill {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query ="select ChiSoCuoiDien from electricityandwaterbill where IDRoom = '"+room+"'" ;
+            String query ="select ChiSoCuoiDien from electricityandwaterbill where IDRoom = '"+room+"' ORDER BY ChiSoCuoiDien ASC" ;
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
                 lastEValue = resultSet.getDouble(1);
@@ -258,7 +307,7 @@ public class ElectricAndWaterBill extends Bill {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query ="select ChiSoCuoiNuoc from electricityandwaterbill where IDRoom = '"+room+"'" ;
+            String query ="select ChiSoCuoiNuoc from electricityandwaterbill where IDRoom = '"+room+"' ORDER BY ChiSoCuoiNuoc ASC" ;
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
                 lastWValue = resultSet.getDouble(1);
@@ -292,10 +341,14 @@ public class ElectricAndWaterBill extends Bill {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query ="select IDEWBill from electricityandwaterbill ORDER BY IDEWBill DESC LIMIT 1" ;
+            String query ="select IDEWBill from electricityandwaterbill" ;
             resultSet = statement.executeQuery(query);
-            if(resultSet.next()){
-                lastEWBill=resultSet.getString(1);
+            while(resultSet.next()){
+                lastEWBill=resultSet.getString(1);             
+                int tempindex = Integer.parseInt(lastEWBill.substring(2));
+                if(index<=tempindex){
+                index = tempindex;
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
@@ -316,7 +369,7 @@ public class ElectricAndWaterBill extends Bill {
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
-        index = Integer.parseInt(lastEWBill.substring(2));
+        System.out.println(index);
         return index;
     }
     
@@ -342,6 +395,34 @@ public class ElectricAndWaterBill extends Bill {
             statement.setString(11, this.status);
             statement.execute();
             
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
+    
+    public void updateStatusEWBill(String IDEWBill){
+        
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query = "update electricityandwaterbill set status = 'Đã thu' where IDEWBill = '"+IDEWBill +"'" ;
+            statement = con.prepareStatement(query);
+            statement.execute();            
         } catch (SQLException ex) {
             Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

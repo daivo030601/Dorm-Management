@@ -30,7 +30,7 @@
                               <Insets left="195.0" right="35.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="apartmentComboBox" prefHeight="45.0" prefWidth="250.0" styleClass="combobox" />
+                        <ComboBox fx:id="apartmentComboBox" onAction="#selectApartment"  prefHeight="45.0" prefWidth="250.0" styleClass="combobox" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -46,7 +46,7 @@
                               <Insets left="145.0" right="35.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="roomComboBox" prefHeight="45.0" prefWidth="250.0" styleClass="combobox" />
+                        <ComboBox fx:id="roomComboBox" onAction="#selectRoom"  prefHeight="45.0" prefWidth="250.0" styleClass="combobox" />
                      </children>
                      <VBox.margin>
                         <Insets top="20.0" />

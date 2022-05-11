@@ -19,10 +19,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
 
@@ -36,6 +39,7 @@ public class AddEWBillController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    private EwBillPaneController eWBillController;
     private ElectricAndWaterBill ewBill;
     @FXML
     private Button insertBtn;
@@ -50,9 +54,7 @@ public class AddEWBillController implements Initializable {
     private ComboBox apartmentComboBox,roomComboBox;
     @FXML
     void back(ActionEvent event){
-        final Node source = (Node) event.getSource();
-        final Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        closeStage(event);
     }
    
     @FXML
@@ -90,7 +92,15 @@ public class AddEWBillController implements Initializable {
             insertBtn.setDisable(false);
         }
         if(eEndError.visibleProperty().get()==false && wEndError.visibleProperty().get()==false){
-            autoFillTotalFee();
+            double totalFee = autoFillTotalFee();
+            if(totalFee==-1) {
+                total.setText("");
+                insertBtn.setDisable(true);
+            }
+            else {
+                total.setText(Double.toString(totalFee));
+                insertBtn.setDisable(false);
+            }
         } else {
             total.setText("");
             insertBtn.setDisable(true);
@@ -122,44 +132,92 @@ public class AddEWBillController implements Initializable {
         try {
             ewBill.insertNewEWBill();
         } catch (Exception e) {
-            System.out.println("something wrong");
+            showNotification("Có lỗi xảy ra. Thêm không thành công.");
+            closeStage(event);
         }
+        eWBillController.refreshTable();
+        showNotification("Thêm thành công.");
+        closeStage(event);
         
         
     }
+    @FXML
+    void selectApartment(ActionEvent event){
+        addDataToRoomComboBox();
+    }
+    @FXML
+    void selectRoom(ActionEvent event){
+        try {
+            autoFillEStartAndWStart(); 
+            double totalFee = autoFillTotalFee();
+            if(totalFee==-1) {
+                total.setText("");
+                insertBtn.setDisable(true);
+            }
+            else {
+                total.setText(Double.toString(totalFee));
+                insertBtn.setDisable(false);
+            }
+        } catch (Exception e) {
+        }
+        
+    }
+    private void closeStage(ActionEvent event){
+        final Node source = (Node) event.getSource();
+        final Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+    private void showNotification(String msg){
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+	alert.setContentText(msg);
+	alert.showAndWait();
+    }
+    public void receiveData(EwBillPaneController receiveController){
+        eWBillController = receiveController;
+    }
     private void addDataToComboBox(){
         apartment = new Apartment();
-        ObservableList<String> items = FXCollections.<String>observableArrayList();
-        ObservableList<String> items2 = FXCollections.<String>observableArrayList();
+        ObservableList<String> items = FXCollections.<String>observableArrayList();       
         for(var item : apartment.getAllApartment()){
             items.add("Tòa "+ item);
         }
         apartmentComboBox.setItems(items);
         apartmentComboBox.getSelectionModel().select(0);
+        addDataToRoomComboBox();
+                    
+    }
+    private void addDataToRoomComboBox(){
+        ObservableList<String> items = FXCollections.<String>observableArrayList();
         String apartmentName = apartmentComboBox.getValue().toString().substring(4);
         for(var item : apartment.getRoomNameBaseApartment(apartmentName)){
-            items2.add(item);
+            items.add(item);
         }
-        roomComboBox.setItems(items2);
-        roomComboBox.getSelectionModel().select(0);              
+        roomComboBox.setItems(items);
+        roomComboBox.getSelectionModel().select(0);  
+    
     }
     private void autoFillEStartAndWStart(){
         ewBill = new ElectricAndWaterBill();
-        String room = roomComboBox.getValue().toString();
-        String lastEStart = Double.toString(ewBill.getLastEValueOfRoom(room));
-        String lastWStart = Double.toString(ewBill.getLastWValueOfRoom(room));
+        String roomName = roomComboBox.getValue().toString();
+        String lastEStart = Double.toString(ewBill.getLastEValueOfRoom(roomName));
+        String lastWStart = Double.toString(ewBill.getLastWValueOfRoom(roomName));
         eStart.setText(lastEStart);
         wStart.setText(lastWStart);
         
         
     }
     
-    private void autoFillTotalFee(){
+    private double autoFillTotalFee(){
         ewBill = new ElectricAndWaterBill();
         double eNumber = Double.parseDouble(eEnd.getText()) - Double.parseDouble(eStart.getText());
         double wNumber = Double.parseDouble(wEnd.getText()) - Double.parseDouble(wStart.getText());
-        String totalFee = Double.toString(ewBill.totalFee(ewBill.calElectricFee(eNumber), ewBill.calWaterFee(wNumber)));
-        total.setText(totalFee);
+        if(eNumber<0 || wNumber<0) return -1;
+        else {
+            double totalFee = ewBill.totalFee(ewBill.calElectricFee(eNumber), ewBill.calWaterFee(wNumber));
+            return totalFee;
+        }      
     }
     private void DrawUI(){
         addDataToComboBox();
