@@ -34,7 +34,7 @@
                               <Insets left="35.0" />
                            </HBox.margin>
                         </TextField> 
-                        <Button mnemonicParsing="false" styleClass="buttonindashboard" text="Thêm phòng">
+                        <Button mnemonicParsing="false" onAction="#addRoom" styleClass="buttonindashboard" text="Thêm phòng">
                            <HBox.margin>
                               <Insets left="35.0" />
                            </HBox.margin>

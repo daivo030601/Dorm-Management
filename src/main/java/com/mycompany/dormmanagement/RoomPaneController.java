@@ -4,39 +4,53 @@
  */
 package com.mycompany.dormmanagement;
 
-import com.mycompany.dormmanagement.Model.Apartment;
-import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
-import com.mycompany.dormmanagement.Model.Room;
-
-import com.mycompany.dormmanagement.DetailRoomPaneController;
-import java.io.IOException;
-
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.NodeOrientation;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
+import com.mycompany.dormmanagement.Model.Apartment;
+import com.mycompany.dormmanagement.Model.Room;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.PieChart.Data;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import se.alipsa.ymp.YearMonthPicker;
+import javafx.util.StringConverter;
+import se.alipsa.ymp.*;
 
 /**
  * FXML Controller class
@@ -128,6 +142,20 @@ public class RoomPaneController implements Initializable {
           searchText.clear();
           showAllBtn.setVisible(false);
     }
+    @FXML
+    void addRoom(ActionEvent event){
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/addRoomPane.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Thêm phòng mới");
+        stage.setScene(new Scene(root));
+        stage.show();   
+        } catch (IOException e) {
+        }
+        
+    }
+    
     private void tableSearch(){
        String keyWord = searchText.getText();
        dataTableView.getItems().clear();
@@ -193,13 +221,15 @@ public class RoomPaneController implements Initializable {
                         Button btnDelete = new Button("",new ImageView("/Image/delete.png"));
                         btnDelete.setStyle("-fx-background-color: transparent;");
                         btnDetail.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            //changeRoomDetail(ActionEvent event);
-                            System.out.println("A"+i);
+                            int index = getIndex();
+                            String data = (String) indexCol.getCellObservableValue(index).getValue();
+                            changeRoomDetail(data);
                         });
                         btnEdit.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            System.out.println("B"+i);
+                            int index = getIndex();
+                            String data = (String) indexCol.getCellObservableValue(index).getValue();
+                            changeRoomEdit(data);
+                            
                         });
                         btnDelete.setOnAction((ActionEvent event) -> {
                             int i = getIndex();
@@ -225,17 +255,38 @@ public class RoomPaneController implements Initializable {
         comboBox.getItems().addAll(items);
         
     }
-    public void changeRoomDetail(ActionEvent event) throws IOException
+    public void changeRoomDetail(String data)
     {
-        Stage stage =(Stage)((Node)event.getSource()).getScene().getWindow();
-        FXMLLoader loader =new FXMLLoader();
-        loader.setLocation(getClass().getResource("/View/detailRoomPane.fxml"));
-        Parent roomViewParent = loader.load();
-        Scene scene = new Scene(roomViewParent); 
-        stage.setScene(scene);
-       
+        try{
+   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailRoomPane.fxml"));
+        Parent roomdetial = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Chi tiết thông tin phòng");
+        DetailRoomPaneController detailRoomPaneController = loader.getController();
+        detailRoomPaneController.setDetailRoom(String.valueOf(room.getApartment()),room.getRoomID(),room.getNoStudent(),room.getStatus(),room.getType(),String.valueOf(room.getRentingPrice()));
+        stage.setScene(new Scene(roomdetial));
+        stage.show();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println("success");
     }
-
+    private void changeRoomEdit(String data){
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/editRoomPane.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Chỉnh sửa thông tin phòng");
+        EditRoomPaneController editRoomPaneController = loader.getController();
+        editRoomPaneController.setDetailRoom(data);
+        stage.setScene(new Scene(root));
+        stage.show();   
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println("success");
+    }
     private void DrawUI(){
         allBox.setSelected(true);
         addDataToCombobox(apartmentComboBox);
