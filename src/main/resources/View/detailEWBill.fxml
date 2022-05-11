@@ -10,12 +10,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="687.0" prefWidth="450.0" styleClass="casualPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="com.mycompany.dormmanagement.DetailEWBillController">
+<AnchorPane id="AnchorPane" prefHeight="750.0" prefWidth="500.0" styleClass="casualPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.dormmanagement.DetailEWBillController">
     <stylesheets>
         <URL value="@/styles/main.css" />
     </stylesheets>
    <children>
-      <VBox layoutX="105.0" layoutY="51.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="105.0" layoutY="51.0" prefHeight="500.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefWidth="200.0">
                <children>
@@ -24,7 +24,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="ID" text="Label">
@@ -32,7 +32,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="132.0" />
+                        <Insets left="172.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -47,7 +47,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="apartment" text="Label">
@@ -55,7 +55,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="119.0" />
+                        <Insets left="159.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -70,7 +70,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="room" text="Label">
@@ -78,7 +78,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="96.0" />
+                        <Insets left="136.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -91,7 +91,7 @@
                   <Font name="Segoe UI Bold" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets left="50.0" top="20.0" />
+                  <Insets left="100.0" top="20.0" />
                </VBox.margin>
             </Label>
             <HBox layoutX="10.0" layoutY="56.0" prefWidth="200.0">
@@ -101,7 +101,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="eStart" text="Label">
@@ -109,7 +109,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="20.0" />
+                        <Insets left="60.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -124,7 +124,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="eEnd" text="Label">
@@ -132,7 +132,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="17.0" />
+                        <Insets left="57.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -142,20 +142,20 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="125.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="eNum" text="Số điện">
+                  <Label text="Số điện">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
-                  <Label text="Label">
+                  <Label fx:id="eNum" text="Label">
                      <font>
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="87.0" />
+                        <Insets left="127.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -170,7 +170,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="eFee" text="Label">
@@ -178,7 +178,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="72.0" />
+                        <Insets left="112.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -191,7 +191,7 @@
                   <Font name="Segoe UI Bold" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets left="50.0" top="20.0" />
+                  <Insets left="100.0" top="20.0" />
                </VBox.margin>
             </Label>
             <HBox layoutX="10.0" layoutY="171.0" prefWidth="200.0">
@@ -201,7 +201,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="wStart" text="Label">
@@ -209,7 +209,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="15.0" />
+                        <Insets left="55.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -224,15 +224,15 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="wEnd"  text="Label">
+                  <Label fx:id="wEnd" text="Label">
                      <font>
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="10.0" />
+                        <Insets left="50.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -247,7 +247,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="wNum" text="Label">
@@ -255,7 +255,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="81.0" />
+                        <Insets left="121.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -270,7 +270,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="wFee" text="Label">
@@ -278,7 +278,7 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="65.0" />
+                        <Insets left="105.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -293,7 +293,7 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="total" text="Label">
@@ -301,7 +301,30 @@
                         <Font name="Segoe UI" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="59.0" />
+                        <Insets left="99.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="589.0" prefWidth="200.0">
+               <children>
+                  <Label text="Ngày tạo">
+                     <font>
+                        <Font name="Segoe UI Bold" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="100.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="date" text="Label">
+                     <font>
+                        <Font name="Segoe UI" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="112.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -310,16 +333,35 @@
                </VBox.margin>
             </HBox>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
-               <center>
-                  <Button onAction="#back" mnemonicParsing="false" text="Quay lại" styleClass="appBtn-red" BorderPane.alignment="CENTER">
+               <left>
+                  <Button mnemonicParsing="false" onAction="#back" prefWidth="201.0" styleClass="appBtn-red" text="Quay lại" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <padding>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                      </padding>
+                     <BorderPane.margin>
+                        <Insets left="30.0" />
+                     </BorderPane.margin>
                   </Button>
-               </center>
+               </left>
+               <right>
+                  <Button fx:id="markAsDone" mnemonicParsing="false" onAction="#updateStatus" styleClass="appBtn-green" text="Đánh dấu là đã thu" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Segoe UI Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </padding>
+                     <BorderPane.margin>
+                        <Insets right="30.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </right>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </BorderPane>
          </children>
       </VBox>
