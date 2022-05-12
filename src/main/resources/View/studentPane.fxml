@@ -26,42 +26,43 @@
                <children>
                   <HBox prefHeight="45.0" prefWidth="1000.0">
                      <children>
-                        <TextField fx:id="searchText" onKeyReleased="#textChange" prefHeight="45.0" prefWidth="500.0" promptText="Tìm kiếm" styleClass="searchField">
+                        <TextField fx:id="searchText" onKeyReleased="#textChange" prefHeight="45.0" prefWidth="402.0" promptText="Tìm kiếm" styleClass="searchField">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" onAction="#addHandleClicked" prefHeight="40.0" styleClass="buttonindashboard" text="Thêm Mới" textFill="WHITE">
+                        <Button mnemonicParsing="false" layoutY="10.0" onAction="#addHandleClicked" prefHeight="45.0" styleClass="buttonindashboard" text="Thêm Mới" textFill="WHITE">
+
                            <padding>
-                              <Insets bottom="8.0" left="24.0" right="24.0" top="8.0" />
+                              <Insets bottom="10.0" left="24.0" right="24.0" top="10.0" />
                            </padding>
                            <HBox.margin>
-                              <Insets left="12.0" top="2.0" />
+                              <Insets left="12.0" />
                            </HBox.margin>
                            <font>
-                              <Font size="14.0" />
+                              <Font name="Segoe UI Bold" size="18.0" />
                            </font>
                         </Button>
-                        <Button layoutX="472.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" styleClass="appBtn-red" text="Xếp phòng thủ công" textFill="WHITE">
+                        <Button layoutX="472.0" layoutY="10.0" mnemonicParsing="false" prefHeight="45.0" styleClass="appBtn-red" text="Xếp phòng thủ công" textFill="WHITE">
                            <padding>
-                              <Insets bottom="8.0" left="24.0" right="24.0" top="8.0" />
+                              <Insets bottom="10.0" left="24.0" right="24.0" top="10.0" />
                            </padding>
                            <HBox.margin>
-                              <Insets left="12.0" top="2.0" />
+                              <Insets left="12.0" />
                            </HBox.margin>
                            <font>
-                              <Font size="14.0" />
+                              <Font name="Segoe UI" size="18.0" />
                            </font>
                         </Button>
-                        <Button layoutX="622.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" styleClass="appBtn-green" text="Xếp phòng thụ động" textFill="WHITE">
+                        <Button layoutX="622.0" layoutY="10.0" mnemonicParsing="false" prefHeight="45.0" styleClass="appBtn-green" text="Xếp phòng tự động" textFill="WHITE">
                            <padding>
-                              <Insets bottom="8.0" left="24.0" right="24.0" top="8.0" />
+                              <Insets bottom="10.0" left="24.0" right="24.0" top="10.0" />
                            </padding>
                            <HBox.margin>
-                              <Insets left="12.0" top="2.0" />
+                              <Insets left="12.0" />
                            </HBox.margin>
                            <font>
-                              <Font size="14.0" />
+                              <Font name="Segoe UI Bold" size="18.0" />
                            </font>
                         </Button>
                      </children>
@@ -80,11 +81,17 @@
                            <HBox.margin>
                               <Insets left="10.0" top="8.0" />
                            </HBox.margin>
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
                         </CheckBox>
                         <CheckBox fx:id="unDoneBox" mnemonicParsing="false" onAction="#checkBoxHandles" text="Chưa xếp">
                            <HBox.margin>
                               <Insets left="10.0" top="8.0" />
                            </HBox.margin>
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
                         </CheckBox>
                         <Button fx:id="showAllBtn" mnemonicParsing="false" onAction="#showAll" styleClass="buttonindashboard" text="Hiển thị tất cả" visible="false">
                            <padding>

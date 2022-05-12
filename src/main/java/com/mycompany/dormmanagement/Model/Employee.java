@@ -4,6 +4,14 @@
  */
 package com.mycompany.dormmanagement.Model;
 
+import connect.DataConnection;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Mayy
@@ -93,4 +101,78 @@ public class Employee {
         this.birthday = birthday;
     }
    
+    public void getInfoBaseAccountID(String IDAccount){
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from employee where IDAccount ='"+IDAccount+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              this.employeeID = resultSet.getString(1);             
+              this.fullname = resultSet.getString(2);
+              this.birthday= resultSet.getString(3);
+              this.address = resultSet.getString(4);
+              this.position = resultSet.getString(5);
+              this.phoneNumber = resultSet.getString(6);
+              this.accountID = resultSet.getString(7);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+    }
+    public void getInfoBaseID(String IDEmployee){
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from employee where IDEmployee ='"+IDEmployee+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              this.employeeID = resultSet.getString(1);             
+              this.fullname = resultSet.getString(2);
+              this.birthday= resultSet.getString(3);
+              this.address = resultSet.getString(4);
+              this.position = resultSet.getString(5);
+              this.phoneNumber = resultSet.getString(6);
+              this.accountID = resultSet.getString(7);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+    }
 }

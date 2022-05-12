@@ -4,6 +4,8 @@
  */
 package com.mycompany.dormmanagement.Model;
 
+import java.util.Date;
+
 /**
  *
  * @author Mayy
@@ -11,8 +13,8 @@ package com.mycompany.dormmanagement.Model;
 public class RentBill extends Bill{
     private Student student;
 
-    public RentBill(Student student, String billID, Employee employee, Apartment apartment, Room room, String createDay, String total) {
-        super(billID, employee, apartment, room, createDay, total);
+    public RentBill(Student student, String billID, Employee employee, Apartment apartment, Room room, Date createDay, String total,String status) {
+        super(billID, employee, apartment, room, createDay, total,status);
         this.student = student;
     }
 

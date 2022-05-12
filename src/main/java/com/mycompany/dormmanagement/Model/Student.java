@@ -33,7 +33,7 @@ public class Student {
     private String phoneNum;
     private String university;
     private String grade;
-    protected Button btnDetail, btnEdit, btnDelete;
+    
 
     public Student() {
         this.studentID = "";
@@ -44,12 +44,7 @@ public class Student {
         this.phoneNum = "";
         this.university = "";
         this.grade = "";
-        this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
-        this.btnDetail.setStyle("-fx-background-color: transparent;");
-        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
-        this.btnEdit.setStyle("-fx-background-color: transparent;");
-        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
-        this.btnDelete.setStyle("-fx-background-color: transparent;");
+        
     }
 
     
@@ -62,12 +57,7 @@ public class Student {
         this.phoneNum = phoneNum;
         this.university = university;
         this.grade = grade;
-        this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
-        this.btnDetail.setStyle("-fx-background-color: transparent;");
-        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
-        this.btnEdit.setStyle("-fx-background-color: transparent;");
-        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
-        this.btnDelete.setStyle("-fx-background-color: transparent;");
+        
     }
 
     public String getStudentID() {

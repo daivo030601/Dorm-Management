@@ -21,6 +21,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import java.sql.PreparedStatement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  *
@@ -31,20 +37,15 @@ public class ElectricAndWaterBill extends Bill {
    protected double ChiSoCuoiDien;
    protected double ChiSoDauNuoc;
    protected double ChiSoCuoiNuoc;
-   protected Button btnDetail, btnEdit, btnDelete;
+   
 
-    public ElectricAndWaterBill(double ChiSoDauDien, double ChiSoCuoiDien, double ChiSoDauNuoc, double ChiSoCuoiNuoc, String BillID, Employee employee, Apartment apartment, Room room, String createDay, String total) {
-        super(BillID, employee, apartment, room, createDay, total);
+    public ElectricAndWaterBill(double ChiSoDauDien, double ChiSoCuoiDien, double ChiSoDauNuoc, double ChiSoCuoiNuoc, String BillID, Employee employee, Apartment apartment, Room room, Date createDay, String total,String status) {
+        super(BillID, employee, apartment, room, createDay, total,status);
         this.ChiSoDauDien = ChiSoDauDien;
         this.ChiSoCuoiDien = ChiSoCuoiDien;
         this.ChiSoDauNuoc = ChiSoDauNuoc;
         this.ChiSoCuoiNuoc = ChiSoCuoiNuoc;
-        this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
-        this.btnDetail.setStyle("-fx-background-color: transparent;");
-        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
-        this.btnEdit.setStyle("-fx-background-color: transparent;");
-        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
-        this.btnDelete.setStyle("-fx-background-color: transparent;");
+        
         
         
     }
@@ -54,12 +55,7 @@ public class ElectricAndWaterBill extends Bill {
         this.ChiSoCuoiDien = ChiSoCuoiDien;
         this.ChiSoDauNuoc = ChiSoDauNuoc;
         this.ChiSoCuoiNuoc = ChiSoCuoiNuoc;
-         this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
-        this.btnDetail.setStyle("-fx-background-color: transparent;");
-        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
-        this.btnEdit.setStyle("-fx-background-color: transparent;");
-        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
-        this.btnDelete.setStyle("-fx-background-color: transparent;");
+        
        
     }
    
@@ -68,18 +64,13 @@ public class ElectricAndWaterBill extends Bill {
         this.employee = new Employee();
         this.apartment = new Apartment();
         this.room = new Room();
-        this.createDay = "";
+        this.createDay = new Date();
         this.total = "0";
         this.ChiSoDauDien = 0.0;
         this.ChiSoCuoiDien = 0.0;
         this.ChiSoDauNuoc = 0.0;
         this.ChiSoCuoiNuoc = 0.0;
-        this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
-        this.btnDetail.setStyle("-fx-background-color: transparent;");
-        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
-        this.btnEdit.setStyle("-fx-background-color: transparent;");
-        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
-        this.btnDelete.setStyle("-fx-background-color: transparent;");
+        this.status = "Chưa thu";
         
     }
 
@@ -114,19 +105,54 @@ public class ElectricAndWaterBill extends Bill {
     public void setChiSoCuoiNuoc(double ChiSoCuoiNuoc) {
         this.ChiSoCuoiNuoc = ChiSoCuoiNuoc;
     }
+    public void getInfoBaseID(String ID){
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from electricityandwaterbill where IDEWBill ='"+ID+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              this.billID = resultSet.getString(1);   
+                System.out.println(this.billID);
+              this.employee.getInfoBaseID(resultSet.getString(2));
+              this.room.getInfo(resultSet.getString(3));
+              this.apartment.getInfo(resultSet.getString(4));
+                try {
+                    this.createDay = formatter.parse(resultSet.getString(5));
+                } catch (ParseException ex) {
+                    Logger.getLogger(ElectricAndWaterBill.class.getName()).log(Level.SEVERE, null, ex);
+                }
+              this.ChiSoDauDien = resultSet.getDouble(6);
+              this.ChiSoCuoiDien = resultSet.getDouble(7);
+              this.ChiSoDauNuoc = resultSet.getDouble(8);
+              this.ChiSoCuoiNuoc = resultSet.getDouble(9);
+              this.total = resultSet.getString(10);
+              this.status = resultSet.getString(11);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
 
-    public Button getBtnDetail() {
-        return btnDetail;
-    }
-
-    public Button getBtnEdit() {
-        return btnEdit;
-    }
-
-    public Button getBtnDelete() {
-        return btnDelete;
-    }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }      
     
+    }
     public ObservableList<Map<String, Object>> getEWBill(String apartment, int option, String month,String year){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -241,12 +267,192 @@ public class ElectricAndWaterBill extends Bill {
         }
         return items;
     }
+    public double getLastEValueOfRoom(String room){
+        double lastEValue = 0.0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="select ChiSoCuoiDien from electricityandwaterbill where IDRoom = '"+room+"' ORDER BY ChiSoCuoiDien ASC" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                lastEValue = resultSet.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return lastEValue;
+    }
+    public double getLastWValueOfRoom(String room){
+        double lastWValue = 0.0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="select ChiSoCuoiNuoc from electricityandwaterbill where IDRoom = '"+room+"' ORDER BY ChiSoCuoiNuoc ASC" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                lastWValue = resultSet.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return lastWValue;
+    }
+    public int getLastBillIDIndex(){
+        String lastEWBill = "";
+        int index = 0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="select IDEWBill from electricityandwaterbill" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                lastEWBill=resultSet.getString(1);             
+                int tempindex = Integer.parseInt(lastEWBill.substring(2));
+                if(index<=tempindex){
+                index = tempindex;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        System.out.println(index);
+        return index;
+    }
+    
+    public void insertNewEWBill(){
+        
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="insert into electricityandwaterbill(IDEWBill,IDEmployee,IDRoom,IDApartment,Createday,ChiSoDauDien,ChiSoCuoiDien,ChiSoDauNuoc,ChiSoCuoiNuoc,Total,status)values(?,?,?,?,?,?,?,?,?,?,?)" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, this.billID);
+            statement.setString(2, this.employee.getEmployeeID());
+            statement.setString(3, this.room.getRoomID());
+            statement.setString(4, this.apartment.getIDApartment());
+            java.sql.Date sqlDate = new java.sql.Date(this.createDay.getTime());
+            statement.setDate(5, sqlDate);
+            statement.setDouble(6, this.ChiSoDauDien);
+            statement.setDouble(7, ChiSoCuoiDien);
+            statement.setDouble(8, ChiSoDauNuoc);
+            statement.setDouble(9, ChiSoCuoiNuoc);
+            statement.setDouble(10, Double.parseDouble(total));
+            statement.setString(11, this.status);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
+    
+    public void updateStatusEWBill(String IDEWBill){
+        
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query = "update electricityandwaterbill set status = 'Đã thu' where IDEWBill = '"+IDEWBill +"'" ;
+            statement = con.prepareStatement(query);
+            statement.execute();            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
     
     public double calElectricFee(double chiSoDau, double chiSoCuoi){
     return 3*(chiSoCuoi-chiSoDau);
     }
+    public double calElectricFee(double eNumber){
+    return 3*eNumber;
+    }
     public double calWaterFee(double chiSoDau, double chiSoCuoi){
     return 10*(chiSoCuoi-chiSoDau);
+    }
+    public double calWaterFee(double wNumber){
+    return 10*wNumber;
     }
     public double totalFee(double electricFee,double waterFee){
     return electricFee + waterFee;

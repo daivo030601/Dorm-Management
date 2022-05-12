@@ -73,7 +73,7 @@
 .line{
     -fx-opacity: 47%;
 }
-.combobox, .searchField{
+.combobox, .searchField, .textField2 {
     -fx-background-color: white;
     -fx-border-color: #8C8C8C;
     -fx-border-radius: 2px;

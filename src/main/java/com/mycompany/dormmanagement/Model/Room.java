@@ -30,7 +30,7 @@ private String noStudent;
 private String status;
 private String type;
 private int rentingPrice;
-protected Button btnDetail, btnEdit, btnDelete;
+
 
 
     public Room() {
@@ -40,12 +40,7 @@ protected Button btnDetail, btnEdit, btnDelete;
         this.status = "";
         this.type = "";
         this.rentingPrice = 0;
-        this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
-        this.btnDetail.setStyle("-fx-background-color: transparent;");
-        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
-        this.btnEdit.setStyle("-fx-background-color: transparent;");
-        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
-        this.btnDelete.setStyle("-fx-background-color: transparent;");
+        
     }
 
     public Room(String roomID, Apartment apartment, String noStudent, String status, String type, int rentingPrice) {
@@ -55,12 +50,7 @@ protected Button btnDetail, btnEdit, btnDelete;
         this.status = status;
         this.type = type;
         this.rentingPrice = rentingPrice;
-        this.btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
-        this.btnDetail.setStyle("-fx-background-color: transparent;");
-        this.btnEdit = new Button("", new ImageView("/Image/edit.png"));
-        this.btnEdit.setStyle("-fx-background-color: transparent;");
-        this.btnDelete = new Button("", new ImageView("/Image/delete.png"));
-        this.btnDelete.setStyle("-fx-background-color: transparent;");
+       
     }
 
     public String getRoomID() {
@@ -141,7 +131,7 @@ protected Button btnDetail, btnEdit, btnDelete;
             item.put("idroom", resultSet.getString(1));
             item.put("nostudent", resultSet.getString(3));
             item.put("status", resultSet.getString(4));
-            item.put("type", resultSet.getString(5));
+            item.put("type", "Phòng " + resultSet.getString(5));
             items.add(item);
             }
         } catch (SQLException ex) {
@@ -195,7 +185,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
             item.put("idroom", resultSet.getString(1));
             item.put("nostudent", resultSet.getString(3));
             item.put("status", resultSet.getString(4));
-            item.put("type", resultSet.getString(5));
+            item.put("type","Phòng " + resultSet.getString(5));
             items.add(item);
             }
         } catch (SQLException ex) {
@@ -227,12 +217,50 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
+
             String query = "Select IDRoom from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               room.add(resultSet.getString(1));
             }
-            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return room;
+    }
+        
+    public void getInfo(String room){
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from room where IDRoom ='"+room+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              this.roomID = resultSet.getString(1);
+              this.apartment.getInfo(resultSet.getString(2));
+              this.noStudent = resultSet.getString(3);
+              this.status = resultSet.getString(4);
+              this.type = resultSet.getString(5);
+              this.rentingPrice = resultSet.getInt(6);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -252,6 +280,6 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }        
-        return room;
     }
+
 }
