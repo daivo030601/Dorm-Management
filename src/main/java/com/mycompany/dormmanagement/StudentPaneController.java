@@ -18,7 +18,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -33,6 +36,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 /**
@@ -98,6 +102,19 @@ public class StudentPaneController implements Initializable {
           else addDataToTable(dataTableView, 3);
           searchText.clear();
           showAllBtn.setVisible(false);
+    }
+    @FXML
+    void addHandleClicked(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/View/roomArrangementForm.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Add screen");
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("can't load new window" + e);
+        }
     }
     
     private void tableSearch(){
