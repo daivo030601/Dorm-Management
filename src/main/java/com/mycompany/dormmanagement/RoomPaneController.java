@@ -35,6 +35,7 @@ import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -149,13 +150,28 @@ public class RoomPaneController implements Initializable {
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
         stage.setTitle("Thêm phòng mới");
+        AddRoomPaneController controller= loader.getController();
+        controller.receiveData(this);
         stage.setScene(new Scene(root));
         stage.show();   
         } catch (IOException e) {
         }
         
     }
-    
+    public void refreshTable(){
+        if(searchText.getText().isEmpty()){
+            dataTableView.getItems().clear();
+        if(allBox.isSelected()){       
+            addDataToTable(dataTableView,1);
+        }
+        if(doneBox.isSelected()){     
+            addDataToTable(dataTableView,2);
+        }
+        if(unDoneBox.isSelected()){      
+            addDataToTable(dataTableView,3);
+        }
+        }else tableSearch();   
+    }
     private void tableSearch(){
        String keyWord = searchText.getText();
        dataTableView.getItems().clear();
@@ -232,8 +248,10 @@ public class RoomPaneController implements Initializable {
                             
                         });
                         btnDelete.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            System.out.println("C"+i);
+                            int index = getIndex();
+                            String data = (String) indexCol.getCellObservableValue(index).getValue();
+                            changeRoomDelete(data);
+
                         });
                         HBox btnManage = new HBox(btnDetail, btnEdit, btnDelete);
                         btnManage.setStyle("-fx-alignment:center");                   
@@ -264,7 +282,7 @@ public class RoomPaneController implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Chi tiết thông tin phòng");
         DetailRoomPaneController detailRoomPaneController = loader.getController();
-        detailRoomPaneController.setDetailRoom(String.valueOf(room.getApartment()),room.getRoomID(),room.getNoStudent(),room.getStatus(),room.getType(),String.valueOf(room.getRentingPrice()));
+        detailRoomPaneController.setDetailRoom(data);
         stage.setScene(new Scene(roomdetial));
         stage.show();
         } catch (IOException e) {
@@ -280,12 +298,32 @@ public class RoomPaneController implements Initializable {
         stage.setTitle("Chỉnh sửa thông tin phòng");
         EditRoomPaneController editRoomPaneController = loader.getController();
         editRoomPaneController.setDetailRoom(data);
+        EditRoomPaneController controller= loader.getController();
+        controller.receiveData(this);
+        editRoomPaneController.receiveData(this);
         stage.setScene(new Scene(root));
         stage.show();   
         } catch (IOException e) {
             System.out.println(e);
         }
         System.out.println("success");
+    }
+    private void changeRoomDelete(String data){
+        try {
+            room.deleteData(data);     
+        } catch (Exception e) {
+            showtification("Có lỗi xảy ra. Thêm không thành công.");
+        }
+        showtification("Xoa thanh cong.");
+        refreshTable();
+        System.out.println("success");
+    }
+    private void showtification(String msg){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+	alert.setContentText(msg);
+	alert.showAndWait();
     }
     private void DrawUI(){
         allBox.setSelected(true);

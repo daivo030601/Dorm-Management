@@ -6,6 +6,7 @@ package com.mycompany.dormmanagement.Model;
 
 import connect.DataConnection;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -244,5 +245,135 @@ public void getInfo(String room){
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }        
+    }
+public void insertdatatoType(String room,String type, int rentingprice ){
+        
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        try {  
+            String query ="update room set Type = '"+type+"', RentingPrice = '"+rentingprice+"' where IDRoom ='"+room+"'" ;
+            statement = con.prepareStatement(query);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+           
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        
+    }
+public void insertRoomdata(){
+        
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="insert into room(IDRoom,IDApartment,NoStudent,Status,Type,RentingPrice)values(?,?,?,?,?,?)" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, this.roomID);
+            statement.setString(2, this.apartment.getIDApartment());
+            statement.setString(3, this.noStudent);
+            statement.setString(4, this.status);
+            statement.setString(5, this.type);
+            statement.setInt(6, this.rentingPrice);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
+public int getLastRoomIndex(String apartment ){
+        String lastRoom = "";
+        int index = 0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="select IDRoom from quanlyktx.room where IDApartment ='"+apartment+"'" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                lastRoom=resultSet.getString(1);             
+                int tempindex = Integer.parseInt(lastRoom.substring(1));
+                if(index<=tempindex){
+                index = tempindex;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        System.out.println(index);
+        return index;
+    }
+public void deleteData(String room ){
+        
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        try {  
+            String query ="delete from quanlyktx.room where IDRoom ='"+room+"'" ;
+            statement = con.prepareStatement(query);
+            statement.execute();   
+        } catch (SQLException ex) {
+           
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        
     }
 }
