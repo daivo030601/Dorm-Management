@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+//import org.controlsfx.control.textfield.TextFields;
 
 
 
@@ -58,7 +59,7 @@ public class RoomArrangementFormController implements Initializable {
         for(var item : student.getAllStudent()){
             items.add(item);
         }
-//        System.out.println("alooooo: " + items);
+        System.out.println("alooooo: " + items);
 //        TextFields
     }
     
@@ -89,7 +90,7 @@ public class RoomArrangementFormController implements Initializable {
         addRoomToCombobox(roomComboBox);
         roomComboBox.getSelectionModel().select(0);
         
-//        autoCompleteText(nameText);
+        autoCompleteText(nameText);
         
     }
     
