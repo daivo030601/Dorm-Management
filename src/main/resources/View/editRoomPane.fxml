@@ -118,15 +118,15 @@
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="50.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="typeComboBox" prefHeight="45.0" prefWidth="200.0">
+                  <ComboBox fx:id="typeComboBox" prefWidth="200.0" styleClass="combobox">
                      <HBox.margin>
-                        <Insets left="64.0" />
+                        <Insets left="53.0" />
                      </HBox.margin>
                      <padding>
-                        <Insets top="10.0" />
+                        <Insets bottom="7.0" top="7.0" />
                      </padding>
                   </ComboBox>
                </children>
