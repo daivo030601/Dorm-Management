@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.dormmanagement.RoomArrangementFormController">
+<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="600.0" styleClass="casualPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.dormmanagement.RoomArrangementFormController">
     <stylesheets>
         <URL value="@/styles/main.css" />
     </stylesheets>
@@ -21,7 +21,7 @@
          <bottom>
             <HBox prefHeight="57.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" styleClass="buttonindashboard" text="Hủy">
+                  <Button mnemonicParsing="false" onAction="#backbtn" styleClass="buttonindashboard" text="Hủy">
                      <HBox.margin>
                         <Insets left="165.0" top="9.0" />
                      </HBox.margin>
@@ -32,7 +32,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" styleClass="buttonindashboard" text="Xếp phòng">
+                  <Button mnemonicParsing="false" onAction="#insertData" styleClass="buttonindashboard" text="Xếp phòng">
                      <padding>
                         <Insets bottom="6.0" left="24.0" right="24.0" top="6.0" />
                      </padding>
@@ -59,7 +59,7 @@
                               <Insets left="90.0" top="20.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="nameText" prefHeight="30.0" prefWidth="309.0">
+                        <TextField fx:id="nameText" onKeyPressed="#TextChange" prefHeight="30.0" prefWidth="309.0">
                            <HBox.margin>
                               <Insets left="9.0" top="16.0" />
                            </HBox.margin>
@@ -76,7 +76,7 @@
                               <Insets left="90.0" top="15.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="genderText" prefHeight="30.0" prefWidth="309.0">
+                        <TextField fx:id="genderText" disable="true" prefHeight="30.0" prefWidth="309.0">
                            <HBox.margin>
                               <Insets left="19.0" top="10.0" />
                            </HBox.margin>

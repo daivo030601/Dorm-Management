@@ -386,6 +386,8 @@ public int getLastRoomIndex(String apartment ){
         System.out.println(index);
         return index;
     }
+
+
 public void deleteData(String room ){
         
         Connection con = DataConnection.getConnection(); 
@@ -413,5 +415,61 @@ public void deleteData(String room ){
             }
         }
         
+    }
+
+    public void addStudentToRoom() {
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        int newNoStudent = Integer.parseInt(this.noStudent) + 1;
+        if (newNoStudent >= Integer.parseInt(this.type)) {
+            try {  
+                String query ="update room set status = 'Hết chỗ', NoStudent = '"+String.valueOf(newNoStudent)+"' where IDRoom ='"+this.roomID+"'" ;
+                statement = con.prepareStatement(query);
+                statement.execute();
+
+            } catch (SQLException ex) {
+
+                Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException ex) {
+                    Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                    lgr.log(Level.WARNING, ex.getMessage(), ex);
+                }
+            }
+            
+        } else {
+            try {  
+                String query ="update room set status = 'Còn chỗ', NoStudent = '"+String.valueOf(newNoStudent)+"' where IDRoom ='"+this.roomID+"'" ;
+                statement = con.prepareStatement(query);
+                statement.execute();
+
+            } catch (SQLException ex) {
+
+                Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException ex) {
+                    Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                    lgr.log(Level.WARNING, ex.getMessage(), ex);
+                }
+            }
+        }
     }
 }

@@ -52,6 +52,10 @@
                 <version>0.0.4</version>
                 <configuration>
                     <mainClass>com.mycompany.dormmanagement.App</mainClass>
+                    <options>
+                        <option>--add-exports</option>
+                        <option>javafx.base/com.sun.javafx.event=org.controlsfx.controls</option>
+                    </options>
                 </configuration>
                 <executions>
                     <execution>
