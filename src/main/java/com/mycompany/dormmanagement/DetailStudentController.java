@@ -74,7 +74,8 @@ public class DetailStudentController implements Initializable {
         System.out.println("id: "+studentID + "name: " +student.getFullName());
         idStudentLabel.setText(student.getStudentID());
         nameLabel.setText(student.getFullName());
-        birthLabel.setText("alo");
+        idCardLabel.setText(student.getIDCard());
+        birthLabel.setText(student.getBirthday().toString());
         genderLabel.setText(student.getGender());
         phoneLabel.setText(student.getPhoneNum());
         universityLabel.setText(student.getUniversity());

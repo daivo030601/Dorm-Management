@@ -113,7 +113,7 @@
                               <Insets left="90.0" top="3.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="roomComboBox" prefHeight="30.0" prefWidth="183.0">
+                        <ComboBox fx:id="roomComboBox" prefHeight="30.0" prefWidth="183.0" styleClass="combobox">
                            <HBox.margin>
                               <Insets left="11.0" />
                            </HBox.margin>
