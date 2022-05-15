@@ -7,6 +7,7 @@ package com.mycompany.dormmanagement;
 import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
 import com.mycompany.dormmanagement.Model.Student;
 import connect.DataConnection;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,7 +19,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -33,6 +38,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 /**
@@ -45,7 +51,9 @@ public class StudentPaneController implements Initializable {
     @FXML
     private TableView dataTableView;
     @FXML
-    private TableColumn idCol, nameCol, genderCol, statusCol, universityCol, sYearCol, eYearCol, toolCol;
+    private Label totalLabel;
+    @FXML
+    private TableColumn idCol, nameCol, genderCol, statusCol, universityCol, sYearCol, eYearCol, toolCol, idRoomCol;
     @FXML
     private CheckBox allBox,doneBox,unDoneBox;
     @FXML
@@ -99,11 +107,48 @@ public class StudentPaneController implements Initializable {
           searchText.clear();
           showAllBtn.setVisible(false);
     }
+    @FXML
+    void roomArrangementHandleClicked(ActionEvent event) {
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/roomArrangementForm.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Arrangement room");
+        RoomArrangementFormController roomArrangementFormController = loader.getController();
+        roomArrangementFormController.receiveData(this);
+        stage.setScene(new Scene(root));
+        stage.show();   
+        } catch (IOException e) {
+            System.out.print(e);
+        }
+    }
+    
+    @FXML
+    void addStudentHandleClicked(ActionEvent event) {
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/addStudent.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Add new student");
+        AddStudentController addStudentController = loader.getController();
+        addStudentController.receiveData(this);
+        stage.setScene(new Scene(root));
+        stage.show();   
+        } catch (IOException e) {
+            System.out.print(e);
+        }
+    }
+    
+    private void setTextTotal() {
+        student = new Student();
+        totalLabel.setText(Integer.toString(student.getTotalStudents()));
+    }
     
     private void tableSearch(){
        String keyWord = searchText.getText();
        dataTableView.getItems().clear();
        student = new Student();
+       setTextTotal();
        if(allBox.isSelected()) { dataTableView.getItems().addAll(student.getSearchStudent(1, keyWord));
        } else if(doneBox.isSelected()){ dataTableView.getItems().addAll(student.getSearchStudent(2, keyWord));
        } else { dataTableView.getItems().addAll(student.getSearchStudent(3, keyWord));
@@ -129,20 +174,23 @@ public class StudentPaneController implements Initializable {
         universityCol.setCellValueFactory(new MapValueFactory<>("university"));
         sYearCol.setCellValueFactory(new MapValueFactory<>("sYear"));
         eYearCol.setCellValueFactory(new MapValueFactory<>("eYear"));
+        idRoomCol.setCellValueFactory(new MapValueFactory<>("idRoom"));
         
-        idCol.prefWidthProperty().bind(table.widthProperty().multiply(0.06));  
-        nameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.17));
-        genderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12)); 
-        statusCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13)); 
-        universityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.15)); 
-        sYearCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12));
-        eYearCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12));
-        toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13));
+        idCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));  
+        nameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
+        genderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.11)); 
+        statusCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12)); 
+        universityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.14)); 
+        sYearCol.prefWidthProperty().bind(table.widthProperty().multiply(0.11));
+        eYearCol.prefWidthProperty().bind(table.widthProperty().multiply(0.11));
+        toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12));
+        idRoomCol.prefWidthProperty().bind(table.widthProperty().multiply(0.08));
         addDataToTable(table,1);
     }
     
     private void addDataToTable(TableView table,int option){      
-        student = new Student();  
+        student = new Student(); 
+        setTextTotal();
         switch (option) {
                 case 1:
                     table.getItems().addAll(student.getStudent(option));
@@ -162,6 +210,24 @@ public class StudentPaneController implements Initializable {
                     break;
             }
     }
+    
+    public void refreshTable(){
+        if(searchText.getText().isEmpty()){
+            System.out.println("search ne");
+            dataTableView.getItems().clear();
+            if(allBox.isSelected()){    
+                System.out.println("all ne");
+                addDataToTable(dataTableView,1);
+            }
+            if(doneBox.isSelected()){     
+                addDataToTable(dataTableView,2);
+            }
+            if(unDoneBox.isSelected()){      
+                addDataToTable(dataTableView,3);
+            }
+        }else tableSearch();   
+    }
+    
     private void addButtonToTable() {     
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
             // make cell containing buttons
@@ -179,16 +245,19 @@ public class StudentPaneController implements Initializable {
                         Button btnDelete = new Button("",new ImageView("/Image/delete.png"));
                         btnDelete.setStyle("-fx-background-color: transparent;");
                         btnDetail.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            System.out.println("A"+i);
+                            int index = getIndex();
+                            String data = (String) idCol.getCellObservableValue(index).getValue();
+                            changeStudentDetail(data);
                         });
                         btnEdit.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            System.out.println("B"+i);
+                            int index = getIndex();
+                            String data = (String) idCol.getCellObservableValue(index).getValue();
+                            changeStudentEdit(data);
                         });
                         btnDelete.setOnAction((ActionEvent event) -> {
-                            int i = getIndex();
-                            System.out.println("C"+i);
+                            int index = getIndex();
+                            String data = (String) idCol.getCellObservableValue(index).getValue();
+                            changeStudentDelete(data);
                         });
                         HBox btnManage = new HBox(btnDetail, btnEdit, btnDelete);
                         btnManage.setStyle("-fx-alignment:center");                   
@@ -200,5 +269,61 @@ public class StudentPaneController implements Initializable {
         };
 
         toolCol.setCellFactory(cellFactory);
+    }
+    
+    public void changeStudentDetail(String data)
+    {
+        try{
+   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailStudent.fxml"));
+        Parent studentdetial = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Chi tiết thông tin sinh viên");
+        DetailStudentController detailStudentController = loader.getController();
+        detailStudentController.setDetailStudent(data);
+        stage.setScene(new Scene(studentdetial));
+        stage.show();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        
+    }
+    
+    private void changeStudentEdit(String data){
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/editStudent.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Chỉnh sửa thông tin sinh viên");
+        EditStudentController editStudentController = loader.getController();
+        editStudentController.setDetailStudent(data);
+        EditStudentController controller= loader.getController();
+        controller.receiveData(this);
+        editStudentController.receiveData(this);
+        stage.setScene(new Scene(root));
+        stage.show();   
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println("success");
+    }
+    
+    private void changeStudentDelete(String data){
+        try {
+            student.deleteData(data);     
+        } catch (Exception e) {
+            showtification("Có lỗi xảy ra. Thêm không thành công.");
+        }
+        showtification("Xoa thanh cong.");
+        refreshTable();
+        System.out.println("success");
+    }
+    
+    private void showtification(String msg){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+	alert.setContentText(msg);
+	alert.showAndWait();
     }
 }
