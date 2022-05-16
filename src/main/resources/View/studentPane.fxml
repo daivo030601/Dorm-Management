@@ -54,7 +54,7 @@
                               <Font name="Segoe UI" size="18.0" />
                            </font>
                         </Button>
-                        <Button layoutX="622.0" layoutY="10.0" mnemonicParsing="false" prefHeight="45.0" styleClass="appBtn-green" text="Xếp phòng tự động" textFill="WHITE">
+                        <Button layoutX="622.0" layoutY="10.0" mnemonicParsing="false" onAction="#autoRoomArrangementHandleClicked" prefHeight="45.0" styleClass="appBtn-green" text="Xếp phòng tự động" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="24.0" right="24.0" top="10.0" />
                            </padding>

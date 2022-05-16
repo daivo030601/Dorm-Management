@@ -235,7 +235,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
-INSERT INTO `room` VALUES ('A101','A','4','Hết chỗ','4',500000),('A102','A','0','Còn chỗ','4',500000),('A103','A','1','Còn chỗ','6',500000),('B101','B','2','Còn chỗ','4',500000),('B102','B','0','Còn Chỗ','6',500000);
+INSERT INTO `room` VALUES ('A101','A','4','Hết chỗ','4',500000),('A102','A','2','Còn chỗ','4',500000),('A103','A','1','Còn chỗ','6',500000),('B101','B','4','Hết chỗ','4',500000),('B102','B','2','Còn chỗ','6',500000),('B103','B','0','Còn Chỗ','6',500000);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,7 +271,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES ('ST1','Nguyễn Văn B','2003-09-10','Nam','123783874','0168666687','ĐH CNTT','2','CX','2021','2024',NULL),('ST2','Nguyễn Thị A','2003-09-10','Nữ','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025','B101'),('ST3','Nguyễn Văn C','2003-02-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025','A101'),('ST4','Võ Thời Đại','2001-03-06','Nam','123783877','0949241357','ĐH CNTT','3','ĐX','2020','2024','A101'),('ST5','Sơn Ngọc Minh','2022-05-03','Nam','123786821','0949231347','ĐH CNTT','1','CX','2022','2025',NULL);
+INSERT INTO `student` VALUES ('ST1','Nguyễn Văn B','2003-09-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2024','A102'),('ST2','Nguyễn Thị A','2003-09-10','Nữ','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025','B101'),('ST3','Nguyễn Văn C','2003-02-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025','A101'),('ST4','Võ Thời Đại','2001-03-06','Nam','123783877','0949241357','ĐH CNTT','3','ĐX','2020','2024','A101'),('ST5','Sơn Ngọc Minh','2022-05-03','Nam','123786821','0949231347','ĐH CNTT','1','ĐX','2022','2025','A102'),('ST6','Vũ Thị Khánh Linh','2022-05-01','Nữ','1678123442','0949241333','USSH','2','ĐX','2021','2025','B102');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -284,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-16  0:05:25
+-- Dump completed on 2022-05-16 23:04:24

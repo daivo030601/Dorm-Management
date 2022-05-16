@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="casualPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="com.mycompany.dormmanagement.EditStudentController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="casualPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.dormmanagement.EditStudentController">
     <stylesheets>
         <URL value="@/styles/main.css" />
     </stylesheets>
@@ -191,7 +191,7 @@
                               <Insets left="72.0" right="35.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="statusComboBox" prefHeight="35.0" prefWidth="250.0" styleClass="combobox" />
+                        <TextField fx:id="statusText" disable="true" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                      </children>
                      <VBox.margin>
                         <Insets top="20.0" />

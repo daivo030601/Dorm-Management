@@ -54,7 +54,7 @@ public class EditStudentController implements Initializable {
     @FXML
     private Button updateBtn;
     @FXML
-    private ComboBox<String> statusComboBox;
+    private TextField statusText;
     @FXML
     private TextField idRoomText;
 
@@ -89,7 +89,7 @@ public class EditStudentController implements Initializable {
         String sYear = sYearText.getText();
         String idRoom = idRoomText.getText();
         String gender = genderComboBox.getValue().toString();
-        String status = statusComboBox.getValue().toString();
+        String status = statusText.getText();
         student = new Student();
         
             try {
@@ -146,7 +146,7 @@ public class EditStudentController implements Initializable {
         student.getInfoByID(studentID);
         nameText.setText(student.getFullName());
         genderComboBox.getSelectionModel().select(student.getGender());
-        statusComboBox.getSelectionModel().select(student.getStatus());
+        statusText.setText(student.getStatus());
         idStudentText.setText(student.getStudentID());
         birthdayDatePicker.setValue(student.getBirthday().toLocalDate());
         idCardText.setText(student.getIDCard());
@@ -156,6 +156,9 @@ public class EditStudentController implements Initializable {
         sYearText.setText(student.getSyear());
         eYearText.setText(student.getEyear());
         idRoomText.setText(student.getIdRoom());
+        if (student.getIdRoom() == null) {
+            idRoomText.setDisable(true);
+        }
     }
     
     private void DrawUI(){
