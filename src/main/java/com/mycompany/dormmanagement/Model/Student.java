@@ -654,4 +654,39 @@ public class Student {
         
     }
     
+    public ArrayList<String> getIDEmptyStudent(){
+    
+        ArrayList<String> listStudent = new ArrayList<String>();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select IDStudent from student where status = 'CX'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              listStudent.add(resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return listStudent;
+    }
+    
 }

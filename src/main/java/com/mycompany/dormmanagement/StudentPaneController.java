@@ -4,7 +4,9 @@
  */
 package com.mycompany.dormmanagement;
 
+import com.mycompany.dormmanagement.Model.Account;
 import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
+import com.mycompany.dormmanagement.Model.Room;
 import com.mycompany.dormmanagement.Model.Student;
 import connect.DataConnection;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -48,6 +51,7 @@ import javafx.util.Callback;
  */
 public class StudentPaneController implements Initializable {
     private Student student;
+    private Room room;
     @FXML
     private TableView dataTableView;
     @FXML
@@ -62,6 +66,7 @@ public class StudentPaneController implements Initializable {
     private Button showAllBtn;
     @FXML
     private TextField searchText;
+    
     @FXML
     void checkBoxHandles(ActionEvent event){
       String keyWord = searchText.getText();
@@ -124,6 +129,11 @@ public class StudentPaneController implements Initializable {
     }
     
     @FXML
+    private void autoRoomArrangementHandleClicked(ActionEvent event) {
+        autoArrangement();
+    }
+    
+    @FXML
     void addStudentHandleClicked(ActionEvent event) {
         try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/addStudent.fxml"));
@@ -138,6 +148,8 @@ public class StudentPaneController implements Initializable {
             System.out.print(e);
         }
     }
+    
+    
     
     private void setTextTotal() {
         student = new Student();
@@ -256,8 +268,11 @@ public class StudentPaneController implements Initializable {
                         });
                         btnDelete.setOnAction((ActionEvent event) -> {
                             int index = getIndex();
-                            String data = (String) idCol.getCellObservableValue(index).getValue();
-                            changeStudentDelete(data);
+                            String idStudent = (String) idCol.getCellObservableValue(index).getValue();
+                            String idRoom = (String) idRoomCol.getCellObservableValue(index).getValue();
+                            if (idRoom != null)
+                                changeRoomDelete(idRoom);
+                            changeStudentDelete(idStudent);
                         });
                         HBox btnManage = new HBox(btnDetail, btnEdit, btnDelete);
                         btnManage.setStyle("-fx-alignment:center");                   
@@ -305,18 +320,29 @@ public class StudentPaneController implements Initializable {
         } catch (IOException e) {
             System.out.println(e);
         }
-        System.out.println("success");
+        
     }
     
     private void changeStudentDelete(String data){
         try {
             student.deleteData(data);     
         } catch (Exception e) {
-            showtification("Có lỗi xảy ra. Thêm không thành công.");
+            showtification("Có lỗi xảy ra. Xóa không thành công.");
         }
         showtification("Xoa thanh cong.");
         refreshTable();
-        System.out.println("success");
+        
+    }
+    
+    private void changeRoomDelete(String data){
+        room = new Room();
+        try {
+            room.getInfo(data);
+            room.removeStudentFromRoom();
+        } catch (Exception e) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
     }
     
     private void showtification(String msg){
@@ -326,4 +352,21 @@ public class StudentPaneController implements Initializable {
 	alert.setContentText(msg);
 	alert.showAndWait();
     }
+    
+    private void autoArrangement() {
+        student = new Student();
+        room = new Room();
+        for(var item : student.getIDEmptyStudent()){
+            student.getInfoByID(item);
+            room.getInfo(room.getRoomAvailableWithGender(student.getGender()));
+            student.updateRoom(room.getRoomID());
+            room.addStudentToRoom();
+        }
+        refreshTable();
+    }
+        
+        
+    
+
+    
 }
