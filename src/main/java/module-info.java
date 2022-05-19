@@ -7,4 +7,5 @@ module com.mycompany.dormmanagement {
     opens com.mycompany.dormmanagement to javafx.fxml;
     exports com.mycompany.dormmanagement;
     requires se.alipsa.ymp;
+    requires org.controlsfx.controls;
 }

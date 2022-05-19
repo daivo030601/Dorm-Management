@@ -70,6 +70,41 @@ public class Apartment {
         this.IDEmployee = IDEmployee;
     }
     
+    public ArrayList<String> getApartmentWithGender(String gender){
+    
+        ArrayList<String> listApartment = new ArrayList<String>();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select IDApartment from apartment where gender = '"+gender+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              listApartment.add(resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return listApartment;
+    }
+    
     public ArrayList<String> getAllApartment(){
     
         ArrayList<String> listApartment = new ArrayList<String>();
@@ -208,7 +243,7 @@ public class Apartment {
         }        
         return listStudent;
     }
-   public int getTotalRentBill(String apartment,String idroom){
+    public int getTotalRentBill(String apartment,String idroom){
         int Total = 0;
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
