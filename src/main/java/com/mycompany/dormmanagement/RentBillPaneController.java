@@ -256,7 +256,7 @@ public class RentBillPaneController implements Initializable {
     private void addDataToCombobox(ComboBox comboBox){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
-        for(var item : apartment.getAllApartment()){
+        for(var item : apartment.getAllApartment(1)){
             items.add("Tòa "+ item);
         }
         comboBox.getItems().addAll(items);

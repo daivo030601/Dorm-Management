@@ -93,6 +93,7 @@ public class EwBillPaneController implements Initializable {
         month = monthYear.substring(5);
         year = monthYear.substring(0,4);
         String crApartment = apartmentComboBox.getValue().toString().substring(4);
+       
       if(event.getSource()== allBox){
             doneBox.setSelected(false);
             unDoneBox.setSelected(false);
@@ -273,7 +274,7 @@ public class EwBillPaneController implements Initializable {
     private void addDataToCombobox(ComboBox comboBox){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
-        for(var item : apartment.getAllApartment()){
+        for(var item : apartment.getAllApartment(1)){
             items.add("Tòa "+ item);
         }
         comboBox.getItems().addAll(items);
