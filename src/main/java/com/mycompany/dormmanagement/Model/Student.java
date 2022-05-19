@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -24,14 +25,14 @@ import javafx.scene.image.ImageView;
  * @author Mayy
  */
 public class Student {
-    private String studentID;
-    private String fullName;
-    private Date birthday;
-    private String Gender;
-    private String IDCard;
-    private String phoneNum;
-    private String university;
-    private String grade;
+    protected String studentID;
+    protected String fullName;
+    protected Date birthday;
+    protected String Gender;
+    protected String IDCard;
+    protected String phoneNum;
+    protected String university;
+    protected String grade;
     
 
     public Student() {
@@ -239,5 +240,38 @@ public class Student {
             }
         }
         return items;
+    }
+    
+    public void getInfo(String student){
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from student where IDStudent ='"+student+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                this.studentID = resultSet.getString(1);
+              
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
     }
 }

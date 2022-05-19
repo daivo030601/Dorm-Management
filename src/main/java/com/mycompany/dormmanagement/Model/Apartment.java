@@ -171,7 +171,74 @@ public class Apartment {
                 Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
-        }        
+        }  
+        
+        
     }
-    
+   public ArrayList<String> getStudentNameBaseRentBill(String apartment,String idroom){
+    ArrayList<String> listStudent = new ArrayList<>();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select IDStudent from quanlyktx.apartment,quanlyktx.room,quanlyktx.student where apartment.IDApartment = room.IDApartment and room.IDRoom = student.IDRoom and room.IDApartment = '"+apartment+"' and room.IDRoom = '"+idroom+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              listStudent.add(resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return listStudent;
+    }
+   public int getTotalRentBill(String apartment,String idroom){
+        int Total = 0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select room.RentingPrice from quanlyktx.apartment,quanlyktx.room where apartment.IDApartment = room.IDApartment and room.IDApartment = '"+apartment+"' and room.IDRoom = '"+idroom+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              Total= resultSet.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return Total;
+    }
 }
