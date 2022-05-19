@@ -13,11 +13,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.AccessibleRole;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 
 /**
  * FXML Controller class
@@ -33,12 +35,13 @@ public class DashboardController implements Initializable {
     @FXML
     private Pane homePane, aboutPane, contactPane, feedbackPane, homeMainView;
     @FXML
-    private Button homeBtn, aboutBtn, contactBtn, feedbackBtn, roomBtn, studentBtn, ewBillBtn, rentBillBtn, reportBtn;
+    private Button homeBtn, aboutBtn, contactBtn, feedbackBtn, roomBtn, studentBtn, ewBillBtn, rentBillBtn, reportBtn,apartmentBtn,accountBtn;
     @FXML
     private Label crUsername, crPermission;
     @FXML
     private ImageView logo;
-    
+    @FXML
+    private Line line1,line2;
     @FXML
     void handleClicks(ActionEvent event){
     if(event.getSource()== homeBtn){
@@ -76,6 +79,7 @@ public class DashboardController implements Initializable {
     ewBillBtn.setStyle("-fx-text-fill: black");
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: black");
+    apartmentBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==studentBtn){
     homeMainView.getChildren().setAll(getPane("/View/studentPane.fxml"));    
@@ -84,6 +88,7 @@ public class DashboardController implements Initializable {
     ewBillBtn.setStyle("-fx-text-fill: black");
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: black");
+    apartmentBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==ewBillBtn){
     homeMainView.getChildren().setAll(getPane("/View/ewBillPane.fxml"));
@@ -92,6 +97,7 @@ public class DashboardController implements Initializable {
     ewBillBtn.setStyle("-fx-text-fill: #2CA8E9");
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: black");
+    apartmentBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==rentBillBtn){
     homeMainView.getChildren().setAll(getPane("/View/rentBillPane.fxml"));     
@@ -100,6 +106,7 @@ public class DashboardController implements Initializable {
     ewBillBtn.setStyle("-fx-text-fill: black");
     rentBillBtn.setStyle("-fx-text-fill: #2CA8E9");
     reportBtn.setStyle("-fx-text-fill: black");
+    apartmentBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==reportBtn){
     homeMainView.getChildren().setAll(getPane("/View/reportPane.fxml"));     
@@ -108,7 +115,18 @@ public class DashboardController implements Initializable {
     ewBillBtn.setStyle("-fx-text-fill: black");
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: #2CA8E9");
+    apartmentBtn.setStyle("-fx-text-fill: black");
     }
+     if(event.getSource()==apartmentBtn){
+    homeMainView.getChildren().setAll(getPane("/View/apartmentPane.fxml"));     
+    roomBtn.setStyle("-fx-text-fill: black");
+    studentBtn.setStyle("-fx-text-fill: black");
+    ewBillBtn.setStyle("-fx-text-fill: black");
+    rentBillBtn.setStyle("-fx-text-fill: black");
+    reportBtn.setStyle("-fx-text-fill: black");
+    apartmentBtn.setStyle("-fx-text-fill: #2CA8E9");
+    }
+     
     }
     private Pane getPane(String path){
         try {
@@ -122,6 +140,12 @@ public class DashboardController implements Initializable {
     logo.setImage(new Image(getClass().getResourceAsStream("/Image/logo.png")));
     crUsername.setText(LoginFormController.currentUser.getUsername());
     crPermission.setText(LoginFormController.currentUser.getPermission());
+    if(crPermission.getText().equals("admin")){
+        apartmentBtn.setVisible(true);
+        line1.setVisible(true);
+        line2.setVisible(true);
+        accountBtn.setVisible(true);
+    }
     homePane.toFront();
     homeMainView.getChildren().setAll(getPane("/View/roomPane.fxml"));
     homeBtn.setStyle("-fx-opacity: 100%");
