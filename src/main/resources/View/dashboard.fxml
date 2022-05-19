@@ -182,12 +182,32 @@
                                     <Insets left="20.0" />
                                  </VBox.margin>
                               </Line>
+                              <Button fx:id="apartmentBtn" layoutX="10.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="75.0" prefWidth="300.0" styleClass="tabButton2" text="Quản lý tòa" visible="false">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                              </Button>
+                              <Line fx:id="line1" endX="160.0" layoutX="131.0" layoutY="390.0" startX="-100.0" styleClass="line" visible="false">
+                                 <VBox.margin>
+                                    <Insets left="20.0" />
+                                 </VBox.margin>
+                              </Line>
+                              <Button fx:id="accountBtn" layoutX="10.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="75.0" prefWidth="300.0" styleClass="tabButton2" text="Cấp tài khoản" visible="false">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                              </Button>
+                              <Line fx:id="line2" endX="160.0" layoutX="111.0" layoutY="466.0" startX="-100.0" styleClass="line" visible="false">
+                                 <VBox.margin>
+                                    <Insets left="20.0" />
+                                 </VBox.margin>
+                              </Line>
                            </children>
                         </VBox>
                      </center>
                   </BorderPane>
                   <Line endX="474.583984375" endY="339.4215393066406" layoutX="136.0" layoutY="18.0" rotate="90.0" startX="-144.63694763183594" startY="338.9727783203125" styleClass="line" />
-                  <Pane fx:id="homeMainView" styleClass="casualPane"  layoutX="330.0" layoutY="50.0" prefHeight="600.0" prefWidth="1000.0" />
+                  <Pane fx:id="homeMainView" layoutX="330.0" layoutY="50.0" prefHeight="600.0" prefWidth="1000.0" styleClass="casualPane" />
                </children>
                <StackPane.margin>
                   <Insets />

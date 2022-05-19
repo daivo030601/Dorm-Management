@@ -487,6 +487,7 @@ public double getLastRentingPiceRoom(String room){
         }
         return retingpice;
 
+}
     public void addStudentToRoom() {
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
