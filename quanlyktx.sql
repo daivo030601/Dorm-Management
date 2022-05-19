@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account` (
-  `IDAccount` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Username` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Password` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Permission` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDAccount` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Username` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Password` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Permission` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`IDAccount`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -49,10 +49,10 @@ DROP TABLE IF EXISTS `apartment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `apartment` (
-  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `NoRoom` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Gender` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Gender` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEmployee` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`IDApartment`),
   KEY `fk_employee` (`IDEmployee`),
   CONSTRAINT `fk_employee` FOREIGN KEY (`IDEmployee`) REFERENCES `employee` (`IDEmployee`)
@@ -70,44 +70,6 @@ INSERT INTO `apartment` VALUES ('A','20','Nam','TN1'),('B','20','Nữ','TN2');
 UNLOCK TABLES;
 
 --
--- Table structure for table `contract`
---
-
-DROP TABLE IF EXISTS `contract`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contract` (
-  `IDContract` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDStudent` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Createday` date DEFAULT NULL,
-  `Startday` datetime DEFAULT NULL,
-  `Endday` datetime DEFAULT NULL,
-  PRIMARY KEY (`IDContract`),
-  KEY `fk_room` (`IDRoom`),
-  KEY `fk_apartment` (`IDApartment`),
-  KEY `fk_employee_contract` (`IDEmployee`),
-  KEY `fk_student_contract` (`IDStudent`),
-  CONSTRAINT `fk_apartment` FOREIGN KEY (`IDApartment`) REFERENCES `apartment` (`IDApartment`),
-  CONSTRAINT `fk_employee_contract` FOREIGN KEY (`IDEmployee`) REFERENCES `employee` (`IDEmployee`),
-  CONSTRAINT `fk_room` FOREIGN KEY (`IDRoom`) REFERENCES `room` (`IDRoom`),
-  CONSTRAINT `fk_student_contract` FOREIGN KEY (`IDStudent`) REFERENCES `student` (`IDStudent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `contract`
---
-
-LOCK TABLES `contract` WRITE;
-/*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-INSERT INTO `contract` VALUES ('CT1','A101','A','TN1','ST1','2021-05-01','2021-05-01 00:00:00','2022-05-01 00:00:00'),('CT2','A101','A','TN1','ST3','2021-05-03','2021-05-03 00:00:00','2022-05-03 00:00:00'),('CT3','B101','B','TN2','ST2','2021-05-03','2021-05-03 00:00:00','2022-05-03 00:00:00');
-/*!40000 ALTER TABLE `contract` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `electricityandwaterbill`
 --
 
@@ -115,17 +77,17 @@ DROP TABLE IF EXISTS `electricityandwaterbill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `electricityandwaterbill` (
-  `IDEWBill` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEWBill` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEmployee` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRoom` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Createday` date DEFAULT NULL,
   `ChiSoDauDien` double DEFAULT NULL,
   `ChiSoCuoiDien` double DEFAULT NULL,
   `ChiSoDauNuoc` double DEFAULT NULL,
   `ChiSoCuoiNuoc` double DEFAULT NULL,
   `Total` double DEFAULT NULL,
-  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`IDEWBill`),
   KEY `fk_employee_electricityandwaterbill` (`IDEmployee`),
   KEY `fk_room_electricityandwaterbill` (`IDRoom`),
@@ -154,13 +116,13 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEmployee` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Fullname` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Birthday` date DEFAULT NULL,
   `Address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Position` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `PhoneNumber` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDAccount` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `PhoneNumber` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDAccount` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`IDEmployee`),
   KEY `fk_account_employee` (`IDAccount`),
   CONSTRAINT `fk_account_employee` FOREIGN KEY (`IDAccount`) REFERENCES `account` (`IDAccount`)
@@ -185,11 +147,11 @@ DROP TABLE IF EXISTS `facilities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `facilities` (
-  `IDFacilities` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Status` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Name` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDFacilities` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRoom` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Status` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Amount` int DEFAULT NULL,
   `Discripition` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`IDFacilities`),
@@ -217,14 +179,14 @@ DROP TABLE IF EXISTS `rentbill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rentbill` (
-  `IDRBill` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDEmployee` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDStudent` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRBill` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDEmployee` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRoom` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDStudent` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Createday` date DEFAULT NULL,
   `Total` double NOT NULL,
-  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`IDRBill`),
   KEY `fk_room_rentbill` (`IDRoom`),
   KEY `fk_employee_rentbill` (`IDEmployee`),
@@ -255,11 +217,11 @@ DROP TABLE IF EXISTS `room`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `room` (
-  `IDRoom` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDApartment` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDRoom` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDApartment` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `NoStudent` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Status` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Status` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Type` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `RentingPrice` int DEFAULT NULL,
   PRIMARY KEY (`IDRoom`),
   KEY `fk_apartment_room` (`IDApartment`),
@@ -273,7 +235,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
-INSERT INTO `room` VALUES ('A101','A','2','Còn chỗ','4',500000),('A102','A','0','Còn chỗ','4',500000),('B101','B','1','Còn chỗ','4',500000);
+INSERT INTO `room` VALUES ('A101','A','4','Hết chỗ','4',500000),('A102','A','2','Còn chỗ','4',500000),('A103','A','1','Còn chỗ','6',500000),('B101','B','4','Hết chỗ','4',500000),('B102','B','2','Còn chỗ','6',500000),('B103','B','0','Còn Chỗ','6',500000);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,18 +247,21 @@ DROP TABLE IF EXISTS `student`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `student` (
-  `IDStudent` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDStudent` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Fullname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Birthday` date DEFAULT NULL,
-  `Gender` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `IDCard` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `PhoneNumber` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Gender` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IDCard` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `PhoneNumber` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `University` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Grade` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Syear` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Eyear` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`IDStudent`)
+  `Grade` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Syear` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Eyear` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `IDRoom` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`IDStudent`),
+  KEY `fk_student_room` (`IDRoom`),
+  CONSTRAINT `fk_student_room` FOREIGN KEY (`IDRoom`) REFERENCES `room` (`IDRoom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -306,7 +271,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES ('ST1','Nguyễn Văn A','2003-09-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025'),('ST2','Nguyễn Thị B','2003-09-10','Nữ','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025'),('ST3','Nguyễn Văn C','2003-02-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025');
+INSERT INTO `student` VALUES ('ST1','Nguyễn Văn B','2003-09-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2024','A102'),('ST2','Nguyễn Thị A','2003-09-10','Nữ','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025','B101'),('ST3','Nguyễn Văn C','2003-02-10','Nam','123783874','0168666687','ĐH CNTT','2','ĐX','2021','2025','A101'),('ST4','Võ Thời Đại','2001-03-06','Nam','123783877','0949241357','ĐH CNTT','3','ĐX','2020','2024','A101'),('ST5','Sơn Ngọc Minh','2022-05-03','Nam','123786821','0949231347','ĐH CNTT','1','ĐX','2022','2025','A102'),('ST6','Vũ Thị Khánh Linh','2022-05-01','Nữ','1678123442','0949241333','USSH','2','ĐX','2021','2025','B102');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -319,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-07 17:09:57
+-- Dump completed on 2022-05-16 23:04:24

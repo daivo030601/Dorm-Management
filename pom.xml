@@ -30,6 +30,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.28</version>
         </dependency>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.1.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -47,6 +52,10 @@
                 <version>0.0.4</version>
                 <configuration>
                     <mainClass>com.mycompany.dormmanagement.App</mainClass>
+                    <options>
+                        <option>--add-exports</option>
+                        <option>javafx.base/com.sun.javafx.event=org.controlsfx.controls</option>
+                    </options>
                 </configuration>
                 <executions>
                     <execution>

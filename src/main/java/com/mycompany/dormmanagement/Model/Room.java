@@ -210,7 +210,79 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         }
         return items;
     }
-public void getInfo(String room){
+
+    public ArrayList<String> getRoomAvailable(String apartment){
+        ArrayList<String> room = new ArrayList<String>();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+
+            String query = "Select IDRoom from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              room.add(resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return room;
+    }
+    
+    public String getRoomAvailableWithGender(String gender){
+        String room = null;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+
+            String query = "Select IDRoom from room, apartment where room.IDApartment = apartment.IDApartment and apartment.gender = '"+gender+"' and status = 'Còn chỗ' LIMIT 1";
+            resultSet = statement.executeQuery(query);
+            if (resultSet.next())
+                room = resultSet.getString(1);
+            else
+                room = null;
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return room;
+    }
+        
+    public void getInfo(String room){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
         ResultSet resultSet = null;
@@ -246,6 +318,8 @@ public void getInfo(String room){
             }
         }        
     }
+    
+    
 public void insertdatatoType(String room,String type, int rentingprice ){
         
         Connection con = DataConnection.getConnection(); 
@@ -348,6 +422,8 @@ public int getLastRoomIndex(String apartment ){
         System.out.println(index);
         return index;
     }
+
+
 public void deleteData(String room ){
         
         Connection con = DataConnection.getConnection(); 
@@ -376,6 +452,7 @@ public void deleteData(String room ){
         }
         
     }
+
 
 public double getLastRentingPiceRoom(String room){
         double retingpice = 0.0;
@@ -409,5 +486,93 @@ public double getLastRentingPiceRoom(String room){
             }
         }
         return retingpice;
+
+    public void addStudentToRoom() {
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        int newNoStudent = Integer.parseInt(this.noStudent) + 1;
+        if (newNoStudent >= Integer.parseInt(this.type)) {
+            try {  
+                String query ="update room set status = 'Hết chỗ', NoStudent = '"+String.valueOf(newNoStudent)+"' where IDRoom ='"+this.roomID+"'" ;
+                statement = con.prepareStatement(query);
+                statement.execute();
+
+            } catch (SQLException ex) {
+
+                Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException ex) {
+                    Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                    lgr.log(Level.WARNING, ex.getMessage(), ex);
+                }
+            }
+            
+        } else {
+            try {  
+                String query ="update room set status = 'Còn chỗ', NoStudent = '"+String.valueOf(newNoStudent)+"' where IDRoom ='"+this.roomID+"'" ;
+                statement = con.prepareStatement(query);
+                statement.execute();
+
+            } catch (SQLException ex) {
+
+                Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException ex) {
+                    Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                    lgr.log(Level.WARNING, ex.getMessage(), ex);
+                }
+            }
+        }
+    }
+    
+    public void removeStudentFromRoom() {
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        int newNoStudent = Integer.parseInt(this.noStudent) - 1;
+        System.out.println("success: " + newNoStudent);
+        
+            try {  
+                String query ="update room set status = 'Còn chỗ', NoStudent = '"+String.valueOf(newNoStudent)+"' where IDRoom ='"+this.roomID+"'" ;
+                statement = con.prepareStatement(query);
+                statement.execute();
+
+            } catch (SQLException ex) {
+
+                Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException ex) {
+                    Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                    lgr.log(Level.WARNING, ex.getMessage(), ex);
+                }
+            }
+        
+
     }
 }
