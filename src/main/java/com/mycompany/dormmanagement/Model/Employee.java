@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -211,5 +212,38 @@ public class Employee {
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }        
+    }
+    public ArrayList<String> getIDNameBaseEmployee(){
+    ArrayList<String> listemployee = new ArrayList<String>();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select IDEmployee from quanlyktx.employee";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              listemployee.add(resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return listemployee;
     }
 }

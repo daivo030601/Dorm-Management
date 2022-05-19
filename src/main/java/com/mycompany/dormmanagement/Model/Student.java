@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
  * @author Mayy
  */
 public class Student {
+
     private String studentID;
     private String fullName;
     private Date birthday;
@@ -38,6 +39,7 @@ public class Student {
     private String syear;
     private String eyear;
     private String idRoom;
+
     
 
     public Student() {
@@ -290,6 +292,7 @@ public class Student {
         return items;
     }
     
+
     public ArrayList<String> getAllStudent(){
     
         ArrayList<String> listStudent = new ArrayList<String>();
@@ -433,12 +436,14 @@ public class Student {
         return total;
     }
     
+
     public void getInfo(String student){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
+
             String query = "Select * from student where Fullname ='"+student+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
@@ -454,6 +459,7 @@ public class Student {
               this.syear = resultSet.getString(10);
               this.eyear = resultSet.getString(11);
               this.idRoom = resultSet.getString(12);
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
@@ -475,6 +481,7 @@ public class Student {
             }
         }        
     }
+
     
     public void getInfoByID(String studentID){
         Connection con = DataConnection.getConnection(); 
@@ -689,4 +696,5 @@ public class Student {
         return listStudent;
     }
     
+
 }
