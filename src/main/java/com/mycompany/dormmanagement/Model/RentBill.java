@@ -183,8 +183,10 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
               this.room.getInfo(resultSet.getString(3));
               this.employee.employeeID = resultSet.getString(4);
               this.employee.fullname = resultSet.getString(5);
-              this.student.studentID = resultSet.getString(6);
-              this.student.fullName = resultSet.getString(7);
+              student.setStudentID(resultSet.getString(6));
+              student.setFullName(resultSet.getString(7));
+              //this.student.studentID = resultSet.getString(6);
+              //this.student.fullName = resultSet.getString(7);
                 try {
                     this.createDay = formatter.parse(resultSet.getString(8));
                 } catch (ParseException ex) {

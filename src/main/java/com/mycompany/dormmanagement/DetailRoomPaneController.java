@@ -15,6 +15,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.Stage;
 
 /*
@@ -28,10 +31,15 @@ public class DetailRoomPaneController implements Initializable {
      *
      * Initializes the controller class.
      */
+    
     private Room room;
     @FXML
-    private Label apartmentLable, roomLable, typeLable, nostudentLable, statusLable, rentingpriceLable;
+    private TableView dataTableView;
     @FXML
+    private TableColumn idstudentCol, nameCol,genderCol,universityCol;
+    @FXML
+    private Label apartmentLable, roomLable, typeLable, nostudentLable, statusLable, rentingpriceLable;
+    @FXML        
     void backbtn(ActionEvent event){
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
@@ -51,12 +59,31 @@ public class DetailRoomPaneController implements Initializable {
         nostudentLable.setText(room.getNoStudent());
         statusLable.setText(room.getStatus());
         rentingpriceLable.setText(String.valueOf(room.getRentingPrice()));
+        initTableView(dataTableView); 
+    }
+    private void initTableView(TableView table){
+        
+        idstudentCol.setCellValueFactory(new MapValueFactory<>("IDStudent"));
+        nameCol.setCellValueFactory(new MapValueFactory<>("Fullname"));
+        genderCol.setCellValueFactory(new MapValueFactory<>("Gender"));
+        universityCol.setCellValueFactory(new MapValueFactory<>("University"));
+        
+        idstudentCol.prefWidthProperty().bind(table.widthProperty().multiply(0.15));  
+        nameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.4));
+        genderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
+        universityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.3)); 
+        addDataToTable(table,1);     
+    }
+    private void addDataToTable(TableView table,int option){      
+        room = new Room();
+        String roomid = roomLable.getText().toString();
+        table.getItems().addAll(room.getStudentRoom(roomid,1));
+
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-       
     }    
 
     

@@ -25,14 +25,14 @@ import javafx.scene.image.ImageView;
  * @author Mayy
  */
 public class Student {
-    protected String studentID;
-    protected String fullName;
-    protected Date birthday;
-    protected String Gender;
-    protected String IDCard;
-    protected String phoneNum;
-    protected String university;
-    protected String grade;
+    private String studentID;
+    private String fullName;
+    private Date birthday;
+    private String Gender;
+    private String IDCard;
+    private String phoneNum;
+    private String university;
+    private String grade;
     
 
     public Student() {

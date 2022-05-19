@@ -120,9 +120,6 @@ public class AddRentBillController implements Initializable {
         }
         roomComboBox.setItems(items);
         roomComboBox.getSelectionModel().select(0);
-//        String roomname = roomComboBox.getValue().toString();
-//        String totals = Double.toString(room.getLastRentingPiceRoom(roomname));
-//        totalText.setText(totals);
         addDataStudentCombobox();
         addDataTotalText();
     }
