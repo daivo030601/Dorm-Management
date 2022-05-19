@@ -48,9 +48,9 @@ public class AddRentBillController implements Initializable {
     private Employee employee;
     private Student student;
     @FXML
-    private TextField idText,dateText,totalText,statusText;
+    private TextField roomText,nameText,totalText;
     @FXML
-    private ComboBox apartmentComboBox,roomComboBox,employeeComboBox,studentComboBox;
+    private ComboBox apartmentComboBox,studentComboBox;
     @FXML
     void backbtn(ActionEvent event){
         closeStage(event);
@@ -58,35 +58,40 @@ public class AddRentBillController implements Initializable {
     
     @FXML
     void selectApartment(ActionEvent event){
+        addDataStudentCombobox();
+    }
+    @FXML
+    void selectStudent(ActionEvent event){
+        addDataNameStudent() ;
         addDataIDRomText();
+        addDataTotalText();
     }
     @FXML
     void insertdata(ActionEvent event){
-        String idtext = idText.getText();
         String apartmentName = apartmentComboBox.getValue().toString();
-        String roomname = roomComboBox.getValue().toString();
-        String employeeid = employeeComboBox.getValue().toString();
+        String roomname = roomText.getText();
         String studentid = studentComboBox.getValue().toString();
         String totaltext = totalText.getText(); 
-        String statustext = statusText.getText();
         apartment = new Apartment();
         apartment.getInfo(apartmentName);
         room = new Room();
         room.getInfo(roomname);
         employee = new Employee();
-        employee.getInfoBaseID(employeeid);
+        employee.getInfoBaseAccountID(LoginFormController.currentUser.getIDAccount());
         student = new Student();
-        student.getInfo(studentid);
+        student.getInfoByID(studentid);
         Date createDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        rentbill = new RentBill(idtext,employee,room,apartment,student,createDay,totaltext,statustext);
+        rentbill = new RentBill("",employee,room,apartment,student,createDay,totaltext,"Chưa thu");
+        int index = rentbill.getLastBillIDIndex()+ 1;
+        rentbill.setBillID("RB"+index);
         try {
             rentbill.insertRentBilldata();
-            showNotification("Thêm thành công.");
         } catch (Exception e) {
             showNotification("Có lỗi xảy ra. Thêm không thành công.");
             closeStage(event);
         }
         rentBillPaneController.refreshTable();
+        showNotification("Thêm thành công.");
         closeStage(event);   
     }
     private void showNotification(String msg){
@@ -109,67 +114,46 @@ public class AddRentBillController implements Initializable {
         }
         apartmentComboBox.setItems(items);
         apartmentComboBox.getSelectionModel().select(0);
-        addDataIDRomText();
-    }
-    private void addDataIDRomText()  
-    {
-        ObservableList<String> items = FXCollections.<String>observableArrayList();
-        String apartmentName = apartmentComboBox.getValue().toString();
-        for(var item : apartment.getRoomNameBaseApartment(apartmentName)){
-            items.add(item);
-        }
-        roomComboBox.setItems(items);
-        roomComboBox.getSelectionModel().select(0);
         addDataStudentCombobox();
+        addDataNameStudent() ;
+        addDataIDRomText();
         addDataTotalText();
     }
-    private void addDataEmployeeCombobox(){ 
-        employee = new Employee();
-        ObservableList<String> items = FXCollections.<String>observableArrayList();
-        for(var item : employee.getIDNameBaseEmployee()){
-            items.add(item);
-        }
-        employeeComboBox.setItems(items);
-        employeeComboBox.getSelectionModel().select(0);
-    }
+    
     private void addDataStudentCombobox(){ 
         ObservableList<String> items = FXCollections.<String>observableArrayList();
         String apartmentName = apartmentComboBox.getValue().toString();
-        String studentName = roomComboBox.getValue().toString();
-        for(var item : apartment.getStudentNameBaseRentBill(apartmentName,studentName)){
+        for(var item : apartment.getStudentNameBaseRentBill(apartmentName)){
             items.add(item);
         }
         studentComboBox.setItems(items);
         studentComboBox.getSelectionModel().select(0);
     }
+    private void addDataIDRomText()  
+    {
+        student = new Student();
+        String studentName = studentComboBox.getValue().toString();
+        String roomtext = student.getToIDRoomStudent(studentName);
+        roomText.setText(roomtext);
+    }
+    
     private void addDataTotalText(){ 
-        ObservableList<String> items = FXCollections.<String>observableArrayList();
         String apartmentName = apartmentComboBox.getValue().toString();
-        String studentName = roomComboBox.getValue().toString();
+        String studentName = roomText.getText();
         String totaltext = String.valueOf(apartment.getTotalRentBill(apartmentName,studentName));
         totalText.setText(totaltext);
     }
-    private void addDataIDRentBillText()  
+    
+    private void addDataNameStudent()  
     {
-        rentbill = new RentBill();
-        int index = rentbill.getLastBillIDIndex()+ 1;
-        idText.setText("RB"+index);
-    }
-    private void addDataLable()  
-    {
-        Date thoiGian = new Date(); //Khai bao dinh dang ngay thang         
-        SimpleDateFormat dinhDangThoiGian = new SimpleDateFormat("dd/MM/yyyy ");           
-        //parse ngay thang sang dinh dang va chuyen thanh string.         
-        String showTime = dinhDangThoiGian.format(thoiGian.getTime());               
-        dateText.setText(showTime);
-        statusText.setText("Chưa thu");
+        student = new Student();
+        String studentName = studentComboBox.getValue().toString();
+        String roomtext = student.getToNameStudent(studentName);
+        nameText.setText(roomtext);
     }
     
     private void DrawUI(){
-        addDataIDRentBillText();
         addDataToCombobox();
-        addDataEmployeeCombobox();
-        addDataLable();
     }
     private void closeStage(ActionEvent event) {
         final Node source = (Node) event.getSource();

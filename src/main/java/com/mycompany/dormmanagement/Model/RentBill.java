@@ -280,7 +280,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
             }
         }
     }
-     public int getLastBillIDIndex(){
+    public int getLastBillIDIndex(){
         String lastRentBill = "";
         int index = 0;
         Connection con = DataConnection.getConnection(); 
