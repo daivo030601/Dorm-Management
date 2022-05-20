@@ -7,6 +7,8 @@ package com.mycompany.dormmanagement;
 
 import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.Employee;
+import com.mycompany.dormmanagement.Model.Room;
+import com.mycompany.dormmanagement.Model.Student;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -189,6 +191,16 @@ public class ApartmentPaneController implements Initializable {
                         Button btnDelete = new Button("", new ImageView("/Image/delete.png"));
                         btnDelete.setStyle("-fx-background-color: transparent;");
                         btnDelete.setOnAction((ActionEvent event) -> {
+                            int index = getIndex();
+                            String apartment = IDCol.getCellObservableValue(index).getValue().toString();
+                            try {
+                                deleteApartment(apartment);
+                                showNotification("Đã xóa");
+                                refreshTable();
+                            } catch (Exception e) {
+                                showNotification("Xóa không thành công");
+                            }
+                            
                             
                         });
                         HBox btnManage = new HBox(btnDelete);
@@ -204,9 +216,14 @@ public class ApartmentPaneController implements Initializable {
     }
     private void deleteApartment(String ID){
         apartment = new Apartment();
-        for (String room : apartment.getRoomNameBaseApartment(ID)) {
-            
+        Room room = new Room();
+        Student student = new Student();
+        for (String item : apartment.getRoomNameBaseApartment(ID)) {
+            student.updateStudentRemoveFromRoom(item);
         }
+        room.deleteAllRoomInApartment(ID);
+        apartment.delete(ID);
+        
     
     }
     private void tableSearch(TableView table){

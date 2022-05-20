@@ -660,11 +660,11 @@ public class Student {
         }
         
     }
-    public void setToDeleteApartment(String id){
+    public void updateStudentRemoveFromRoom(String id){
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
         try {  
-            String query ="update student set IDRoom = null where IDRoom like '"+id+"%'" ;
+            String query ="update student set IDRoom=null, status = 'CX' where IDRoom='"+id+"'";
             statement = con.prepareStatement(query);
             statement.execute();   
         } catch (SQLException ex) {

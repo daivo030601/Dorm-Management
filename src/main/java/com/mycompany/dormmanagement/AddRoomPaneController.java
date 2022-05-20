@@ -83,11 +83,13 @@ public class AddRoomPaneController implements Initializable {
         int RentingpriceText = (int)Double.parseDouble(rentingpriceText.getText()); 
         apartment = new Apartment();
         apartment.getInfo(apartmentName);
+        String noRoom = Integer.toString(Integer.parseInt(apartment.getNoRoom()) + 1);
         room = new Room(RoomText,apartment,NostudentText,roomstatus,roomtype,RentingpriceText);
         //int index = room.getLastRoomIndex()+ 1;
 //        room.setRoomID(apartmentName+ index);
         try {
             room.insertRoomdata();
+            apartment.updateNoRoom(apartmentName, noRoom);
            
         } catch (Exception e) {
             showNotification("Có lỗi xảy ra. Thêm không thành công.");
