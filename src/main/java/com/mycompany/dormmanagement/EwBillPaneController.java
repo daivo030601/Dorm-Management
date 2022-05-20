@@ -4,6 +4,8 @@
  */
 package com.mycompany.dormmanagement;
 
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BaseColor;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +23,7 @@ import javafx.scene.control.cell.MapValueFactory;
 import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +54,18 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import se.alipsa.ymp.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.BaseFont;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Date;
 /**
  * FXML Controller class
  *
@@ -79,6 +94,16 @@ public class EwBillPaneController implements Initializable {
     private Button showAllBtn;
     
     private YearMonthPicker picker;
+    
+    
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 22,
+            Font.BOLD);
+    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+            Font.NORMAL, BaseColor.RED);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 20,
+            Font.BOLD);
+    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+            Font.NORMAL);
     //event of apartmentCombobox
     @FXML
     void selectHandle(ActionEvent event){ 
@@ -148,6 +173,8 @@ public class EwBillPaneController implements Initializable {
         stage.show();   
         } catch (IOException e) {
         }
+        ExportPDF();
+        
         
     }
     public void refreshTable(){
@@ -316,6 +343,151 @@ public class EwBillPaneController implements Initializable {
         DrawUI();
         
     }    
+    
+    private void ExportPDF() {
+        ewBill = new ElectricAndWaterBill();
+        ewBill.getInfoBaseID("EW1");
+        try {
+       	//Create Document instance.
+	Document document = new Document();
+ 
+	//Create OutputStream instance.
+	OutputStream outputStream = 
+		new FileOutputStream(new File("D:\\TestFile.pdf"));
+ 
+	//Create PDFWriter instance.
+        PdfWriter.getInstance(document, outputStream);
+ 
+        //Open the document.
+        document.open();
+ 
+        //Add content to the document.
+        
+        addMetaData(document);
+        addTitlePage(document, ewBill.getRoom().getRoomID(), ewBill.getApartment().getIDApartment(), ewBill.getChiSoDauDien(), ewBill.getChiSoCuoiDien(), ewBill.getChiSoCuoiDien()-ewBill.getChiSoDauDien(),ewBill.calElectricFee(ewBill.getChiSoDauDien(),ewBill.getChiSoCuoiDien()),ewBill.getChiSoDauNuoc(), ewBill.getChiSoCuoiNuoc(), ewBill.getChiSoCuoiNuoc()-ewBill.getChiSoDauNuoc(),ewBill.calElectricFee(ewBill.getChiSoDauNuoc(),ewBill.getChiSoCuoiNuoc()), Double.parseDouble(ewBill.getTotal()) );
+        addContent(document);
+        
+ 
+        //Close document and outputStream.
+        document.close();
+        outputStream.close();
+ 
+        System.out.println("Pdf created successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static void addMetaData(Document document) {
+        document.addTitle("My first PDF");
+        document.addSubject("Using iText");
+        document.addKeywords("Java, PDF, iText");
+        document.addAuthor("Lars Vogel");
+        document.addCreator("Lars Vogel");
+    }
+    
+    private static void addContent(Document document) throws DocumentException {
+        Anchor anchor = new Anchor("First Chapter", catFont);
+        anchor.setName("First Chapter");
+
+        // Second parameter is the number of the chapter
+        Chapter catPart = new Chapter(new Paragraph(anchor), 1);
+
+        Paragraph subPara = new Paragraph("Subcategory 1", subFont);
+        Section subCatPart = catPart.addSection(subPara);
+        subCatPart.add(new Paragraph("Hello"));
+
+        subPara = new Paragraph("Subcategory 2", subFont);
+        subCatPart = catPart.addSection(subPara);
+        subCatPart.add(new Paragraph("Paragraph 1"));
+        subCatPart.add(new Paragraph("Paragraph 2"));
+        subCatPart.add(new Paragraph("Paragraph 3"));
+
+        
+        // now add all this to the document
+        document.add(catPart);
+
+        // Next section
+        anchor = new Anchor("Second Chapter", catFont);
+        anchor.setName("Second Chapter");
+
+        // Second parameter is the number of the chapter
+        catPart = new Chapter(new Paragraph(anchor), 1);
+
+        subPara = new Paragraph("Subcategory", subFont);
+        subCatPart = catPart.addSection(subPara);
+        subCatPart.add(new Paragraph("This is a very important message"));
+
+        // now add all this to the document
+        document.add(catPart);
+
+    }
+    
+    private static void addTitlePage(Document document, String roomID, String apartmentID, Double eStart, Double eEnd, Double eNum, Double eFee,Double wStart, Double wEnd, Double wNum, Double wFee,Double total)
+            throws DocumentException {
+        Paragraph preface = new Paragraph();
+        // We add one empty line
+        addEmptyLine(preface, 1);
+        // Lets write a big header
+        preface.add(new Paragraph("                            Thong tin chi tiet hoa don", catFont));
+
+        addEmptyLine(preface, 1);
+        // Will create: Report generated by: _name, _date
+        preface.add(new Paragraph(
+                "               Thong tin duoc tao boi: " + System.getProperty("user.name") + ", " + new Date(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                smallBold));
+        addEmptyLine(preface, 1);
+        preface.add(new Paragraph(
+                "                                   Hoa don tien dien nuoc phong: " + roomID,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                   Toa: " + apartmentID,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                Dien: ",
+                subFont));
+        preface.add(new Paragraph(
+                "                                                Chi so dau dien: " + eStart,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                                Chi so cuoi dien: " + eEnd,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                                So dien: " + eNum,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                                Tien dien: " + eFee,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                Nuoc: ",
+                subFont));
+        preface.add(new Paragraph(
+                "                                                Chi so dau nuoc: " + wStart,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                                Chi so cuoi nuoc: " + wEnd,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                                So nuoc: " + wNum,
+                smallBold));
+        preface.add(new Paragraph(
+                "                                                Tien nuoc: " + wFee,
+                smallBold));
+        preface.add(new Paragraph(
+                "                               ---------------------------------------------",
+                smallBold));
+        preface.add(new Paragraph(
+                "                                                Tong cong: " + total,
+                smallBold));
+        document.add(preface);
+        // Start a new page
+        document.newPage();
+    }
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
  
    
 }
