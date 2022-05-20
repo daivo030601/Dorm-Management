@@ -6,13 +6,18 @@ package com.mycompany.dormmanagement.Model;
 
 import connect.DataConnection;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -105,7 +110,7 @@ public class Apartment {
         return listApartment;
     }
     
-    public ArrayList<String> getAllApartment(){
+    public ArrayList<String> getAllApartment(int option){
     
         ArrayList<String> listApartment = new ArrayList<String>();
         Connection con = DataConnection.getConnection(); 
@@ -113,7 +118,21 @@ public class Apartment {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select IDApartment from apartment";
+            String query ="" ;
+            switch (option) {
+                case 1:
+                    query = "Select IDApartment from apartment";
+                    break;
+                case 2:
+                    query = "Select IDApartment from apartment where Gender = 'Nam'";
+                    break;
+                case 3:
+                    query = "Select IDApartment from apartment where Gender = 'Nữ'";
+                    break;
+                default:
+                    query = "Select IDApartment from apartment";
+                    break;
+            }
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               listApartment.add(resultSet.getString(1));
@@ -140,6 +159,63 @@ public class Apartment {
         return listApartment;
     }
     
+    public ObservableList<Map<String, Object>> getSearchApartment(int option, String keyWord){
+        ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="" ;
+            switch (option) {
+                case 1:
+                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%'";
+                    break;
+                case 2:
+                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%' and Gender = 'Nam'";
+                    break;
+                case 3:
+                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%' and Gender = 'Nữ'";
+                    break;
+                default:
+                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%'";
+                    break;
+            }
+            
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            Employee employee = new Employee();
+            employee.getInfoBaseID(resultSet.getString(4));
+            item.put("id", resultSet.getString(1));
+            item.put("room", resultSet.getString(2));
+            item.put("gender", resultSet.getString(3));
+            item.put("employee", employee.getFullname());
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    }
     public ArrayList<String> getRoomNameBaseApartment(String apartment){
     ArrayList<String> listRoom = new ArrayList<>();
         Connection con = DataConnection.getConnection(); 
@@ -173,7 +249,38 @@ public class Apartment {
         }        
         return listRoom;
     }
+    public void insertNewApartment(String ID,String gender,String employeeID){
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="insert into apartment (IDApartment,NoRoom,Gender,IDEmployee) values(?,?,?,?)";
+            statement = con.prepareStatement(query);
+            statement.setString(1, ID);
+            statement.setString(2, "0");
+            statement.setString(3, gender);
+            statement.setString(4, employeeID);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
     
+    }
     public void getInfo(String apartment){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
@@ -206,7 +313,105 @@ public class Apartment {
                 Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
+        }  
+        
+        
+    }
+   public ArrayList<String> getStudentNameBaseRentBill(String apartment){
+    ArrayList<String> listStudent = new ArrayList<>();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select IDStudent from quanlyktx.apartment,quanlyktx.room,quanlyktx.student where apartment.IDApartment = room.IDApartment and room.IDRoom = student.IDRoom and apartment.IDApartment = '"+apartment+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              listStudent.add(resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
         }        
+        return listStudent;
+    }
+    public int getTotalRentBill(String apartment,String idroom){
+        int Total = 0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select room.RentingPrice from quanlyktx.apartment,quanlyktx.room where apartment.IDApartment = room.IDApartment and room.IDApartment = '"+apartment+"' and room.IDRoom = '"+idroom+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              Total= resultSet.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return Total;
+    }
+
+    public void delete(String IDApartment){
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="delete from apartment where IDApartment =?";
+            statement = con.prepareStatement(query);
+            statement.setString(1, IDApartment);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    
     }
     
 }

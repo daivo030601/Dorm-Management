@@ -25,12 +25,12 @@ import javafx.scene.image.ImageView;
  * @author Mayy
  */
 public class Room {
-private String roomID;
-private Apartment apartment;
-private String noStudent;
-private String status;
-private String type;
-private int rentingPrice;
+protected String roomID;
+protected Apartment apartment;
+protected String noStudent;
+protected String status;
+protected String type;
+protected int rentingPrice;
 
 
 
@@ -453,6 +453,41 @@ public void deleteData(String room ){
         
     }
 
+
+public double getLastRentingPiceRoom(String room){
+        double retingpice = 0.0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="Select RentingPrice from quanlyktx.room where  room.IDRoom = '"+room+"' " ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                retingpice = resultSet.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return retingpice;
+}
+
     public void addStudentToRoom() {
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
@@ -539,5 +574,46 @@ public void deleteData(String room ){
                 }
             }
         
+
+    }
+public ObservableList<Map<String, Object>> getStudentRoom(String room, int option){
+        ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query = "Select student.IDStudent, student.Fullname, student.Gender,student.University from quanlyktx.student,quanlyktx.room where student.IDRoom = room.IDRoom and room.IDRoom = '"+ room+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("IDStudent", resultSet.getString(1));
+            item.put("Fullname", resultSet.getString(2));
+            item.put("Gender", resultSet.getString(3));
+            item.put("University", resultSet.getString(4));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
     }
 }

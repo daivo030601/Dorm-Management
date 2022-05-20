@@ -38,7 +38,7 @@ public class Student {
     private String syear;
     private String eyear;
     private String idRoom;
-    
+
 
     public Student() {
         this.studentID = "";
@@ -290,6 +290,7 @@ public class Student {
         return items;
     }
     
+
     public ArrayList<String> getAllStudent(){
     
         ArrayList<String> listStudent = new ArrayList<String>();
@@ -433,12 +434,14 @@ public class Student {
         return total;
     }
     
+
     public void getInfo(String student){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
+
             String query = "Select * from student where Fullname ='"+student+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
@@ -454,6 +457,7 @@ public class Student {
               this.syear = resultSet.getString(10);
               this.eyear = resultSet.getString(11);
               this.idRoom = resultSet.getString(12);
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
@@ -475,6 +479,7 @@ public class Student {
             }
         }        
     }
+
     
     public void getInfoByID(String studentID){
         Connection con = DataConnection.getConnection(); 
@@ -688,5 +693,72 @@ public class Student {
         }        
         return listStudent;
     }
+    public String getToIDRoomStudent(String idstudent){
+        String idroom = "";
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select student.IDRoom from quanlyktx.student where student.IDStudent ='"+idstudent+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              idroom = resultSet.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return idroom;
+    }
     
+    public String getToNameStudent(String idstudent){
+        String idroom = "";
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select student.Fullname from quanlyktx.student where student.IDStudent ='"+idstudent+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              idroom = resultSet.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return idroom;
+    }
+
 }
