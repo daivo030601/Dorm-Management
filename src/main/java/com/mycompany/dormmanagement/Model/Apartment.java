@@ -317,14 +317,14 @@ public class Apartment {
         
         
     }
-   public ArrayList<String> getStudentNameBaseRentBill(String apartment,String idroom){
+   public ArrayList<String> getStudentNameBaseRentBill(String apartment){
     ArrayList<String> listStudent = new ArrayList<>();
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select IDStudent from quanlyktx.apartment,quanlyktx.room,quanlyktx.student where apartment.IDApartment = room.IDApartment and room.IDRoom = student.IDRoom and room.IDApartment = '"+apartment+"' and room.IDRoom = '"+idroom+"'";
+            String query = "Select IDStudent from quanlyktx.apartment,quanlyktx.room,quanlyktx.student where apartment.IDApartment = room.IDApartment and room.IDRoom = student.IDRoom and apartment.IDApartment = '"+apartment+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               listStudent.add(resultSet.getString(1));
@@ -350,7 +350,7 @@ public class Apartment {
         }        
         return listStudent;
     }
-   public int getTotalRentBill(String apartment,String idroom){
+    public int getTotalRentBill(String apartment,String idroom){
         int Total = 0;
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;

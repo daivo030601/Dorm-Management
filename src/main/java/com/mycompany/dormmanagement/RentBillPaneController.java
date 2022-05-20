@@ -123,7 +123,7 @@ public class RentBillPaneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/addRentBill.fxml"));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
-        stage.setTitle("Thêm ");
+        stage.setTitle("Thêm bill tiền thuê phòng ");
         AddRentBillController addRentBillController = loader.getController();
         addRentBillController.receiveData(this);
         stage.setScene(new Scene(root));
@@ -242,7 +242,7 @@ public class RentBillPaneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailRentBill.fxml"));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
-        stage.setTitle("Electricity and water bill detail");
+        stage.setTitle("Xem thông tin tiền phòng");
         stage.setScene(new Scene(root));
         DetailRentBillController detailRentBillController = loader.getController(); 
         detailRentBillController.reciveData(data,this);

@@ -486,8 +486,8 @@ public double getLastRentingPiceRoom(String room){
             }
         }
         return retingpice;
-
 }
+
     public void addStudentToRoom() {
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
@@ -575,5 +575,45 @@ public double getLastRentingPiceRoom(String room){
             }
         
 
+    }
+public ObservableList<Map<String, Object>> getStudentRoom(String room, int option){
+        ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query = "Select student.IDStudent, student.Fullname, student.Gender,student.University from quanlyktx.student,quanlyktx.room where student.IDRoom = room.IDRoom and room.IDRoom = '"+ room+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("IDStudent", resultSet.getString(1));
+            item.put("Fullname", resultSet.getString(2));
+            item.put("Gender", resultSet.getString(3));
+            item.put("University", resultSet.getString(4));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
     }
 }

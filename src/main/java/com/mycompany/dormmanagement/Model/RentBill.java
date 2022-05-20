@@ -185,6 +185,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
               this.employee.setFullname(resultSet.getString(5));
               this.student.setStudentID(resultSet.getString(6));
               this.student.setFullName(resultSet.getString(7));
+
                 try {
                     this.createDay = formatter.parse(resultSet.getString(8));
                 } catch (ParseException ex) {
@@ -279,7 +280,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
             }
         }
     }
-     public int getLastBillIDIndex(){
+    public int getLastBillIDIndex(){
         String lastRentBill = "";
         int index = 0;
         Connection con = DataConnection.getConnection(); 

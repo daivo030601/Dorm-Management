@@ -26,7 +26,6 @@ import javafx.scene.image.ImageView;
  * @author Mayy
  */
 public class Student {
-
     private String studentID;
     private String fullName;
     private Date birthday;
@@ -40,7 +39,6 @@ public class Student {
     private String eyear;
     private String idRoom;
 
-    
 
     public Student() {
         this.studentID = "";
@@ -695,6 +693,72 @@ public class Student {
         }        
         return listStudent;
     }
+    public String getToIDRoomStudent(String idstudent){
+        String idroom = "";
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select student.IDRoom from quanlyktx.student where student.IDStudent ='"+idstudent+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              idroom = resultSet.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return idroom;
+    }
     
+    public String getToNameStudent(String idstudent){
+        String idroom = "";
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select student.Fullname from quanlyktx.student where student.IDStudent ='"+idstudent+"'";
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              idroom = resultSet.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+        return idroom;
+    }
 
 }
