@@ -80,6 +80,7 @@ public class DashboardController implements Initializable {
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: black");
     apartmentBtn.setStyle("-fx-text-fill: black");
+    accountBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==studentBtn){
     homeMainView.getChildren().setAll(getPane("/View/studentPane.fxml"));    
@@ -89,6 +90,7 @@ public class DashboardController implements Initializable {
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: black");
     apartmentBtn.setStyle("-fx-text-fill: black");
+    accountBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==ewBillBtn){
     homeMainView.getChildren().setAll(getPane("/View/ewBillPane.fxml"));
@@ -98,6 +100,7 @@ public class DashboardController implements Initializable {
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: black");
     apartmentBtn.setStyle("-fx-text-fill: black");
+    accountBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==rentBillBtn){
     homeMainView.getChildren().setAll(getPane("/View/rentBillPane.fxml"));     
@@ -107,6 +110,7 @@ public class DashboardController implements Initializable {
     rentBillBtn.setStyle("-fx-text-fill: #2CA8E9");
     reportBtn.setStyle("-fx-text-fill: black");
     apartmentBtn.setStyle("-fx-text-fill: black");
+    accountBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==reportBtn){
     homeMainView.getChildren().setAll(getPane("/View/reportPane.fxml"));     
@@ -116,6 +120,7 @@ public class DashboardController implements Initializable {
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: #2CA8E9");
     apartmentBtn.setStyle("-fx-text-fill: black");
+    accountBtn.setStyle("-fx-text-fill: black");
     }
      if(event.getSource()==apartmentBtn){
     homeMainView.getChildren().setAll(getPane("/View/apartmentPane.fxml"));     
@@ -125,6 +130,17 @@ public class DashboardController implements Initializable {
     rentBillBtn.setStyle("-fx-text-fill: black");
     reportBtn.setStyle("-fx-text-fill: black");
     apartmentBtn.setStyle("-fx-text-fill: #2CA8E9");
+    accountBtn.setStyle("-fx-text-fill: black");
+    }
+     if(event.getSource()==accountBtn){
+    homeMainView.getChildren().setAll(getPane("/View/accountPane.fxml"));     
+    roomBtn.setStyle("-fx-text-fill: black");
+    studentBtn.setStyle("-fx-text-fill: black");
+    ewBillBtn.setStyle("-fx-text-fill: black");
+    rentBillBtn.setStyle("-fx-text-fill: black");
+    reportBtn.setStyle("-fx-text-fill: black");
+    apartmentBtn.setStyle("-fx-text-fill: black");
+    accountBtn.setStyle("-fx-text-fill: #2CA8E9");
     }
      
     }

@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -175,6 +177,92 @@ public class Employee {
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }        
+    }
+    public ObservableList<Map<String,Object>> getAllEmployeeIncludeAccount(){
+    ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="select * from employee,account where employee.IDAccount = account.IDAccount" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("id", resultSet.getString(1));
+            item.put("name", resultSet.getString(2));
+            item.put("birthday", resultSet.getString(3));
+            item.put("position", resultSet.getString(5));
+            item.put("username", resultSet.getString(9));
+            item.put("pass", resultSet.getString(10));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    
+    }
+    public ObservableList<Map<String,Object>> getSearchEmployeeIncludeAccount(String keyWord){
+    ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="select * from employee,account where employee.IDAccount = account.IDAccount and IDEmployee like '%"+keyWord+"%'" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("id", resultSet.getString(1));
+            item.put("name", resultSet.getString(2));
+            item.put("birthday", resultSet.getString(3));
+            item.put("position", resultSet.getString(5));
+            item.put("username", resultSet.getString(9));
+            item.put("pass", resultSet.getString(10));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    
     }
     public void getInfoBaseID(String IDEmployee){
         Connection con = DataConnection.getConnection(); 

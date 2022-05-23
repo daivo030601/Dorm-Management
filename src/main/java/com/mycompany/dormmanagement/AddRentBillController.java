@@ -62,8 +62,17 @@ public class AddRentBillController implements Initializable {
     }
     @FXML
     void selectStudent(ActionEvent event){
-        addDataNameStudent() ;
-        addDataIDRomText();
+        
+        String studentName  ="";
+        try{
+                studentName = studentComboBox.getValue().toString();
+                addDataNameStudent(studentName) ;
+                addDataIDRomText(studentName);
+        }
+        catch(Exception e){}
+        
+        
+        
         addDataTotalText();
     }
     @FXML
@@ -115,8 +124,9 @@ public class AddRentBillController implements Initializable {
         apartmentComboBox.setItems(items);
         apartmentComboBox.getSelectionModel().select(0);
         addDataStudentCombobox();
-        addDataNameStudent() ;
-        addDataIDRomText();
+        String studentName = studentComboBox.getValue().toString();
+        addDataNameStudent(studentName) ;
+        addDataIDRomText(studentName);
         addDataTotalText();
     }
     
@@ -129,10 +139,10 @@ public class AddRentBillController implements Initializable {
         studentComboBox.setItems(items);
         studentComboBox.getSelectionModel().select(0);
     }
-    private void addDataIDRomText()  
+    private void addDataIDRomText(String studentName)  
     {
         student = new Student();
-        String studentName = studentComboBox.getValue().toString();
+        
         String roomtext = student.getToIDRoomStudent(studentName);
         roomText.setText(roomtext);
     }
@@ -144,10 +154,10 @@ public class AddRentBillController implements Initializable {
         totalText.setText(totaltext);
     }
     
-    private void addDataNameStudent()  
+    private void addDataNameStudent(String studentName)  
     {
         student = new Student();
-        String studentName = studentComboBox.getValue().toString();
+        
         String roomtext = student.getToNameStudent(studentName);
         nameText.setText(roomtext);
     }
