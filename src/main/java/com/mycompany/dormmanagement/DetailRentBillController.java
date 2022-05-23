@@ -131,6 +131,7 @@ public class DetailRentBillController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        openFile();
     }
     
     private static void addMetaData(Document document) {
@@ -208,7 +209,28 @@ public class DetailRentBillController implements Initializable {
 	alert.setContentText(msg);
 	alert.showAndWait();
     }
-    
+    private void openFile() {
+        try {
+
+		if ((new File("D:\\HoaDonDienNuoc.pdf")).exists()) {
+
+			Process p = Runtime
+			   .getRuntime()
+			   .exec("rundll32 url.dll,FileProtocolHandler D:\\HoaDonDienNuoc.pdf");
+			p.waitFor();
+				
+		} else {
+
+			System.out.println("File is not exists");
+
+		}
+
+		System.out.println("Done");
+
+  	  } catch (Exception ex) {
+		ex.printStackTrace();
+	  }
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

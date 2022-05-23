@@ -125,11 +125,12 @@ public class DetailEWBillController implements Initializable {
         //Close document and outputStream.
         document.close();
         outputStream.close();
- 
+        
         showtification("Tạo file pdf thành công.");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        openFile();
     }
     
     private static void addMetaData(Document document) {
@@ -213,6 +214,29 @@ public class DetailEWBillController implements Initializable {
         alert.setHeaderText(null);
 	alert.setContentText(msg);
 	alert.showAndWait();
+    }
+    
+    private void openFile() {
+        try {
+
+		if ((new File("D:\\HoaDonDienNuoc.pdf")).exists()) {
+
+			Process p = Runtime
+			   .getRuntime()
+			   .exec("rundll32 url.dll,FileProtocolHandler D:\\HoaDonDienNuoc.pdf");
+			p.waitFor();
+				
+		} else {
+
+			System.out.println("File is not exists");
+
+		}
+
+		System.out.println("Done");
+
+  	  } catch (Exception ex) {
+		ex.printStackTrace();
+	  }
     }
     
     @Override
