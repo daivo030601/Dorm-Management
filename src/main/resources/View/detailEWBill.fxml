@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="750.0" prefWidth="500.0" styleClass="casualPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.dormmanagement.DetailEWBillController">
+<AnchorPane id="AnchorPane" prefHeight="750.0" prefWidth="600.0" styleClass="casualPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.dormmanagement.DetailEWBillController">
     <stylesheets>
         <URL value="@/styles/main.css" />
     </stylesheets>
@@ -334,7 +334,7 @@
             </HBox>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <left>
-                  <Button mnemonicParsing="false" onAction="#back" prefWidth="201.0" styleClass="appBtn-red" text="Quay lại" BorderPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#back" prefWidth="155.0" styleClass="appBtn-red" text="Quay lại" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
@@ -346,8 +346,21 @@
                      </BorderPane.margin>
                   </Button>
                </left>
-               <right>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <center>
                   <Button fx:id="markAsDone" mnemonicParsing="false" onAction="#updateStatus" styleClass="appBtn-green" text="Đánh dấu là đã thu" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Segoe UI Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </padding>
+                  </Button>
+               </center>
+               <right>
+                  <Button fx:id="exportButton" mnemonicParsing="false" onAction="#exportFilePDF" styleClass="appBtn-green" text="Xuất hóa đơn" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
@@ -359,9 +372,6 @@
                      </BorderPane.margin>
                   </Button>
                </right>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
             </BorderPane>
          </children>
       </VBox>
