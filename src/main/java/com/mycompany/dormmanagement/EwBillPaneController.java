@@ -4,6 +4,8 @@
  */
 package com.mycompany.dormmanagement;
 
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BaseColor;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +23,7 @@ import javafx.scene.control.cell.MapValueFactory;
 import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +54,18 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import se.alipsa.ymp.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.BaseFont;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Date;
 /**
  * FXML Controller class
  *
@@ -79,6 +94,16 @@ public class EwBillPaneController implements Initializable {
     private Button showAllBtn;
     
     private YearMonthPicker picker;
+    
+    
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 22,
+            Font.BOLD);
+    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+            Font.NORMAL, BaseColor.RED);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 20,
+            Font.BOLD);
+    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+            Font.NORMAL);
     //event of apartmentCombobox
     @FXML
     void selectHandle(ActionEvent event){ 
@@ -149,6 +174,7 @@ public class EwBillPaneController implements Initializable {
         stage.show();   
         } catch (IOException e) {
         }
+        
         
     }
     public void refreshTable(){
@@ -317,6 +343,8 @@ public class EwBillPaneController implements Initializable {
         DrawUI();
         
     }    
+    
+    
  
    
 }

@@ -362,6 +362,7 @@ public class StudentPaneController implements Initializable {
             student.updateRoom(room.getRoomID());
             room.addStudentToRoom();
         }
+        showtification("Tự động xếp phòng thành công");
         refreshTable();
     }
         

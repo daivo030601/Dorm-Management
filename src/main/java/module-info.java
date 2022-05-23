@@ -8,4 +8,5 @@ module com.mycompany.dormmanagement {
     exports com.mycompany.dormmanagement;
     requires se.alipsa.ymp;
     requires org.controlsfx.controls;
+    requires itextpdf;
 }

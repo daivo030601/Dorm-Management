@@ -5,17 +5,21 @@
  */
 package com.mycompany.dormmanagement;
 
+import com.mycompany.dormmanagement.Model.Account;
 import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
 import com.mycompany.dormmanagement.Model.Employee;
 import com.mycompany.dormmanagement.Model.Room;
 import com.mycompany.dormmanagement.Model.Student;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -57,12 +61,14 @@ public class RoomArrangementFormController implements Initializable {
     void selectHandle(ActionEvent event){
         room = new Room();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
+        if (apartmentComboBox.getValue() != null) {
         for(var item : room.getRoomAvailable(apartmentComboBox.getValue().toString())){
             items.add(item);
         }
         roomComboBox.getItems().clear();
         roomComboBox.getItems().addAll(items);
         roomComboBox.getSelectionModel().select(0);
+        }
     }
     @FXML
     void backbtn(ActionEvent event){
@@ -77,16 +83,22 @@ public class RoomArrangementFormController implements Initializable {
         if(name.isEmpty()){
             genderText.setText("Nam");
         } else {
+            
             student = new Student();
             student.getInfo(name);
             genderText.setText(student.getGender());
         }
         String gender = genderText.getText();
         if (!gender.isEmpty()) {
-            addApartmentToCombobox(apartmentComboBox);
-            apartmentComboBox.getSelectionModel().select(0);
-            addRoomToCombobox(roomComboBox);
-            roomComboBox.getSelectionModel().select(0);
+            try {
+                addApartmentToCombobox(apartmentComboBox);
+                apartmentComboBox.getSelectionModel().select(0);
+                addRoomToCombobox(roomComboBox);
+                roomComboBox.getSelectionModel().select(0);
+            } catch(NullPointerException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
         }
     }
     
