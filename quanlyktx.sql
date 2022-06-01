@@ -104,7 +104,7 @@ CREATE TABLE `electricityandwaterbill` (
 
 LOCK TABLES `electricityandwaterbill` WRITE;
 /*!40000 ALTER TABLE `electricityandwaterbill` DISABLE KEYS */;
-INSERT INTO `electricityandwaterbill` VALUES ('EW1','TN1','A101','A','2022-05-30',0,100,0,10,1000000,'Đã thu'),('EW2','TN2','B101','B','2022-05-30',0,200,0,10,1000000,'Chưa thu'),('EW3','TN1','A102','A','2022-05-30',0,200,0,10,1000000,'Chưa thu');
+INSERT INTO `electricityandwaterbill` VALUES ('EW1','TN1','A101','A','2022-05-30',0,100,0,10,1000000,'Đã thu'),('EW2','TN2','B101','B','2022-05-30',0,200,0,10,1000000,'Chưa thu'),('EW3','TN1','A102','A','2022-05-30',0,200,0,10,1000000,'Chưa thu'),('EW4','TN1','A101','A','2022-06-01',100,467,10,90,1901,'Đã thu'),('EW5','TN1','A102','A','2022-06-01',200,956,10,145,3618,'Chưa thu'),('EW6','TN1','A103','A','2022-06-01',0,167,0,45,786338,'Chưa thu'),('EW7','TN1','B101','B','2022-06-01',200,367,10,45,686338,'Đã thu');
 /*!40000 ALTER TABLE `electricityandwaterbill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +205,7 @@ CREATE TABLE `rentbill` (
 
 LOCK TABLES `rentbill` WRITE;
 /*!40000 ALTER TABLE `rentbill` DISABLE KEYS */;
-INSERT INTO `rentbill` VALUES ('RB1','TN2','B101','B','ST2','2021-05-03',6000000,'Đã thu'),('RB2','TN1','A101','A','ST1','2021-05-01',6000000,'Đã thu'),('RB3','TN1','A101','A','ST3','2021-05-03',6000000,'Chưa thu');
+INSERT INTO `rentbill` VALUES ('RB1','TN2','B101','B','ST2','2021-05-03',6000000,'Đã thu'),('RB2','TN1','A101','A','ST1','2021-05-01',6000000,'Đã thu'),('RB3','TN1','A101','A','ST3','2021-05-03',6000000,'Chưa thu'),('RB4','TN1','A101','A','ST3','2022-06-01',500000,'Đã thu'),('RB5','TN1','A101','A','ST4','2022-06-01',500000,'Chưa thu');
 /*!40000 ALTER TABLE `rentbill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-16 23:04:24
+-- Dump completed on 2022-06-02  0:48:29

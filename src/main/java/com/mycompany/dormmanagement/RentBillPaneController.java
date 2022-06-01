@@ -102,12 +102,14 @@ public class RentBillPaneController implements Initializable {
             else dataTableView.getItems().addAll(rentbill.getSearchRentBill(crApartment, 3, keyWord, month, year));
       } 
     }
+    
     @FXML
     void textChange(KeyEvent event){
        tableSearch();
       // showAllBtn.setVisible(true);
        
     }
+    
     @FXML
     void showAll(ActionEvent event){
           dataTableView.getItems().clear();
@@ -117,6 +119,7 @@ public class RentBillPaneController implements Initializable {
           searchText.clear();
           //showAllBtn.setVisible(false);
     }
+    
     @FXML
     void addRentBill(ActionEvent event){
         try {
@@ -130,8 +133,8 @@ public class RentBillPaneController implements Initializable {
         stage.show();   
         } catch (IOException e) {
         }
-        
     }
+    
     public void refreshTable(){
         if(searchText.getText().isEmpty()){
             dataTableView.getItems().clear();
@@ -163,7 +166,6 @@ public class RentBillPaneController implements Initializable {
     }
     
     private void initTableView(TableView table){
-        
         indexCol.setCellValueFactory(new MapValueFactory<>("id"));
         roomCol.setCellValueFactory(new MapValueFactory<>("room"));
         idstudentCol.setCellValueFactory(new MapValueFactory<>("student"));
@@ -171,16 +173,14 @@ public class RentBillPaneController implements Initializable {
         totalCol.setCellValueFactory(new MapValueFactory<>("total"));
         statusCol.setCellValueFactory(new MapValueFactory<>("status"));
         
-        indexCol.prefWidthProperty().bind(table.widthProperty().multiply(0.058));  
+        indexCol.prefWidthProperty().bind(table.widthProperty().multiply(0.058));
         roomCol.prefWidthProperty().bind(table.widthProperty().multiply(0.11));
-        idstudentCol.prefWidthProperty().bind(table.widthProperty().multiply(0.19)); 
-        dateCol.prefWidthProperty().bind(table.widthProperty().multiply(0.19)); 
-        totalCol.prefWidthProperty().bind(table.widthProperty().multiply(0.19)); 
+        idstudentCol.prefWidthProperty().bind(table.widthProperty().multiply(0.19));
+        dateCol.prefWidthProperty().bind(table.widthProperty().multiply(0.19));
+        totalCol.prefWidthProperty().bind(table.widthProperty().multiply(0.19));
         statusCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13));
         toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13));
         addDataToTable(table,1);
-        
-        
     }
     private void addDataToTable(TableView table,int option){      
         rentbill = new RentBill();
@@ -208,7 +208,7 @@ public class RentBillPaneController implements Initializable {
                     break;
             }
     }
-    private void addButtonToTable() {     
+    private void addButtonToTable() {
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
             // make cell containing buttons
             final TableCell<Object, String> cell = new TableCell<Object, String>() {
@@ -221,7 +221,7 @@ public class RentBillPaneController implements Initializable {
                         Button btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
                         btnDetail.setStyle("-fx-background-color: transparent;");
                         btnDetail.setOnAction((ActionEvent event) -> {
-                            int index = getIndex();  
+                            int index = getIndex();
                             String data = (String) indexCol.getCellObservableValue(index).getValue();
                             sendDetailData(data);
                         });
@@ -233,11 +233,10 @@ public class RentBillPaneController implements Initializable {
             };
             return cell;         
         };
-
         toolCol.setCellFactory(cellFactory);
     }
+    
     private void sendDetailData(String data){
-        
         try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailRentBill.fxml"));
         Parent root = (Parent) loader.load();
@@ -251,8 +250,8 @@ public class RentBillPaneController implements Initializable {
             System.out.println(e);
         }
         System.out.println("success");
-        
     }
+    
     private void addDataToCombobox(ComboBox comboBox){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
@@ -271,7 +270,6 @@ public class RentBillPaneController implements Initializable {
         picker.setId("yearMonthPicker");
         picker.setValue(YearMonth.now());
         picker.setOnAction((ActionEvent event) -> {
-          
           if(searchText.getText().isEmpty()){
           dataTableView.getItems().clear();
           if(allBox.isSelected()) addDataToTable(dataTableView, 1);
