@@ -491,16 +491,16 @@ public class ElectricAndWaterBill extends Bill {
         return items;
     }
     public double calElectricFee(double chiSoDau, double chiSoCuoi){
-    return 3*(chiSoCuoi-chiSoDau);
+    return 2014*(chiSoCuoi-chiSoDau);
     }
     public double calElectricFee(double eNumber){
-    return 3*eNumber;
+    return 2014*eNumber;
     }
     public double calWaterFee(double chiSoDau, double chiSoCuoi){
-    return 10*(chiSoCuoi-chiSoDau);
+    return 10000*(chiSoCuoi-chiSoDau);
     }
     public double calWaterFee(double wNumber){
-    return 10*wNumber;
+    return 10000*wNumber;
     }
     public double totalFee(double electricFee,double waterFee){
     return electricFee + waterFee;

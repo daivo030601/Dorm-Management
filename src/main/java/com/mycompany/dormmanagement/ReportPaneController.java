@@ -70,8 +70,10 @@ public class ReportPaneController implements Initializable {
                 new PieChart.Data("Tiền điện nước chưa thu", getEWChargeUnpaid()/totalPaid * 100)
                 
             );
-        System.out.println(getRoomChargePaid());
-        System.out.println(getEWChargePaid());
+        if(getRoomChargePaid() == 0 && getRoomChargeUnpaid() == 0 && getEWChargePaid() == 0 && getEWChargeUnpaid() == 0){
+            pieChart.setData(pieChartData);
+            pieChart.setTitle("Tháng này không có dữ liệu doanh thu");
+        } else {
         pieChart.setData(pieChartData);
         pieChart.setTitle("Báo cáo doanh thu");
         pieChart.getData().forEach(data -> {
@@ -79,6 +81,7 @@ public class ReportPaneController implements Initializable {
             Tooltip toolTip = new Tooltip(percentage);
             Tooltip.install(data.getNode(), toolTip);
         });
+        }
     }
     
     private void addDataToLabel() {
@@ -190,10 +193,8 @@ public class ReportPaneController implements Initializable {
         picker.setId("yearMonthPicker");
         picker.setValue(YearMonth.now());
         picker.setOnAction((ActionEvent event) -> {
-            double totalRent = getRoomCharge();
-            double totalRentPaid = getRoomChargePaid();
-            double totalRentUnpaid = getRoomChargeUnpaid();
-            double totalEW = getEWCharge();
+            addDataToChart();
+            addDataToLabel();
         });
         box.getChildren().add(0, picker);
     }
