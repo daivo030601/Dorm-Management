@@ -78,4 +78,8 @@
     -fx-border-color: #8C8C8C;
     -fx-border-radius: 2px;
 }
+.panel {
+    -fx-background-color: #2CA8E9;
+    -fx-background-radius: 10;
+}
 

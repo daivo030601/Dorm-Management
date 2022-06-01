@@ -26,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -442,6 +443,53 @@ public class ElectricAndWaterBill extends Bill {
         }
     }
     
+    public ArrayList<Double> getTotalEWBill(String month,String year, int option){
+        ArrayList<Double> items = new ArrayList<Double>();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="" ;
+            switch (option) {
+                case 1: 
+                    query ="Select Total from electricityandwaterbill where MONTH(Createday) = '"+month+ "' and YEAR(Createday) = "+ year ;
+                    break;
+                case 2:
+                    query = "Select Total from electricityandwaterbill where MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"' and status = 'Đã thu'";
+                    break;
+                case 3:
+                    query = "Select Total from electricityandwaterbill where MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"' and status = 'Chưa thu'";
+                    break;
+                default:
+                    query = "Select Total from electricityandwaterbill where MONTH(Createday) = '"+month+ "' and YEAR(Createday) = "+ year;
+                    break;
+            }
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+              items.add(Double.parseDouble(resultSet.getString(1)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    }
     public double calElectricFee(double chiSoDau, double chiSoCuoi){
     return 3*(chiSoCuoi-chiSoDau);
     }
