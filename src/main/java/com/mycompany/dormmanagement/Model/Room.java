@@ -319,6 +319,39 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         }        
     }
     
+    public int getTotalRooms(){
+        int total = 0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="select IDRoom from room" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){           
+                total++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return total;
+    }
     
 public void insertdatatoType(String room,String type, int rentingprice ){
         

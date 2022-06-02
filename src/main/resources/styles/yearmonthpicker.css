@@ -16,5 +16,5 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-background-color: white;
     -fx-border-color: gray;
     -fx-border-radius: 2px;
-    
+    /*-fx-self-aligment: center;*/
 }
