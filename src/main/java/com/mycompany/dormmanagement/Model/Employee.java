@@ -6,6 +6,7 @@ package com.mycompany.dormmanagement.Model;
 
 import connect.DataConnection;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,13 +25,13 @@ import javafx.collections.ObservableList;
  */
 public class Employee {
     
-   protected String employeeID;
-   protected String accountID;
-   protected String fullname;
-   protected String address;
-   protected String position;
-   protected String phoneNumber;
-   protected String birthday;
+   private String employeeID;
+   private String accountID;
+   private String fullname;
+   private String address;
+   private String position;
+   private String phoneNumber;
+   private String birthday;
 
     public Employee(String EmployeeID, String AccountID, String fullname, String address, String position, String phoneNumber, String birthday) {
         this.employeeID = EmployeeID;
@@ -301,4 +302,78 @@ public class Employee {
             }
         }        
     }
+    public int getLastEmployeeIDIndex(){
+        String lastEmployee = "";
+        int index = 0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="select IDEmployee from employee" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                lastEmployee=resultSet.getString(1);             
+                int tempindex = Integer.parseInt(lastEmployee.substring(2));
+                if(index<=tempindex){
+                index = tempindex;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        System.out.println(index);
+        return index;
+    }
+     public void insertNewEmployee(){
+     Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="insert into employee(IDEmployee,Fullname,Birthday,Address,Position,PhoneNumber,IDAccount)values(?,?,?,?,?,?,?)" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, this.employeeID);
+            statement.setString(2, this.fullname);
+            statement.setString(3, this.birthday);
+            statement.setString(4, this.address);
+            statement.setString(5, this.position);
+            statement.setString(6, this.phoneNumber);
+            statement.setString(7, this.accountID);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+     
+     }
 }

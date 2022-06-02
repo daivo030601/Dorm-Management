@@ -7,6 +7,7 @@ package com.mycompany.dormmanagement.Model;
 import connect.DataConnection;
 import java.lang.Runtime.Version;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -103,5 +104,37 @@ public class Account {
             }
         }        
     
-    }       
+    }    
+     public void insertNewAccount(){
+     Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="insert into account(IDAccount,Username,Password,Permission)values(?,?,?,?)" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, this.IDAccount);
+            statement.setString(2, this.Username);
+            statement.setString(3, this.Password);
+            statement.setString(4, this.Permission);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+     
+     }
 }
