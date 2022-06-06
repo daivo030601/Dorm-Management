@@ -376,4 +376,38 @@ public class Employee {
         }
      
      }
+     public void update(String IdEmployee,String name,String birthday,String address,String position,String phoneNum){
+     Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="update employee set Fullname=?,Birthday=?,Address=?,Position=?,PhoneNumber=? where IDEmployee=?" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, name);
+            statement.setString(2, birthday);
+            statement.setString(3, address);
+            statement.setString(4, position);
+            statement.setString(5, phoneNum);
+            statement.setString(6, IdEmployee);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+     
+     }
 }

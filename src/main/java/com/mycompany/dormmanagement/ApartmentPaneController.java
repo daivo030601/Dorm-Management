@@ -73,6 +73,10 @@ public class ApartmentPaneController implements Initializable {
         
     }
     @FXML
+    void clearText(){
+    clearAll();
+    }
+    @FXML
     void checkHandle(ActionEvent event){
         String keyWord = searchText.getText();
     if(event.getSource()== allBox){
@@ -127,14 +131,19 @@ public class ApartmentPaneController implements Initializable {
         apartment.insertNewApartment(ID, gender, EmployeeID);
             showNotification("Thêm thành công");
             refreshTable();
+            clearAll();
         }
         else showNotification("Tòa nhà này đã tồn tại");
     }
     @FXML
     void valueChange(){
         Employee employee = new Employee();
-        employee.getInfoBaseID(employeeCombobox.getValue().toString());
-        name.setText(employee.getFullname());
+        try {
+            employee.getInfoBaseID(employeeCombobox.getValue().toString());
+            name.setText(employee.getFullname());
+        } catch (Exception e) {
+        }
+        
     }
     public void refreshTable(){
         if(searchText.getText().isEmpty()){
@@ -149,6 +158,12 @@ public class ApartmentPaneController implements Initializable {
             addDataToTable(dataTableView,3);
         }
         }else tableSearch(dataTableView);   
+    }
+    private void clearAll(){
+    idTextField.clear();
+    name.clear();
+    genderCombobox.getSelectionModel().clearSelection();
+    employeeCombobox.getSelectionModel().clearSelection(); 
     }
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

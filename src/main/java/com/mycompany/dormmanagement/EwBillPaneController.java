@@ -66,6 +66,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
+import javafx.stage.Window;
 /**
  * FXML Controller class
  *
@@ -293,8 +294,7 @@ public class EwBillPaneController implements Initializable {
         } catch (IOException e) {
             System.out.println(e);
         }
-        System.out.println("success");
-        
+        System.out.println("success");      
     }
     
     private void addDataToCombobox(ComboBox comboBox){

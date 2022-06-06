@@ -6,11 +6,15 @@ package com.mycompany.dormmanagement;
 
 import com.mycompany.dormmanagement.Model.Account;
 import com.mycompany.dormmanagement.Model.Employee;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -24,6 +28,7 @@ import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 /**
@@ -119,13 +124,21 @@ public class AccountPaneController implements Initializable {
             Employee newEmployee = new Employee(idEmployee, idAccount, name, address, position, phone, birthday);
             newEmployee.insertNewEmployee();
             showNotification("Thêm thành công");
-            dataTableView.getItems().clear();
-            addDataToTable(dataTableView);
+            refreshTable();
+            clearAll();
         } catch (Exception e) {
             showNotification("Thêm không thành công");
         }
         
         
+    }
+    @FXML
+    void clearText(){
+    clearAll();
+    }
+    public void refreshTable(){
+        dataTableView.getItems().clear();
+        addDataToTable(dataTableView); 
     }
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -161,8 +174,22 @@ public class AccountPaneController implements Initializable {
     String keyWord = searchText.getText().trim();
     table.getItems().clear();
     table.getItems().addAll(employee.getSearchEmployeeIncludeAccount(keyWord));
-    
-    
+    }
+    private void clearAll(){
+    idTextField.clear();
+    passwordText.clear();
+    usernameText.clear();
+    addressText.clear();
+    phoneText.clear();
+    positionCombobox.getSelectionModel().clearSelection();
+    birthdayPicker.getEditor().clear();
+    birthdayPicker.setValue(null);
+    passError.setVisible(false);
+    usernameError.setVisible(false);
+    addressError.setVisible(false);
+    phoneError.setVisible(false);
+    nameError.setVisible(false);
+    birthdayError.setVisible(false);
     }
      private void addButtonToTable() {     
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
@@ -181,11 +208,17 @@ public class AccountPaneController implements Initializable {
                         Button btnDelete = new Button("",new ImageView("/Image/delete.png"));
                         btnDelete.setStyle("-fx-background-color: transparent;");
                         btnDetail.setOnAction((ActionEvent event) -> {
-                            
+                            int index = getIndex();  
+                            String idEmployee = (String) IDCol.getCellObservableValue(index).getValue();
+                            String username = (String) usernameCol.getCellObservableValue(index).getValue();
+                            sendDetailData(idEmployee,username);
                         });
                         btnEdit.setOnAction((ActionEvent event) -> {
                             
-                            
+                            int index = getIndex();  
+                            String idEmployee = (String) IDCol.getCellObservableValue(index).getValue();
+                            String username = (String) usernameCol.getCellObservableValue(index).getValue();
+                            sendEditData(idEmployee,username);
                         });
                         btnDelete.setOnAction((ActionEvent event) -> {
                             
@@ -202,8 +235,43 @@ public class AccountPaneController implements Initializable {
 
         toolCol.setCellFactory(cellFactory);
     }
+     private void sendDetailData(String idEmployee, String username){
+        
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailEmployee.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Employee and account detail");
+        stage.setScene(new Scene(root));
+        DetailEmployeeController detailEmployeeController = loader.getController(); 
+        detailEmployeeController.receiveData(idEmployee,username);
+        stage.show(); 
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println("success");
+        
+    }
+     private void sendEditData(String idEmployee, String username){
+        
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/editEmployee.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Edit employee and account");
+        stage.setScene(new Scene(root));
+        EditEmployeeController editEmployeeController = loader.getController(); 
+        editEmployeeController.receiveData(idEmployee,username,this);
+        stage.show(); 
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println("success");
+        
+    }
     private void addDataToCombobox(){
         positionCombobox.getItems().addAll("Người quản trị","Trưởng nhà","Nhân viên");
+        positionCombobox.getSelectionModel().select(1);
     }
     private void DrawUI(){
         initTable(dataTableView);
