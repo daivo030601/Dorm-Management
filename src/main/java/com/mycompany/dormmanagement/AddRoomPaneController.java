@@ -83,11 +83,13 @@ public class AddRoomPaneController implements Initializable {
         int RentingpriceText = (int)Double.parseDouble(rentingpriceText.getText()); 
         apartment = new Apartment();
         apartment.getInfo(apartmentName);
+        String noRoom = Integer.toString(Integer.parseInt(apartment.getNoRoom()) + 1);
         room = new Room(RoomText,apartment,NostudentText,roomstatus,roomtype,RentingpriceText);
         //int index = room.getLastRoomIndex()+ 1;
 //        room.setRoomID(apartmentName+ index);
         try {
             room.insertRoomdata();
+            apartment.updateNoRoom(apartmentName, noRoom);
            
         } catch (Exception e) {
             showNotification("Có lỗi xảy ra. Thêm không thành công.");
@@ -131,8 +133,8 @@ public class AddRoomPaneController implements Initializable {
     private void addDataIDRomText()  
     {
         apartment = new Apartment();
-        room = new Room();
-        ObservableList<String> items = FXCollections.<String>observableArrayList();
+        room = new Room();  
+        ObservableList<String> items = FXCollections.<String>observableArrayList();       
         String apartmentName = apartmentComboBox.getValue().toString();
         int index = room.getLastRoomIndex(apartmentName)+ 1;
         for(var item : apartment.getRoomNameBaseApartment(apartmentName)){
@@ -141,8 +143,7 @@ public class AddRoomPaneController implements Initializable {
         roomText.setText(apartmentName+index);
     }
     private void addDataLable()  
-    {
-        
+    {    
         nostudentText.setText("0");
         statusText.setText("Còn Chỗ");
     }

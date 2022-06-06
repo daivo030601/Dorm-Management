@@ -7,6 +7,8 @@ package com.mycompany.dormmanagement;
 
 import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.Employee;
+import com.mycompany.dormmanagement.Model.Room;
+import com.mycompany.dormmanagement.Model.Student;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +73,10 @@ public class ApartmentPaneController implements Initializable {
         
     }
     @FXML
+    void clearText(){
+    clearAll();
+    }
+    @FXML
     void checkHandle(ActionEvent event){
         String keyWord = searchText.getText();
     if(event.getSource()== allBox){
@@ -125,14 +131,19 @@ public class ApartmentPaneController implements Initializable {
         apartment.insertNewApartment(ID, gender, EmployeeID);
             showNotification("Thêm thành công");
             refreshTable();
+            clearAll();
         }
         else showNotification("Tòa nhà này đã tồn tại");
     }
     @FXML
     void valueChange(){
         Employee employee = new Employee();
-        employee.getInfoBaseID(employeeCombobox.getValue().toString());
-        name.setText(employee.getFullname());
+        try {
+            employee.getInfoBaseID(employeeCombobox.getValue().toString());
+            name.setText(employee.getFullname());
+        } catch (Exception e) {
+        }
+        
     }
     public void refreshTable(){
         if(searchText.getText().isEmpty()){
@@ -147,6 +158,12 @@ public class ApartmentPaneController implements Initializable {
             addDataToTable(dataTableView,3);
         }
         }else tableSearch(dataTableView);   
+    }
+    private void clearAll(){
+    idTextField.clear();
+    name.clear();
+    genderCombobox.getSelectionModel().clearSelection();
+    employeeCombobox.getSelectionModel().clearSelection(); 
     }
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -189,6 +206,16 @@ public class ApartmentPaneController implements Initializable {
                         Button btnDelete = new Button("", new ImageView("/Image/delete.png"));
                         btnDelete.setStyle("-fx-background-color: transparent;");
                         btnDelete.setOnAction((ActionEvent event) -> {
+                            int index = getIndex();
+                            String apartment = IDCol.getCellObservableValue(index).getValue().toString();
+                            try {
+                                deleteApartment(apartment);
+                                showNotification("Đã xóa");
+                                refreshTable();
+                            } catch (Exception e) {
+                                showNotification("Xóa không thành công");
+                            }
+                            
                             
                         });
                         HBox btnManage = new HBox(btnDelete);
@@ -204,9 +231,14 @@ public class ApartmentPaneController implements Initializable {
     }
     private void deleteApartment(String ID){
         apartment = new Apartment();
-        for (String room : apartment.getRoomNameBaseApartment(ID)) {
-            
+        Room room = new Room();
+        Student student = new Student();
+        for (String item : apartment.getRoomNameBaseApartment(ID)) {
+            student.updateStudentRemoveFromRoom(item);
         }
+        room.deleteAllRoomInApartment(ID);
+        apartment.delete(ID);
+        
     
     }
     private void tableSearch(TableView table){

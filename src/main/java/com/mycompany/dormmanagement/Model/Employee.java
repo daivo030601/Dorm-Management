@@ -6,11 +6,14 @@ package com.mycompany.dormmanagement.Model;
 
 import connect.DataConnection;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -22,13 +25,13 @@ import javafx.collections.ObservableList;
  */
 public class Employee {
     
-   protected String employeeID;
-   protected String accountID;
-   protected String fullname;
-   protected String address;
-   protected String position;
-   protected String phoneNumber;
-   protected String birthday;
+   private String employeeID;
+   private String accountID;
+   private String fullname;
+   private String address;
+   private String position;
+   private String phoneNumber;
+   private String birthday;
 
     public Employee(String EmployeeID, String AccountID, String fullname, String address, String position, String phoneNumber, String birthday) {
         this.employeeID = EmployeeID;
@@ -176,6 +179,92 @@ public class Employee {
             }
         }        
     }
+    public ObservableList<Map<String,Object>> getAllEmployeeIncludeAccount(){
+    ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="select * from employee,account where employee.IDAccount = account.IDAccount" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("id", resultSet.getString(1));
+            item.put("name", resultSet.getString(2));
+            item.put("birthday", resultSet.getString(3));
+            item.put("position", resultSet.getString(5));
+            item.put("username", resultSet.getString(9));
+            item.put("pass", resultSet.getString(10));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    
+    }
+    public ObservableList<Map<String,Object>> getSearchEmployeeIncludeAccount(String keyWord){
+    ObservableList<Map<String, Object>> items =
+        FXCollections.<Map<String, Object>>observableArrayList();
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Map<String, Object> item;
+        try {        
+            statement = con.createStatement();
+            String query ="select * from employee,account where employee.IDAccount = account.IDAccount and IDEmployee like '%"+keyWord+"%'" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+            item = new HashMap<>();
+            item.put("id", resultSet.getString(1));
+            item.put("name", resultSet.getString(2));
+            item.put("birthday", resultSet.getString(3));
+            item.put("position", resultSet.getString(5));
+            item.put("username", resultSet.getString(9));
+            item.put("pass", resultSet.getString(10));
+            items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return items;
+    
+    }
     public void getInfoBaseID(String IDEmployee){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
@@ -213,4 +302,112 @@ public class Employee {
             }
         }        
     }
+    public int getLastEmployeeIDIndex(){
+        String lastEmployee = "";
+        int index = 0;
+        Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query ="select IDEmployee from employee" ;
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                lastEmployee=resultSet.getString(1);             
+                int tempindex = Integer.parseInt(lastEmployee.substring(2));
+                if(index<=tempindex){
+                index = tempindex;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        System.out.println(index);
+        return index;
+    }
+     public void insertNewEmployee(){
+     Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="insert into employee(IDEmployee,Fullname,Birthday,Address,Position,PhoneNumber,IDAccount)values(?,?,?,?,?,?,?)" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, this.employeeID);
+            statement.setString(2, this.fullname);
+            statement.setString(3, this.birthday);
+            statement.setString(4, this.address);
+            statement.setString(5, this.position);
+            statement.setString(6, this.phoneNumber);
+            statement.setString(7, this.accountID);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+     
+     }
+     public void update(String IdEmployee,String name,String birthday,String address,String position,String phoneNum){
+     Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="update employee set Fullname=?,Birthday=?,Address=?,Position=?,PhoneNumber=? where IDEmployee=?" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, name);
+            statement.setString(2, birthday);
+            statement.setString(3, address);
+            statement.setString(4, position);
+            statement.setString(5, phoneNum);
+            statement.setString(6, IdEmployee);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+     
+     }
 }

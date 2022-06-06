@@ -20,49 +20,64 @@
     </stylesheets>
    <children>
       <BorderPane layoutX="116.0" layoutY="47.0" prefHeight="75.0" prefWidth="1360.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <right>
-            <VBox prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label fx:id="crUsername" text="Username">
-                     <font>
-                        <Font name="Segoe UI Bold" size="20.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label fx:id="crPermission" text="Label">
-                     <font>
-                        <Font name="Segoe UI" size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-         </right>
          <bottom>
             <Line endX="645.2929077148438" startX="-710.0" styleClass="line" BorderPane.alignment="CENTER" />
          </bottom>
+         <left>
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="120.0">
+                     <children>
+                        <Label fx:id="crUsername1" text="Username:">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="crPermission1" text="Permission:">
+                           <font>
+                              <Font name="Segoe UI" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="crUsername" text="Username">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="crPermission" text="Label">
+                           <font>
+                              <Font name="Segoe UI" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets left="20.0" />
+               </BorderPane.margin>
+            </HBox>
+         </left>
+         <right>
+            <Button mnemonicParsing="false" onAction="#logOut" style="-fx-background-color: white;" text="Đăng xuất" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Segoe UI Bold" size="18.0" />
+               </font>
+            </Button>
+         </right>
       </BorderPane>
       <BorderPane layoutY="75.0" prefHeight="75.0" prefWidth="1360.0">
          <right>
             <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="75.0" prefWidth="751.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="feedbackBtn" layoutX="417.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="75.0" styleClass="tabButton" text="Đóng góp">
-                     <font>
-                        <Font name="Segoe UI Bold" size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets left="30.0" right="30.0" />
-                     </padding>
-                  </Button>
-                  <Button fx:id="contactBtn" layoutX="184.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="75.0" styleClass="tabButton" text="Liên hệ">
-                     <font>
-                        <Font name="Segoe UI Bold" size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets left="45.0" right="45.0" />
-                     </padding>
-                  </Button>
                   <Button fx:id="aboutBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="75.0" styleClass="tabButton" text="Về chúng tôi">
                      <font>
                         <Font name="Segoe UI Bold" size="24.0" />
@@ -214,8 +229,6 @@
                </StackPane.margin>
             </Pane>
             <Pane fx:id="aboutPane" prefHeight="689.0" prefWidth="1360.0" styleClass="casualPane" />
-            <Pane fx:id="contactPane" prefHeight="689.0" prefWidth="1360.0" styleClass="casualPane" />
-            <Pane fx:id="feedbackPane" prefHeight="689.0" prefWidth="1360.0" styleClass="casualPane" />
          </children>
       </StackPane>
    </children>

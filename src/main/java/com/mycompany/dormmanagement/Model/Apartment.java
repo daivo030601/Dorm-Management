@@ -384,6 +384,37 @@ public class Apartment {
         return Total;
     }
 
+    public void updateNoRoom(String ID, String noRoom){
+    Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="update apartment set NoRoom=? where IDApartment =?";
+            statement = con.prepareStatement(query);
+            statement.setString(1, noRoom);
+            statement.setString(2, IDApartment);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    
+    
+    }
     public void delete(String IDApartment){
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
