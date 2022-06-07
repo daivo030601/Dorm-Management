@@ -5,6 +5,9 @@
 package com.mycompany.dormmanagement.Model;
 
 import connect.DataConnection;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -18,8 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 
 /**
  *
@@ -38,6 +39,7 @@ public class Student {
     private String syear;
     private String eyear;
     private String idRoom;
+    private InputStream image;
 
 
     public Student() {
@@ -53,12 +55,14 @@ public class Student {
         this.syear = "";
         this.eyear = "";
         this.idRoom = "";
+        this.image = null;
+
     }
 
     
 
     
-    public Student(String studentID, String fullName, Date birthday, String Gender, String IDCard, String phoneNum, String university, String grade, String status, String Syear, String Eyear, String idRoom) {
+    public Student(String studentID, String fullName, Date birthday, String Gender, String IDCard, String phoneNum, String university, String grade, String status, String Syear, String Eyear, String idRoom, InputStream image) {
         this.studentID = studentID;
         this.fullName = fullName;
         this.birthday = birthday;
@@ -71,6 +75,7 @@ public class Student {
         this.syear = Syear;
         this.eyear = Eyear;
         this.idRoom = idRoom;
+        this.image = image;
     }
 
     public String getStudentID() {
@@ -168,6 +173,14 @@ public class Student {
 
     public String getIdRoom() {
         return idRoom;
+    }
+
+    public InputStream getImage() {
+        return image;
+    }
+
+    public void setImage(InputStream image) {
+        this.image = image;
     }
     
     
@@ -502,6 +515,7 @@ public class Student {
               this.syear = resultSet.getString(10);
               this.eyear = resultSet.getString(11);
               this.idRoom = resultSet.getString(12);
+              this.image = resultSet.getBinaryStream(13);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
@@ -524,13 +538,13 @@ public class Student {
         }        
     }
     
-    public void insertStudentdata(){
+    public void insertStudentdata(int length){
         
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
         
         try {  
-            String query ="insert into student(IDStudent,Fullname,Birthday,Gender,IDCard,PhoneNumber,university,grade,status,sYear,eYear,IDRoom)values(?,?,?,?,?,?,?,?,?,?,?,?)" ;
+            String query ="insert into student(IDStudent,Fullname,Birthday,Gender,IDCard,PhoneNumber,university,grade,status,sYear,eYear,IDRoom,Image)values(?,?,?,?,?,?,?,?,?,?,?,?,?)" ;
             statement = con.prepareStatement(query);
             statement.setString(1, this.studentID);
             statement.setString(2, this.fullName);
@@ -544,6 +558,7 @@ public class Student {
             statement.setString(10, this.syear);
             statement.setString(11, this.eyear);
             statement.setString(12, this.idRoom);
+            statement.setBinaryStream(13, this.image, length);
             statement.execute();
             
         } catch (SQLException ex) {
@@ -593,18 +608,20 @@ public class Student {
         }
     }
     
-    public void updateStudent(String studentID, String fullName, Date birthday, String Gender, String IDCard, String phoneNum, String university, String grade, String status, String Syear, String Eyear, String idRoom ){
+    public void updateStudent(String studentID, String fullName, Date birthday, String Gender, String IDCard, String phoneNum, String university, String grade, String status, String Syear, String Eyear, String idRoom, InputStream image, int length ){
         
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
         try {  
             if(idRoom == null){
-                String query ="update student set Fullname = '"+fullName+"', Birthday = '"+birthday+"',Gender = '"+Gender+"', IDCard = '"+IDCard+"',phoneNumber = '"+phoneNum+"', University = '"+university+"',Grade = '"+grade+"', status = '"+status+"',Syear = '"+Syear+"', Eyear = '"+Eyear+"' where IDStudent ='"+studentID+"'" ;
+                String query ="update student set Fullname = '"+fullName+"', Birthday = '"+birthday+"',Gender = '"+Gender+"', IDCard = '"+IDCard+"',phoneNumber = '"+phoneNum+"', University = '"+university+"',Grade = '"+grade+"', status = '"+status+"',Syear = '"+Syear+"', Eyear = '"+Eyear+"', Image=? where IDStudent ='"+studentID+"'" ;
                 statement = con.prepareStatement(query);
+                statement.setBinaryStream(1, image, length);
                 statement.execute();
             } else {
-                String query ="update student set Fullname = '"+fullName+"', Birthday = '"+birthday+"',Gender = '"+Gender+"', IDCard = '"+IDCard+"',phoneNumber = '"+phoneNum+"', University = '"+university+"',Grade = '"+grade+"', status = '"+status+"',Syear = '"+Syear+"', Eyear = '"+Eyear+"', IDRoom = '"+idRoom+"' where IDStudent ='"+studentID+"'" ;
+                String query ="update student set Fullname = '"+fullName+"', Birthday = '"+birthday+"',Gender = '"+Gender+"', IDCard = '"+IDCard+"',phoneNumber = '"+phoneNum+"', University = '"+university+"',Grade = '"+grade+"', status = '"+status+"',Syear = '"+Syear+"', Eyear = '"+Eyear+"', IDRoom = '"+idRoom+"', Image=? where IDStudent ='"+studentID+"'" ;
                 statement = con.prepareStatement(query);
+                statement.setBinaryStream(1, image, length);
                 statement.execute();
             }
            
