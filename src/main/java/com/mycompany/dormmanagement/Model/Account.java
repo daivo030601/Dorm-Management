@@ -104,7 +104,41 @@ public class Account {
             }
         }        
     
-    }    
+    }   
+    public void getDataByID(String ID){
+    Connection con = DataConnection.getConnection(); 
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {        
+            statement = con.createStatement();
+            String query = "Select * from account where IDAccount = '" + ID + "'";
+            resultSet = statement.executeQuery(query);
+            if(resultSet.next()){
+                setIDAccount(resultSet.getString(1));
+                setUsername(resultSet.getString(2));
+                setPassword(resultSet.getString(3));
+                setPermission(resultSet.getString(4));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if ( resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }        
+    }
      public void insertNewAccount(){
      Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
@@ -136,5 +170,65 @@ public class Account {
             }
         }
      
+     }
+     public void update(Account account){
+     Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="update account set Password=?,Permission=? where IDAccount=?" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, account.getPassword());
+            statement.setString(2, account.getPermission());
+            statement.setString(3, account.getIDAccount());
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+     
+     }
+     public void detele(String ID){
+     
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="delete from account where IDAccount=?" ;
+            statement = con.prepareStatement(query);
+            statement.setString(1, ID);
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
      }
 }

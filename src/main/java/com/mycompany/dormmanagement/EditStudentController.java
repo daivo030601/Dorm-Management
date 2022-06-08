@@ -5,6 +5,7 @@
  */
 package com.mycompany.dormmanagement;
 
+import Utils.DataValidation;
 import com.mycompany.dormmanagement.Model.Room;
 import com.mycompany.dormmanagement.Model.Student;
 import java.io.File;
@@ -34,6 +35,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
@@ -71,6 +73,8 @@ public class EditStudentController implements Initializable {
     private TextField idRoomText;
     @FXML
     private ImageView image;
+    @FXML
+    private Label nameError, IDCardError, phoneNumError, universityError, yearError,sYearError,eYearError;
     
     private Image imageFile;
     private File file ;
@@ -92,7 +96,102 @@ public class EditStudentController implements Initializable {
     private void back(ActionEvent event) {
         closeStage(event);
     }
-
+    @FXML
+    void TextChange(){
+    //check name text field null or empty
+        if(DataValidation.textFieldIsNull(nameText, nameError, "Vui lòng không để trống")){
+            nameError.setVisible(true);
+        } //check valid character, name is alphabet?
+        else if(!DataValidation.textAlphabet(nameText, nameError, "Tên chứa ký tự không hợp lệ")){
+            nameError.setVisible(true);
+        } else nameError.setVisible(false);      
+        
+        //check IDCard text field null or empty
+        if(DataValidation.textFieldIsNull(idCardText, IDCardError, "Vui lòng không để trống")){
+            IDCardError.setVisible(true);
+        } //ID card must be a numberic
+        else if(!DataValidation.textNumeric(idCardText, IDCardError , "CMND/CCCD phải là số")){
+            IDCardError.setVisible(true);
+        } else IDCardError.setVisible(false);
+        
+        //check phone number null or empty
+        if(DataValidation.textFieldIsNull(phoneText, phoneNumError, "Vui lòng không để trống")){
+            phoneNumError.setVisible(true);
+        } //phone number must be a numberic
+        else if(!DataValidation.textNumeric(phoneText, phoneNumError , "Số điện thoại phải là số")){
+            phoneNumError.setVisible(true);
+        }//phone number larger than 10 character 
+        else if(!DataValidation.dataLengthMinMax(phoneText, phoneNumError, "Số điện thoại phải có ít nhất 10 số", "10","50")){
+            phoneNumError.setVisible(true);
+        } else phoneNumError.setVisible(false);
+        
+        //check university null or empty
+        if(DataValidation.textFieldIsNull(universityText, universityError, "Vui lòng không để trống")){
+            universityError.setVisible(true);
+        } else universityError.setVisible(false);
+        
+        //check grade null or empty
+        if(DataValidation.textFieldIsNull(gradeText, yearError, "Vui lòng không để trống")){
+            yearError.setVisible(true);
+        } //grade must be a numberic
+        else if(!DataValidation.textNumeric(gradeText, yearError, "Vui lòng nhập năm đang học là số")){
+            yearError.setVisible(true);
+        } //max year study in VietNam university is 9
+        else if(Integer.parseInt(gradeText.getText().trim())> 9) {
+            yearError.setText("Năm học tối đa là 9 năm");
+            yearError.setVisible(true);
+        } else yearError.setVisible(false);
+        
+        //check start year null or empty
+        if(DataValidation.textFieldIsNull(sYearText, sYearError, "Vui lòng không để trống")){
+            sYearError.setVisible(true);
+        } 
+        // check if text field value is number, if not show the error
+        else if(!DataValidation.textNumeric(sYearText, sYearError, "Năm bắt đầu học phải phải là số")){
+            sYearError.setVisible(true);
+        } 
+        //check if text field value >0, if not show the error because renting price must larger than 0
+        else if(Integer.parseInt(sYearText.getText().trim())<=0){
+            sYearError.setText("Năm bắt đầu học phải > 0");
+            sYearError.setVisible(true);
+        } else sYearError.setVisible(false);
+        
+        //check end year null or empty
+        if(DataValidation.textFieldIsNull(eYearText, eYearError, "Vui lòng không để trống")){
+            eYearError.setVisible(true);
+        } 
+        // check if text field value is number, if not show the error
+        else if(!DataValidation.textNumeric(eYearText, eYearError, "Năm bắt đầu học phải phải là số")){
+            eYearError.setVisible(true);
+        }
+        //check if text field value >0, if not show the error because renting price must larger than 0
+        else if(Integer.parseInt(eYearText.getText().trim())<=0){
+            eYearError.setText("Năm bắt đầu học phải > 0");
+            eYearError.setVisible(true);
+        } else eYearError.setVisible(false);
+        
+        //check when start year and end year not null end year must larger than start year 
+        if(!sYearText.getText().trim().isEmpty() && !eYearText.getText().trim().isEmpty()){
+            int sYear = -1;
+            int eYear = -1;
+            try {
+                sYear = Integer.parseInt(sYearText.getText().trim());
+                eYear = Integer.parseInt(eYearText.getText().trim());
+                if(sYear >= eYear) {
+                eYearError.setText("Năm kết thúc phải lớn hơn năm bắt đầu");
+                eYearError.setVisible(true);
+                } else eYearError.setVisible(false);
+            } catch (NumberFormatException e) {
+            }    
+        }
+        
+        if(!nameError.isVisible() && !IDCardError.isVisible() && !phoneNumError.isVisible() && !universityError.isVisible() && !yearError.isVisible() && !sYearError.isVisible() && !eYearError.isVisible()){
+            updateBtn.setDisable(false);
+        } else {
+            updateBtn.setDisable(true);
+        }
+    
+    }
     @FXML
     private void updateData(ActionEvent event) {
         String name = nameText.getText();
@@ -199,7 +298,9 @@ public class EditStudentController implements Initializable {
         if (student.getIdRoom() == null) {
             idRoomText.setDisable(true);
         }
-        InputStream is = student.getImage();
+        
+        try {
+           InputStream is = student.getImage();
         OutputStream os = new FileOutputStream(new File("photo.jpg"));
         byte[] content = new byte[1024];
         int size = 0;
@@ -214,6 +315,9 @@ public class EditStudentController implements Initializable {
         image.setFitWidth(175);
         image.setFitHeight(225);
         image.setPreserveRatio(true);
+        } catch (Exception e) {
+        }
+        
     }
     
     private void DrawUI(){
