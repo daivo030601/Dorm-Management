@@ -163,17 +163,30 @@ public class AccountPaneController implements Initializable {
         usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2)); 
         passCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
+        String crUserPermission = LoginFormController.currentUser.getPermission();
+        Employee crEmployee = new Employee();
+        crEmployee.getInfoBaseAccountID(LoginFormController.currentUser.getIDAccount());
+        String crPosition = crEmployee.getPosition();
+       
+        if(LoginFormController.currentUser.getPermission().equals("admin") && crPosition.equals("Người quản trị")){
+            passCol.setVisible(true);
+         }else {
+            passCol.setVisible(false);
+            positonCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
+        }
         addDataToTable(table);
         addButtonToTable();
     }
     private void addDataToTable(TableView table){
         table.getItems().clear();
         table.getItems().addAll(employee.getAllEmployeeIncludeAccount());
+          
     }
     private void tableSearch(TableView table){
     String keyWord = searchText.getText().trim();
     table.getItems().clear();
     table.getItems().addAll(employee.getSearchEmployeeIncludeAccount(keyWord));
+    
     }
     private void clearAll(){
     idTextField.clear();
@@ -221,6 +234,12 @@ public class AccountPaneController implements Initializable {
                             sendEditData(idEmployee,username);
                         });
                         btnDelete.setOnAction((ActionEvent event) -> {
+                            int index = getIndex();
+                            String idEmployee = (String) IDCol.getCellObservableValue(index).getValue();
+                            String username = (String) usernameCol.getCellObservableValue(index).getValue();                         
+                            Account account = new Account();
+                            account.GetDataByUsername(username);
+                            deleteData(idEmployee, account.getIDAccount(), account.getPermission());
                             
 
                         });
@@ -269,6 +288,36 @@ public class AccountPaneController implements Initializable {
         System.out.println("success");
         
     }
+     private void deleteData(String idEmployee, String idAccount,String permission){
+     String crUserPermission = LoginFormController.currentUser.getPermission();
+     Employee crEmployee = new Employee();
+     crEmployee.getInfoBaseAccountID(LoginFormController.currentUser.getIDAccount());
+     String crPosition = crEmployee.getPosition();
+     if(permission.equals("user")){
+         try {
+             crEmployee.detele(idEmployee);
+             LoginFormController.currentUser.detele(idAccount);
+             showNotification("Xóa thành công");
+             refreshTable();
+         } catch (Exception e) {
+             System.out.println(e);
+         } 
+     }
+     else{
+         if(LoginFormController.currentUser.getPermission().equals("admin") && crPosition.equals("Người quản trị")){
+            try {
+                 crEmployee.detele(idEmployee);
+                LoginFormController.currentUser.detele(idAccount);
+                showNotification("Xóa thành công");
+                refreshTable();
+            } catch (Exception e) {
+                System.out.println(e);
+            } 
+         }else{
+                showNotification("Bạn không đủ quyền để xóa tài khoản này.");
+         }
+     }
+     }
     private void addDataToCombobox(){
         positionCombobox.getItems().addAll("Người quản trị","Trưởng nhà","Nhân viên");
         positionCombobox.getSelectionModel().select(1);

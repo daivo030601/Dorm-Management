@@ -410,4 +410,32 @@ public class Employee {
         }
      
      }
+     public void detele(String ID){
+     Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        
+        try {  
+            String query ="delete from employee where IDEmployee =?";
+            statement = con.prepareStatement(query);
+            statement.setString(1, ID); 
+            statement.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+     }
 }
