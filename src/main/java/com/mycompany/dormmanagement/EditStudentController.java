@@ -7,9 +7,18 @@ package com.mycompany.dormmanagement;
 
 import com.mycompany.dormmanagement.Model.Room;
 import com.mycompany.dormmanagement.Model.Student;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +30,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -57,7 +69,12 @@ public class EditStudentController implements Initializable {
     private TextField statusText;
     @FXML
     private TextField idRoomText;
-
+    @FXML
+    private ImageView image;
+    
+    private Image imageFile;
+    private File file ;
+    private FileInputStream fis;
     /**
      * Initializes the controller class.
      */
@@ -90,10 +107,15 @@ public class EditStudentController implements Initializable {
         String idRoom = idRoomText.getText();
         String gender = genderComboBox.getValue().toString();
         String status = statusText.getText();
+        try {
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AddStudentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         student = new Student();
         
             try {
-                student.updateStudent(idStudent,name,birthday,gender,idCard,phone,university,grade,status,sYear,eYear,idRoom);
+                student.updateStudent(idStudent,name,birthday,gender,idCard,phone,university,grade,status,sYear,eYear,idRoom,(InputStream)fis,(int)file.length());
             } catch (Exception e) {
                 showNotification("Có lỗi xảy ra. Sửa không thành công.");
                 closeStage(event);
@@ -104,7 +126,25 @@ public class EditStudentController implements Initializable {
         
     }
     
-    public void setDetailStudent (String  data){
+    @FXML
+    public void handleAddImage(ActionEvent event) {
+        
+        final Node source = (Node) event.getSource();
+        final Stage stage = (Stage) source.getScene().getWindow();
+        FileChooser chooser = new FileChooser();
+        file = chooser.showOpenDialog(stage);
+        System.out.println("file ne: " + file);
+        if (file != null) {
+            Image imageFile = new Image(file.toURI().toString(),175,225,true,true);
+            System.out.println("file ne: " + imageFile);
+            image.setImage(imageFile);
+            image.setFitWidth(175);
+            image.setFitHeight(225);
+            image.setPreserveRatio(true);
+        }
+    }
+    
+    public void setDetailStudent (String  data) throws IOException{
         loadData(data);
     }
     
@@ -141,7 +181,7 @@ public class EditStudentController implements Initializable {
         genderComboBox.setItems(items);
     }
     
-    public void loadData(String studentID){
+    public void loadData(String studentID) throws FileNotFoundException, IOException{
         student = new Student();
         student.getInfoByID(studentID);
         nameText.setText(student.getFullName());
@@ -159,6 +199,21 @@ public class EditStudentController implements Initializable {
         if (student.getIdRoom() == null) {
             idRoomText.setDisable(true);
         }
+        InputStream is = student.getImage();
+        OutputStream os = new FileOutputStream(new File("photo.jpg"));
+        byte[] content = new byte[1024];
+        int size = 0;
+        while((size = is.read(content)) != -1) {
+            os.write(content, 0, size);
+        }
+        os.close();
+        is.close();
+        
+        imageFile = new Image("file:photo.jpg", 175, 225,true, true);
+        image.setImage(imageFile);
+        image.setFitWidth(175);
+        image.setFitHeight(225);
+        image.setPreserveRatio(true);
     }
     
     private void DrawUI(){

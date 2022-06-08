@@ -7,10 +7,16 @@ package com.mycompany.dormmanagement;
 
 import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.Student;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +29,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import Utils.DataValidation;
 import java.time.LocalDate;
@@ -85,10 +94,17 @@ public class AddStudentController implements Initializable {
     private TextField universityText;
 
     @FXML
+
     private Label yearError;
     
     @FXML
     private Button insertBtn;
+
+    private Button addImageBtn;
+    @FXML
+    private ImageView image;
+    private File file ;
+    private FileInputStream fis;
 
     /**
      * Initializes the controller class.
@@ -210,12 +226,18 @@ public class AddStudentController implements Initializable {
         String sYear = sYearText.getText();
         String eYear = eYearText.getText();
         String gender = genderComboBox.getValue().toString();
+        
+        try {
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AddStudentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if (name.isEmpty() || idStudent.isEmpty() || birthday.toString().isEmpty() || idCard.isEmpty() || phone.isEmpty() || university.isEmpty() || grade.isEmpty() || sYear.isEmpty() || eYear.isEmpty()) {
             showNotification("Bạn chưa điền đầy đủ thông tin! Xin vui lòng điền đầy đủ trước khi thêm sinh viên.");
         } else {
-            student = new Student(idStudent, name, birthday, gender, idCard, phone, university, grade, "CX", sYear, eYear, null);
+            student = new Student(idStudent, name, birthday, gender, idCard, phone, university, grade, "CX", sYear, eYear, null, (InputStream)fis);
             try {
-            student.insertStudentdata();
+            student.insertStudentdata((int)file.length());
            
             } catch (Exception e) {
                 showNotification("Có lỗi xảy ra. Thêm không thành công.");
@@ -244,6 +266,23 @@ public class AddStudentController implements Initializable {
     public void receiveData (StudentPaneController parentController)
     {
         studentPaneController = parentController;
+    }
+    @FXML
+    public void handleAddImage(ActionEvent event) {
+        
+        final Node source = (Node) event.getSource();
+        final Stage stage = (Stage) source.getScene().getWindow();
+        FileChooser chooser = new FileChooser();
+        file = chooser.showOpenDialog(stage);
+        System.out.println("file ne: " + file);
+        if (file != null) {
+            Image imageFile = new Image(file.toURI().toString(),175,225,true,true);
+            System.out.println("file ne: " + imageFile);
+            image.setImage(imageFile);
+            image.setFitWidth(175);
+            image.setFitHeight(225);
+            image.setPreserveRatio(true);
+        }
     }
     
     private void addDataToComboBox(){
