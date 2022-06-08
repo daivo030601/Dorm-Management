@@ -4,6 +4,7 @@
  */
 package com.mycompany.dormmanagement;
 
+import Utils.DataValidation;
 import com.mycompany.dormmanagement.Model.Account;
 import com.mycompany.dormmanagement.Model.Employee;
 import java.net.URL;
@@ -15,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -31,8 +33,10 @@ public class EditEmployeeController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    @FXML 
+    private Button employeeUpdateBtn,accountUpdateBtn;
     @FXML
-    private Label IDText;
+    private Label IDText,nameError,birthdayError,addressError,phoneError,passError;
     @FXML
     private TextField nameText;
     @FXML
@@ -68,6 +72,50 @@ public class EditEmployeeController implements Initializable {
         } catch (Exception e) {
             showNotification("Cập nhật không thành công");
         }
+    }
+    @FXML
+    void TextChange(){
+    if(DataValidation.textFieldIsNull(nameText, nameError, "Vui lòng không để trống")) {
+        nameError.setVisible(true);
+    } else if(!DataValidation.textAlphabet(nameText, nameError, "Tên chứa ký tự không hợp lệ")){
+        nameError.setVisible(true);
+    }
+    else nameError.setVisible(false);
+    
+    if(birthdayPicker.getValue()==null){
+        birthdayError.setVisible(true);
+    }
+    else birthdayError.setVisible(false);
+    
+    if(DataValidation.textFieldIsNull(addressText, addressError, "Vui lòng không để trống")) {
+        addressError.setVisible(true);    
+    }
+    else addressError.setVisible(false);
+    
+    if(DataValidation.textFieldIsNull(phoneText, phoneError, "vui lòng không để trống")) {
+        phoneError.setVisible(true);
+    } else if(!DataValidation.textNumeric(phoneText, phoneError, "Số điện thoại phải là số")){
+        phoneError.setVisible(true);
+    } else if(!DataValidation.dataLengthMinMax(phoneText, phoneError, "Số điện thoại phải có ít nhất 10 chữ số","10","50")){
+        phoneError.setVisible(true);
+    }
+    else phoneError.setVisible(false);
+    
+    if(DataValidation.textFieldIsNull(passwordText, passError, "Vui lòng không để trống")) {
+        passError.setVisible(true);   
+    }
+    else passError.setVisible(false);
+    
+    if(!nameError.isVisible()&&!birthdayError.isVisible()&&!addressError.isVisible()&&!phoneError.isVisible()){
+    employeeUpdateBtn.setDisable(false);
+    }
+    else{
+    employeeUpdateBtn.setDisable(true);
+    }
+    if(!passError.isVisible()){
+    accountUpdateBtn.setDisable(false);
+    } else accountUpdateBtn.setDisable(true);
+    
     }
     @FXML
     void updateAccount(){

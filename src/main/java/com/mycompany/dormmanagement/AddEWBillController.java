@@ -28,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
+import Utils.DataValidation;
 
 /**
  * FXML Controller class
@@ -74,23 +75,23 @@ public class AddEWBillController implements Initializable {
         }
         
         
-        if(eEndText.isEmpty()){
-            eEndError.setText("Vui lòng không để trống");
+        if(DataValidation.textFieldIsNull(eEnd, eEndError, "Vui lòng không để trống")){
+            eEndError.setVisible(true);
+        }else if(!DataValidation.textNumeric(eEnd, eEndError, "Chỉ số điện phải là số")){
             eEndError.setVisible(true);
         } else if(eEndNum<eStartNum){
             eEndError.setText("Số điện cuối phải lớn hơn hoặc bằng số điện đầu");
             eEndError.setVisible(true);
         } else eEndError.setVisible(false);
-        if(wEndText.isEmpty()){
-            wEndError.setText("Vui lòng không để trống");
+        if(DataValidation.textFieldIsNull(wEnd, wEndError, "Vui lòng không để trống")){
+            wEndError.setVisible(true);
+        } else if(!DataValidation.textNumeric(wEnd, wEndError, "Chỉ số nước phải là số")){
             wEndError.setVisible(true);
         } else if(wEndNum<wStartNum){
             wEndError.setText("Số điện cuối phải lớn hơn hoặc bằng số điện đầu");
             wEndError.setVisible(true);
-        } else {
-            wEndError.setVisible(false);
-            insertBtn.setDisable(false);
-        }
+        } else wEndError.setVisible(false);
+        
         if(eEndError.visibleProperty().get()==false && wEndError.visibleProperty().get()==false){
             double totalFee = autoFillTotalFee();
             if(totalFee==-1) {
