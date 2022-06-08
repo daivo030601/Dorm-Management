@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.Event;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyEvent;
 
 /**
@@ -33,11 +34,13 @@ public class LoginFormController implements Initializable {
      * Initializes the controller class.
      */
     @FXML
+    private PasswordField passwordText;
+    @FXML
     private ImageView logoImageView,usernameIcon,passwordIcon;
     @FXML
     private Button loginBtn;
     @FXML
-    private TextField usernameText, passwordText;
+    private TextField usernameText;
     @FXML
     private Label usernameErrorLabel, passwordErrorLabel;
     @FXML
@@ -69,6 +72,10 @@ public class LoginFormController implements Initializable {
     void action(MouseEvent event){
         usernameErrorLabel.setVisible(false);
         passwordErrorLabel.setVisible(false);
+    }
+    @FXML
+    void action2(){
+    
     }
     private void DrawUi(){
         logoImageView.setImage(new Image(getClass().getResourceAsStream("/Image/logo.png")));

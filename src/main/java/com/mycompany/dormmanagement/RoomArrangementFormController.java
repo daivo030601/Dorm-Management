@@ -189,10 +189,7 @@ public class RoomArrangementFormController implements Initializable {
         apartmentComboBox.getSelectionModel().select(0);
 //      
         addRoomToCombobox(roomComboBox);
-        roomComboBox.getSelectionModel().select(0);
-        
-        
-        
+        roomComboBox.getSelectionModel().select(0); 
         autoCompleteText(nameText);
         
     }

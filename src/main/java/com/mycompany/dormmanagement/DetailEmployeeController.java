@@ -58,7 +58,22 @@ public class DetailEmployeeController implements Initializable {
         positionText.setText(employee.getPosition());
         phoneText.setText(employee.getPhoneNumber());
         usernameText.setText(account.getUsername());
-        passwordText.setText(account.getPassword());
+        String crUserPermission = LoginFormController.currentUser.getPermission();
+        Employee crEmployee = new Employee();
+        crEmployee.getInfoBaseAccountID(LoginFormController.currentUser.getIDAccount());
+        String crPosition = crEmployee.getPosition();
+       
+        if(LoginFormController.currentUser.getPermission().equals("admin") && crPosition.equals("Người quản trị")){
+            passwordText.setText(account.getPassword());
+         }else {
+            String pass = account.getPassword();
+            String convertPass = "";
+            for(int i=0;i<pass.length();i++){
+            convertPass = convertPass+"*";
+            }
+            passwordText.setText(convertPass);
+        }
+        
         permissionText.setText(account.getPermission());
     
     }

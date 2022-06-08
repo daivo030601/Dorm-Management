@@ -27,164 +27,220 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="494.0">
                            <children>
-                              <Label text="Họ và tên">
+                              <Label prefWidth="180.0" text="Họ và tên">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="70.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="nameText" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
+                              <TextField fx:id="nameText" onKeyReleased="#TextChange" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                            </children>
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </HBox>
+                        <Label fx:id="nameError" text="Label" textFill="RED" visible="false">
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="210.0" />
+                           </VBox.margin>
+                        </Label>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="Giới tính">
+                              <Label prefWidth="180.0" text="Giới tính">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="78.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
                               <ComboBox fx:id="genderComboBox" prefHeight="35.0" prefWidth="250.0" styleClass="combobox" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="ID Sinh viên">
+                              <Label prefWidth="180.0" text="ID Sinh viên">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="49.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
                               <TextField fx:id="idStudentText" disable="true" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="25.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="Ngày sinh">
+                              <Label prefWidth="180.0" text="Ngày sinh">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="65.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <DatePicker fx:id="birthdayDatePicker" onAction="#getDate" prefHeight="35.0" prefWidth="250.0" promptText="nhập sinh nhật" />
+                              <DatePicker fx:id="birthdayDatePicker" prefHeight="35.0" prefWidth="250.0" promptText="nhập sinh nhật" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="25.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="CMND/Căn cước">
+                              <Label prefWidth="180.0" text="CMND/Căn cước">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="8.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="idCardText" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
+                              <TextField fx:id="idCardText" onKeyReleased="#TextChange" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="25.0" />
                            </VBox.margin>
                         </HBox>
+                        <Label fx:id="IDCardError" text="Label" textFill="RED" visible="false">
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="210.0" />
+                           </VBox.margin>
+                        </Label>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="Số điện thoại">
+                              <Label prefWidth="180.0" text="Số điện thoại">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="36.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="phoneText" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
+                              <TextField fx:id="phoneText" onKeyReleased="#TextChange" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
+                        <Label fx:id="phoneNumError" text="Label" textFill="RED" visible="false">
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="210.0" />
+                           </VBox.margin>
+                        </Label>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="Trường đại học">
+                              <Label prefWidth="180.0" text="Trường đại học">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="17.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="universityText" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
+                              <TextField fx:id="universityText" onKeyReleased="#TextChange" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
+                        <Label fx:id="universityError" text="Label" textFill="RED" visible="false">
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="210.0" />
+                           </VBox.margin>
+                        </Label>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="402.0" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="Sinh viên năm">
+                              <Label prefWidth="180.0" text="Sinh viên năm">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="26.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="gradeText" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
+                              <TextField fx:id="gradeText" onKeyReleased="#TextChange" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
+                        <Label fx:id="yearError" text="Label" textFill="RED" visible="false">
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="210.0" />
+                           </VBox.margin>
+                        </Label>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="394.0" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="Năm bắt đầu học">
+                              <Label prefWidth="180.0" text="Năm bắt đầu học">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="sYearText" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
+                              <TextField fx:id="sYearText" onKeyReleased="#TextChange" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
+                        <Label fx:id="sYearError" text="Label" textFill="RED" visible="false">
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="210.0" />
+                           </VBox.margin>
+                        </Label>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="449.0" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label text="Năm tốt nghiệp">
+                              <Label prefWidth="180.0" text="Năm tốt nghiệp">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="11.0" right="35.0" />
+                                    <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="eYearText" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
+                              <TextField fx:id="eYearText" onKeyReleased="#TextChange" prefHeight="35.0" prefWidth="250.0" styleClass="textField2" />
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
+                        <Label fx:id="eYearError" layoutX="10.0" layoutY="485.0" text="Label" textFill="RED" visible="false">
+                           <font>
+                              <Font name="Segoe UI" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="210.0" />
+                           </VBox.margin>
+                        </Label>
                      </children>
                      <VBox.margin>
                         <Insets top="30.0" />
@@ -201,7 +257,7 @@
                         <Insets left="10.0" right="10.0" top="30.0" />
                      </VBox.margin>
                   </ImageView>
-                  <Button fx:id="insertBtn1" mnemonicParsing="false" onAction="#insertData" prefWidth="131.0" styleClass="appBtn-green" text="Thêm ảnh">
+                  <Button fx:id="insertBtn1" mnemonicParsing="false" prefWidth="131.0" styleClass="appBtn-green" text="Thêm ảnh">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
@@ -229,7 +285,7 @@
                         <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="insertBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#insertData" prefWidth="131.0" styleClass="appBtn-green" text="Thêm">
+                  <Button fx:id="insertBtn" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#insertData" prefWidth="131.0" styleClass="appBtn-green" text="Thêm">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>

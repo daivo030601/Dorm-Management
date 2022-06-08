@@ -59,7 +59,7 @@
                               <Insets left="130.0" top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="nameText" onKeyPressed="#TextChange" prefHeight="45.0" prefWidth="250.0" styleClass="textField2">
+                        <TextField fx:id="nameText" onKeyReleased="#TextChange" prefHeight="45.0" prefWidth="250.0" styleClass="textField2">
                            <HBox.margin>
                               <Insets left="18.0" />
                            </HBox.margin>

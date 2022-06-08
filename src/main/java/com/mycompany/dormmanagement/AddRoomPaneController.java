@@ -23,7 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
+import Utils.DataValidation;
 /**
  * FXML Controller class
  *
@@ -56,22 +56,27 @@ public class AddRoomPaneController implements Initializable {
     @FXML
     void TextChange(KeyEvent event){
         String cEndText;
-       
+        
         cEndText = rentingpriceText.getText().trim();
-        
-        if(cEndText.isEmpty()){
-            cEndError.setText("Vui lòng không để trống");
+        //check if text field null notified error, if not invisible label error
+        if(DataValidation.textFieldIsNull(rentingpriceText, cEndError, "Vui lòng không để trống")){
             cEndError.setVisible(true);
-        } else cEndError.setVisible(false); 
-        
-        if(cEndError.visibleProperty().get()==false){
-            
-            insertBtn.setDisable(false);
-            
+        } 
+        // check if text field value is number, if not show the error
+        else if(!DataValidation.textNumeric(rentingpriceText, cEndError, "Tiền thuê phòng phải là số")){
+                cEndError.setVisible(true);
+            }
+            //check if text field value >0, if not show the error because renting price must larger than 0
+            else if(Integer.parseInt(cEndText)<=0){
+                    cEndError.setText("Tiền phòng phải > 0");
+                    cEndError.setVisible(true);
+                } else cEndError.setVisible(false);
+        // if not have any error enable button "Thêm"
+        if(cEndError.visibleProperty().get()==false){    
+            insertBtn.setDisable(false);       
         } else {
             insertBtn.setDisable(true);
-        }
-        
+        }   
     }
     @FXML
     void insertdata(ActionEvent event){
@@ -151,6 +156,7 @@ public class AddRoomPaneController implements Initializable {
         addDataToCombobox();
         addDataTypeCombobox();
         addDataLable();
+        typeComboBox.getSelectionModel().selectFirst();
     }
     private void closeStage(ActionEvent event) {
         final Node source = (Node) event.getSource();

@@ -5,6 +5,7 @@
  */
 package com.mycompany.dormmanagement;
 
+import Utils.DataValidation;
 import com.mycompany.dormmanagement.Model.Room;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,9 +16,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -33,11 +36,13 @@ public class EditRoomPaneController implements Initializable {
     private Room room;
     private RoomPaneController roomPaneController;
     @FXML
-    private Label apartmentLabel, roomLabel, statusLable,nostudentLable;
+    private Label apartmentLabel, roomLabel, statusLable,nostudentLable,rentPriceError;
     @FXML
     private TextField  rentingpriceText; 
     @FXML
     private ComboBox typeComboBox;
+    @FXML
+    private Button updateBtn;
     @FXML
     void backbtn(ActionEvent event){
         final Node source = (Node) event.getSource();
@@ -76,6 +81,31 @@ public class EditRoomPaneController implements Initializable {
         showNotification("Sửa thành công.");
         roomPaneController.refreshTable();
         closeStage(event);
+    }
+     @FXML
+    void TextChange(KeyEvent event){
+        String cEndText;
+        
+        cEndText = rentingpriceText.getText().trim();
+        //check if text field null notified error, if not invisible label error
+        if(DataValidation.textFieldIsNull(rentingpriceText, rentPriceError, "Vui lòng không để trống")){
+            rentPriceError.setVisible(true);
+        } 
+        // check if text field value is number, if not show the error
+        else if(!DataValidation.textNumeric(rentingpriceText, rentPriceError, "Tiền thuê phòng phải là số")){
+                rentPriceError.setVisible(true);
+            }
+            //check if text field value >0, if not show the error because renting price must larger than 0
+            else if(Integer.parseInt(cEndText)<=0){
+                    rentPriceError.setText("Tiền phòng phải > 0");
+                    rentPriceError.setVisible(true);
+                } else rentPriceError.setVisible(false);
+        // if not have any error enable button "Thêm"
+        if(rentPriceError.visibleProperty().get()==false){    
+            updateBtn.setDisable(false);       
+        } else {
+            updateBtn.setDisable(true);
+        }   
     }
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
