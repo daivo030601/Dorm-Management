@@ -100,7 +100,8 @@ public class DetailStudentController implements Initializable {
         } else {
             idRoomLabel.setText("Chưa có phòng ở");
         }
-        InputStream is = student.getImage();
+        try {
+            InputStream is = student.getImage();
         OutputStream os = new FileOutputStream(new File("photo.jpg"));
         byte[] content = new byte[1024];
         int size = 0;
@@ -115,6 +116,10 @@ public class DetailStudentController implements Initializable {
         image.setFitWidth(175);
         image.setFitHeight(225);
         image.setPreserveRatio(true);
+        } catch (Exception e) {
+            
+        }
+        
     }
     
 }

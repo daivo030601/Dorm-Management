@@ -7,11 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import Utils.RemoveAccent;
 /**
  *
  * @author Mayy
  */
 public class DataValidation {
+    
     public static boolean dataLength(TextField inputTextField, Label inputLabel, String validationText, String requiredLength) {
         boolean isDataLength = true;
         String validationString = null;
@@ -41,15 +43,15 @@ public class DataValidation {
     public static boolean textAlphabet(TextField inputTextField, Label inputLabel, String validationText) {
         boolean isAlphabet = true;
         String validationString = null;
-
-        if (!inputTextField.getText().matches("[a-z A-Z]+")) {
+   
+        if (!RemoveAccent.removeAccent(inputTextField.getText()).matches("[a-z A-Z]+")) {
             isAlphabet = false;
             validationString = validationText;
 
         }
         inputLabel.setText(validationString);
-
-        System.out.println(inputTextField.getText().matches("[a-z A-Z]"));
+        
+        System.out.println(RemoveAccent.removeAccent(inputTextField.getText()).matches("[a-z A-Z]"));
         return isAlphabet;
 
     }

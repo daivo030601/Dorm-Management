@@ -34,8 +34,10 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import Utils.DataValidation;
+import Utils.RemoveAccent;
 import java.time.LocalDate;
 import javafx.scene.input.KeyEvent;
+import Utils.RemoveAccent;
 
 /**
  * FXML Controller class
@@ -121,6 +123,8 @@ public class AddStudentController implements Initializable {
     }
     @FXML
     void TextChange(){
+        
+        
         //check name text field null or empty
         if(DataValidation.textFieldIsNull(nameText, nameError, "Vui lòng không để trống")){
             nameError.setVisible(true);
