@@ -240,6 +240,7 @@ public class EditStudentController implements Initializable {
             image.setFitWidth(175);
             image.setFitHeight(225);
             image.setPreserveRatio(true);
+            updateBtn.setDisable(false);
         }
     }
     
@@ -311,6 +312,7 @@ public class EditStudentController implements Initializable {
         is.close();
         
         imageFile = new Image("file:photo.jpg", 175, 225,true, true);
+        file = new File("photo.jpg");
         image.setImage(imageFile);
         image.setFitWidth(175);
         image.setFitHeight(225);

@@ -230,9 +230,9 @@ public class AddStudentController implements Initializable {
         String sYear = sYearText.getText();
         String eYear = eYearText.getText();
         String gender = genderComboBox.getValue().toString();
-//        if (file == null) {
-//            file.
-//        }
+        if (file == null) {
+            file = new File("avatar.jpg");
+        }
         
         if (name.isEmpty() || idStudent.isEmpty() || birthday.toString().isEmpty() || idCard.isEmpty() || phone.isEmpty() || university.isEmpty() || grade.isEmpty() || sYear.isEmpty() || eYear.isEmpty()) {
             showNotification("Bạn chưa điền đầy đủ thông tin! Xin vui lòng điền đầy đủ trước khi thêm sinh viên.");
