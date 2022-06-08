@@ -101,15 +101,18 @@ public class AddStudentController implements Initializable {
         String sYear = sYearText.getText();
         String eYear = eYearText.getText();
         String gender = genderComboBox.getValue().toString();
+//        if (file == null) {
+//            file.
+//        }
         
-        try {
-            fis = new FileInputStream(file);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(AddStudentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         if (name.isEmpty() || idStudent.isEmpty() || birthday.toString().isEmpty() || idCard.isEmpty() || phone.isEmpty() || university.isEmpty() || grade.isEmpty() || sYear.isEmpty() || eYear.isEmpty()) {
             showNotification("Bạn chưa điền đầy đủ thông tin! Xin vui lòng điền đầy đủ trước khi thêm sinh viên.");
         } else {
+            try {
+                fis = new FileInputStream(file);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(AddStudentController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             student = new Student(idStudent, name, birthday, gender, idCard, phone, university, grade, "CX", sYear, eYear, null, (InputStream)fis);
             try {
             student.insertStudentdata((int)file.length());
