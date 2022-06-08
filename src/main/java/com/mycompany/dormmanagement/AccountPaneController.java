@@ -30,6 +30,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import Utils.DataValidation;
+import java.time.LocalDate;
 
 /**
  * FXML Controller class
@@ -63,31 +65,43 @@ public class AccountPaneController implements Initializable {
     }
     @FXML
     void fieldValueChange(){
-    if(idTextField.getText().isEmpty()) {
+    if(DataValidation.textFieldIsNull(idTextField, nameError, "Vui lòng không để trống")) {
+        nameError.setVisible(true);
+    } else if(!DataValidation.textAlphabet(idTextField, nameError, "Tên chứa ký tự không hợp lệ")){
         nameError.setVisible(true);
     }
     else nameError.setVisible(false);
+    
     if(birthdayPicker.getValue()==null){
         birthdayError.setVisible(true);
     }
     else birthdayError.setVisible(false);
-    if(addressText.getText().isEmpty()) {
+    
+    if(DataValidation.textFieldIsNull(addressText, addressError, "Vui lòng không để trống")) {
         addressError.setVisible(true);    
     }
     else addressError.setVisible(false);
-    if(phoneText.getText().isEmpty()) {
+    
+    if(DataValidation.textFieldIsNull(phoneText, phoneError, "vui lòng không để trống")) {
+        phoneError.setVisible(true);
+    } else if(!DataValidation.textNumeric(phoneText, phoneError, "Số điện thoại phải là số")){
+        phoneError.setVisible(true);
+    } else if(!DataValidation.dataLengthMinMax(phoneText, phoneError, "Số điện thoại phải có ít nhất 10 chữ số","10","50")){
         phoneError.setVisible(true);
     }
     else phoneError.setVisible(false);
-    if(usernameText.getText().isEmpty()) {
+    
+    if(DataValidation.textFieldIsNull(usernameText, usernameError, "Vui lòng không để trống")) {
         usernameError.setVisible(true);   
     }
     else usernameError.setVisible(false);
-    if(passwordText.getText().isEmpty()) {
+    
+    if(DataValidation.textFieldIsNull(passwordText, passError, "Vui lòng không để trống")) {
         passError.setVisible(true);   
     }
     else passError.setVisible(false);
-    if(!idTextField.getText().isEmpty() &&birthdayPicker.getValue() !=null&& !phoneText.getText().isEmpty() && !addressText.getText().isEmpty() && !usernameText.getText().isEmpty() && !passwordText.getText().isEmpty()){
+    
+    if(!nameError.isVisible()&&!birthdayError.isVisible()&&!addressError.isVisible()&&!phoneError.isVisible()&&!usernameError.isVisible()&&!passError.isVisible()){
     addBtn.setDisable(false);
     }
     else{
@@ -105,6 +119,7 @@ public class AccountPaneController implements Initializable {
     }
     @FXML
     void addEmployee(){
+        Account account = new Account();
         String idEmployee,name,birthday,address,position,idAccount,phone,username,pass,permission;
         name = idTextField.getText().trim();
         birthday = birthdayPicker.getValue().toString();
@@ -118,6 +133,9 @@ public class AccountPaneController implements Initializable {
         idAccount = "AC" + index;
         if(position.equals("Người quản trị")) permission = "admin";
         else permission = "user";
+        
+        account.GetDataByUsername(username);
+        if(account.getIDAccount().isEmpty()){
         try {
             Account newAccount = new Account(idAccount, username, pass, permission);
             newAccount.insertNewAccount();
@@ -129,7 +147,7 @@ public class AccountPaneController implements Initializable {
         } catch (Exception e) {
             showNotification("Thêm không thành công");
         }
-        
+        } else showNotification("Tên tài khoản đã tồn tại");
         
     }
     @FXML
@@ -325,6 +343,8 @@ public class AccountPaneController implements Initializable {
     private void DrawUI(){
         initTable(dataTableView);
         addDataToCombobox();
+        birthdayPicker.setValue(LocalDate.now());
+        
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

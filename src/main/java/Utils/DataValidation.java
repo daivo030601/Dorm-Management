@@ -55,6 +55,22 @@ public class DataValidation {
         return isAlphabet;
 
     }
+    
+    public static boolean textAlphabetUppercase(TextField inputTextField, Label inputLabel, String validationText) {
+        boolean isAlphabet = true;
+        String validationString = null;
+   
+        if (!RemoveAccent.removeAccent(inputTextField.getText()).matches("[A-Z]+")) {
+            isAlphabet = false;
+            validationString = validationText;
+
+        }
+        inputLabel.setText(validationString);
+        
+        System.out.println(RemoveAccent.removeAccent(inputTextField.getText()).matches("[A-Z]"));
+        return isAlphabet;
+
+    }
 
     public static boolean textNumeric(TextField inputTextField, Label inputLabel, String validationText) {
         boolean isNumeric = true;

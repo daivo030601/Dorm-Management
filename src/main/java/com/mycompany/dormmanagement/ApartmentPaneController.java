@@ -23,6 +23,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,6 +32,7 @@ import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import Utils.DataValidation;
 
 /**
  * FXML Controller class
@@ -52,9 +54,11 @@ public class ApartmentPaneController implements Initializable {
     @FXML
     private TableColumn IDCol,noRoomCol,genderCol,employeeCol,toolCol;
     @FXML
-    private Button showAllBtn;
+    private Button showAllBtn,addBtn;
     @FXML
     private ComboBox genderCombobox,employeeCombobox;
+    @FXML
+    private Label apartmentError;
     
     private void initTableView(TableView table){
         
@@ -75,6 +79,21 @@ public class ApartmentPaneController implements Initializable {
     @FXML
     void clearText(){
     clearAll();
+    }
+    @FXML
+    void apartmentTextChange(){
+        if(DataValidation.textFieldIsNull(idTextField, apartmentError, "Vui lòng không để trống")){
+            apartmentError.setVisible(true);
+            
+        }else if(!DataValidation.textAlphabetUppercase(idTextField, apartmentError, "Tên tòa phải là chữ cái in hoa")){
+            apartmentError.setVisible(true);
+            
+        } else apartmentError.setVisible(false);
+        
+        if(!apartmentError.isVisible()){
+            addBtn.setDisable(false);
+        } else addBtn.setDisable(true);
+    
     }
     @FXML
     void checkHandle(ActionEvent event){
@@ -161,9 +180,10 @@ public class ApartmentPaneController implements Initializable {
     }
     private void clearAll(){
     idTextField.clear();
-    name.clear();
-    genderCombobox.getSelectionModel().clearSelection();
-    employeeCombobox.getSelectionModel().clearSelection(); 
+    genderCombobox.getSelectionModel().selectFirst();
+    employeeCombobox.getSelectionModel().selectFirst();
+    valueChange(); 
+    apartmentError.setVisible(false);
     }
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -259,6 +279,9 @@ public class ApartmentPaneController implements Initializable {
     allBox.setSelected(true);
     initTableView(dataTableView); 
     addDataToCombobox();
+    genderCombobox.getSelectionModel().selectFirst();
+    employeeCombobox.getSelectionModel().selectFirst();
+    valueChange();
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
