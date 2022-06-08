@@ -196,12 +196,12 @@
          <left>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="173.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="image" fitHeight="225.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" top="30.0" />
                      </VBox.margin>
                   </ImageView>
-                  <Button fx:id="insertBtn1" mnemonicParsing="false" onAction="#insertData" prefWidth="131.0" styleClass="appBtn-green" text="Thêm ảnh">
+                  <Button fx:id="addImageBtn" mnemonicParsing="false" onAction="#handleAddImage" prefWidth="131.0" styleClass="appBtn-green" text="Thêm ảnh">
                      <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                      </font>
@@ -209,7 +209,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                      <VBox.margin>
-                        <Insets left="45.0" top="15.0" />
+                        <Insets left="35.0" top="15.0" />
                      </VBox.margin>
                   </Button>
                </children>
