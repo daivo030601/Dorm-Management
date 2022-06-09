@@ -22,12 +22,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import java.sql.PreparedStatement;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  *
@@ -38,6 +40,7 @@ public class ElectricAndWaterBill extends Bill {
    protected double ChiSoCuoiDien;
    protected double ChiSoDauNuoc;
    protected double ChiSoCuoiNuoc;
+   
    
 
     public ElectricAndWaterBill(double ChiSoDauDien, double ChiSoCuoiDien, double ChiSoDauNuoc, double ChiSoCuoiNuoc, String BillID, Employee employee, Apartment apartment, Room room, Date createDay, String total,String status) {
@@ -130,7 +133,7 @@ public class ElectricAndWaterBill extends Bill {
               this.ChiSoCuoiDien = resultSet.getDouble(7);
               this.ChiSoDauNuoc = resultSet.getDouble(8);
               this.ChiSoCuoiNuoc = resultSet.getDouble(9);
-              this.total = resultSet.getString(10);
+              this.total = nf.format(resultSet.getDouble(10));
               this.status = resultSet.getString(11);
             }
         } catch (SQLException ex) {
@@ -183,9 +186,9 @@ public class ElectricAndWaterBill extends Bill {
             item = new HashMap<>();
             item.put("id", resultSet.getString(1));
             item.put("room", resultSet.getString(3));
-            item.put("electric", calElectricFee(resultSet.getDouble(6), resultSet.getDouble(7)));
-            item.put("water", calWaterFee(resultSet.getDouble(8), resultSet.getDouble(9)));
-            item.put("total", resultSet.getDouble(10));
+            item.put("electric", nf.format(calElectricFee(resultSet.getDouble(6), resultSet.getDouble(7))));
+            item.put("water", nf.format(calWaterFee(resultSet.getDouble(8), resultSet.getDouble(9))));
+            item.put("total", nf.format(resultSet.getDouble(10)));
             item.put("status", resultSet.getString(11));
             items.add(item);
             }
@@ -241,9 +244,9 @@ public class ElectricAndWaterBill extends Bill {
             item = new HashMap<>();
             item.put("id", resultSet.getString(1));
             item.put("room", resultSet.getString(3));
-            item.put("electric", calElectricFee(resultSet.getDouble(6), resultSet.getDouble(7)));
-            item.put("water", calWaterFee(resultSet.getDouble(8), resultSet.getDouble(9)));
-            item.put("total", resultSet.getDouble(10));
+            item.put("electric", nf.format(calElectricFee(resultSet.getDouble(6), resultSet.getDouble(7))));
+            item.put("water", nf.format(calWaterFee(resultSet.getDouble(8), resultSet.getDouble(9))));
+            item.put("total", nf.format(resultSet.getDouble(10)));
             item.put("status", resultSet.getString(11));
             items.add(item);
             }

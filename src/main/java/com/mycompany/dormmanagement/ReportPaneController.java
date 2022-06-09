@@ -9,7 +9,9 @@ import com.mycompany.dormmanagement.Model.RentBill;
 import com.mycompany.dormmanagement.Model.Room;
 import com.mycompany.dormmanagement.Model.Student;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.time.YearMonth;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +32,7 @@ import se.alipsa.ymp.YearMonthPicker;
  * @author Mayy
  */
 public class ReportPaneController implements Initializable {
+    private NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
     private RentBill rentBill;
     private ElectricAndWaterBill ewBill;
     private Student student;
@@ -88,9 +91,9 @@ public class ReportPaneController implements Initializable {
         double totalPaid = getRoomChargePaid() + getEWChargePaid();
         double totalUnpaid = getRoomChargeUnpaid() + getEWChargeUnpaid();
         double total = totalPaid + totalUnpaid;
-        textDoanhThuThang.setText(String.format("%.0f",total));
-        textDoanhThuDaThu.setText(String.format("%.0f",totalPaid));
-        textDoanhThuChuaThu.setText(String.format("%.0f",totalUnpaid));
+        textDoanhThuThang.setText(nf.format(total));
+        textDoanhThuDaThu.setText(nf.format(totalPaid));
+        textDoanhThuChuaThu.setText(nf.format(totalUnpaid));
     }
     
     private double getRoomCharge() {
@@ -176,7 +179,7 @@ public class ReportPaneController implements Initializable {
     }
     
     private void getTotalStudent() {
-        student = new Student();
+        student = new Student();       
         totalLabel.setText(Integer.toString(student.getTotalStudents()));
     }
     

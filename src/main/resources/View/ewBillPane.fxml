@@ -32,7 +32,7 @@
                               <Insets left="35.0" right="35.0" />
                            </HBox.margin>
                         </TextField> 
-                        <Button fx:id="addBtn" onAction="#addEWBill" mnemonicParsing="false" styleClass="buttonindashboard" text="Thêm">
+                        <Button fx:id="addBtn" mnemonicParsing="false" onAction="#addEWBill" styleClass="buttonindashboard" text="Thêm">
                            <HBox.margin>
                               <Insets left="35.0" />
                            </HBox.margin>
@@ -89,9 +89,9 @@
                <columns>
                   <TableColumn fx:id="indexCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" styleClass="column" text="ID" />
                   <TableColumn fx:id="roomCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Số phòng" />
-                  <TableColumn fx:id="electricCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Tiền điện" />
-                  <TableColumn fx:id="waterCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Tiền nước" />
-                  <TableColumn fx:id="totalCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Tổng" />
+                  <TableColumn fx:id="electricCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Tiền điện (VND)" />
+                  <TableColumn fx:id="waterCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Tiền nước (VND)" />
+                  <TableColumn fx:id="totalCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Tổng (VND)" />
                   <TableColumn fx:id="statusCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Status" />
                   <TableColumn fx:id="toolCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" />
                </columns>

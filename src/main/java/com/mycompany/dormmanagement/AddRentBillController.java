@@ -10,10 +10,12 @@ import com.mycompany.dormmanagement.Model.Employee;
 import com.mycompany.dormmanagement.Model.Room;
 import com.mycompany.dormmanagement.Model.Student;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,6 +43,7 @@ public class AddRentBillController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    
     private Apartment apartment;
     private Room room;
     private RentBillPaneController rentBillPaneController;

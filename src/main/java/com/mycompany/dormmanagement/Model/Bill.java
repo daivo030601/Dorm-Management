@@ -4,8 +4,10 @@
  */
 package com.mycompany.dormmanagement.Model;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  *
@@ -19,6 +21,7 @@ public class Bill {
    protected Date createDay;
    protected String total;
    protected String status;
+   protected NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
 
     public Bill(String BillID, Employee employee, Apartment apartment, Room room, Date createDay, String total,String status) {
         this.billID = BillID;
