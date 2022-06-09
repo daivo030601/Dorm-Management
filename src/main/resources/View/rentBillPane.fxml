@@ -91,7 +91,7 @@
                   <TableColumn fx:id="roomCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Số phòng" />
                   <TableColumn fx:id="idstudentCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="ID Sinh viên" />
                   <TableColumn fx:id="dateCol" prefWidth="130.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Ngày lập tiền phòng" />
-                  <TableColumn fx:id="totalCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Tổng tiền" />
+                  <TableColumn fx:id="totalCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Tổng tiền (VND)" />
                   <TableColumn fx:id="statusCol" prefWidth="75.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Status" />
                   <TableColumn fx:id="toolCol" prefWidth="70.0" style="-fx-background-color: transparent; -fx-alignment: center;" />
                </columns>

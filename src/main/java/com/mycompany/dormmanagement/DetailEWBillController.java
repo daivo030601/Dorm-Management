@@ -15,8 +15,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +39,7 @@ public class DetailEWBillController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    private static NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
      private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 22,
             Font.BOLD);
     private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
@@ -85,15 +88,15 @@ public class DetailEWBillController implements Initializable {
         ID.setText(ewBill.getBillID());
         apartment.setText(ewBill.getApartment().getIDApartment());
         room.setText(ewBill.getRoom().getRoomID());
-        eStart.setText(Double.toString(ewBill.getChiSoDauDien()));
-        eEnd.setText(Double.toString(ewBill.getChiSoCuoiDien()));
-        eNum.setText(Double.toString(ewBill.getChiSoCuoiDien()-ewBill.getChiSoDauDien()));
-        eFee.setText(Double.toString(ewBill.calElectricFee(ewBill.getChiSoDauDien(),ewBill.getChiSoCuoiDien())));
-        wStart.setText(Double.toString(ewBill.getChiSoDauNuoc()));
-        wEnd.setText(Double.toString(ewBill.getChiSoCuoiNuoc()));
-        wNum.setText(Double.toString(ewBill.getChiSoCuoiNuoc()-ewBill.getChiSoDauNuoc()));
-        wFee.setText(Double.toString(ewBill.calWaterFee(ewBill.getChiSoDauNuoc(), ewBill.getChiSoCuoiNuoc())));
-        total.setText(ewBill.getTotal());
+        eStart.setText(nf.format(ewBill.getChiSoDauDien()));
+        eEnd.setText(nf.format(ewBill.getChiSoCuoiDien()));
+        eNum.setText(nf.format(ewBill.getChiSoCuoiDien()-ewBill.getChiSoDauDien()));
+        eFee.setText(nf.format(ewBill.calElectricFee(ewBill.getChiSoDauDien(),ewBill.getChiSoCuoiDien())) + " VND");
+        wStart.setText(nf.format(ewBill.getChiSoDauNuoc()));
+        wEnd.setText(nf.format(ewBill.getChiSoCuoiNuoc()));
+        wNum.setText(nf.format(ewBill.getChiSoCuoiNuoc()-ewBill.getChiSoDauNuoc()));
+        wFee.setText(nf.format(ewBill.calWaterFee(ewBill.getChiSoDauNuoc(), ewBill.getChiSoCuoiNuoc())) + " VND");
+        total.setText(ewBill.getTotal() + " VND");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         date.setText(formatter.format(ewBill.getCreateDay()));
     }
@@ -118,7 +121,7 @@ public class DetailEWBillController implements Initializable {
         //Add content to the document.
         
         addMetaData(document);
-        addTitlePage(document, ewBill.getRoom().getRoomID(), ewBill.getApartment().getIDApartment(), ewBill.getChiSoDauDien(), ewBill.getChiSoCuoiDien(), ewBill.getChiSoCuoiDien()-ewBill.getChiSoDauDien(),ewBill.calElectricFee(ewBill.getChiSoDauDien(),ewBill.getChiSoCuoiDien()),ewBill.getChiSoDauNuoc(), ewBill.getChiSoCuoiNuoc(), ewBill.getChiSoCuoiNuoc()-ewBill.getChiSoDauNuoc(),ewBill.calElectricFee(ewBill.getChiSoDauNuoc(),ewBill.getChiSoCuoiNuoc()), Double.parseDouble(ewBill.getTotal()) );
+        addTitlePage(document, ewBill.getRoom().getRoomID(), ewBill.getApartment().getIDApartment(), ewBill.getChiSoDauDien(), ewBill.getChiSoCuoiDien(), ewBill.getChiSoCuoiDien()-ewBill.getChiSoDauDien(),ewBill.calElectricFee(ewBill.getChiSoDauDien(),ewBill.getChiSoCuoiDien()),ewBill.getChiSoDauNuoc(), ewBill.getChiSoCuoiNuoc(), ewBill.getChiSoCuoiNuoc()-ewBill.getChiSoDauNuoc(),ewBill.calElectricFee(ewBill.getChiSoDauNuoc(),ewBill.getChiSoCuoiNuoc()), ewBill.getTotal() );
         
         
  
@@ -141,7 +144,7 @@ public class DetailEWBillController implements Initializable {
         document.addCreator("Lars Vogel");
     }
     
-    private static void addTitlePage(Document document, String roomID, String apartmentID, Double eStart, Double eEnd, Double eNum, Double eFee,Double wStart, Double wEnd, Double wNum, Double wFee,Double total)
+    private static void addTitlePage(Document document, String roomID, String apartmentID, Double eStart, Double eEnd, Double eNum, Double eFee,Double wStart, Double wEnd, Double wNum, Double wFee,String total)
             throws DocumentException {
         Paragraph preface = new Paragraph();
         // We add one empty line
@@ -174,7 +177,7 @@ public class DetailEWBillController implements Initializable {
                 "                So dien: " + eNum,
                 smallBold));
         preface.add(new Paragraph(
-                "                Tien dien: " + eFee,
+                "                Tien dien: " + nf.format(eFee) + " VND",
                 smallBold));
         preface.add(new Paragraph(
                 "               Nuoc: ",
@@ -189,13 +192,13 @@ public class DetailEWBillController implements Initializable {
                 "                So nuoc: " + wNum,
                 smallBold));
         preface.add(new Paragraph(
-                "                Tien nuoc: " + wFee,
+                "                Tien nuoc: " + nf.format(wFee) + " VND",
                 smallBold));
         preface.add(new Paragraph(
                 "          ---------------------------------------------",
                 smallBold));
         preface.add(new Paragraph(
-                "                Tong cong: " + total,
+                "                Tong cong: " + total + " VND",
                 smallBold));
         document.add(preface);
         // Start a new page

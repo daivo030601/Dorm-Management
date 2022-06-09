@@ -26,7 +26,8 @@ import javafx.collections.ObservableList;
  * @author Mayy
  */
 public class RentBill extends Bill{
-    protected Student student;
+    private Student student;
+    
 
     public RentBill( String billID,Employee employee , Room room,Apartment apartment,Student student, Date createDay, String total,String status) {
         super(billID, employee, apartment, room, createDay, total,status);
@@ -61,16 +62,16 @@ public ObservableList<Map<String, Object>> getRentBill(String apartment, int opt
             String query ="" ;
             switch (option) {
                 case 1:
-                    query = "Select * from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"'";
+                    query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"'";
                     break;
                 case 2:
-                    query = "Select * from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Đã thu'";
+                    query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Đã thu'";
                     break;
                 case 3:
-                    query = "Select * from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Chưa thu'";
+                    query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Chưa thu'";
                     break;
                 default:
-                    query = "Select * from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"'";
+                    query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"'";
                     break;
             }
             resultSet = statement.executeQuery(query);
@@ -80,7 +81,7 @@ public ObservableList<Map<String, Object>> getRentBill(String apartment, int opt
             item.put("room", resultSet.getString(3));
             item.put("student", resultSet.getString(5));
             item.put("createDay", resultSet.getString(6));
-            item.put("total", resultSet.getDouble(7));
+            item.put("total", resultSet.getString(7));
             item.put("status", resultSet.getString(8));
             items.add(item);
             }
@@ -118,16 +119,16 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
             String query ="" ;
             switch (option) {
                 case 1:
-                    query = "Select * from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
+                    query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
                     break;
                 case 2:
-                    query = "Select * from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Đã thu' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
+                    query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Đã thu' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
                     break;
                 case 3:
-                    query = "Select * from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Chưa thu' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
+                    query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and status = 'Chưa thu' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
                     break;
                 default:
-                    query = "Select * from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
+                    query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
                     break;
             }
             
@@ -192,7 +193,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
                 } catch (ParseException ex) {
                     Logger.getLogger(ElectricAndWaterBill.class.getName()).log(Level.SEVERE, null, ex);
                 }
-              this.total = resultSet.getString(9);
+              this.total = nf.format(resultSet.getDouble(9));
               this.status = resultSet.getString(10);
             }
         } catch (SQLException ex) {
