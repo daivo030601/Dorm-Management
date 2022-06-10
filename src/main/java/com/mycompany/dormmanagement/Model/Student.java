@@ -545,7 +545,8 @@ public class Student {
                 Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
-        }        
+        }
+        System.out.println("success2");        
     }
     
     public void insertStudentdata(int length){
@@ -713,6 +714,34 @@ public class Student {
     
     
     }
+    public void RemoveStudent(String id){
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        try {  
+            String query ="update student set IDRoom=null, status = 'CX' where active = 'yes' and IDStudent='"+id+"'";
+            statement = con.prepareStatement(query);
+            statement.execute();   
+        } catch (SQLException ex) {
+           
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    
+    
+    }
     public ArrayList<String> getIDEmptyStudent(){
     
         ArrayList<String> listStudent = new ArrayList<String>();
@@ -725,6 +754,7 @@ public class Student {
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               listStudent.add(resultSet.getString(1));
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
@@ -744,7 +774,8 @@ public class Student {
                 Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
-        }        
+        }    
+        
         return listStudent;
     }
     public String getToIDRoomStudent(String idstudent){
@@ -815,32 +846,5 @@ public class Student {
         return idroom;
     }
     
-    public void updateStudentRemoveToIDRoom(String id){
-        Connection con = DataConnection.getConnection(); 
-        PreparedStatement statement = null;
-        try {  
-            String query ="update student set IDRoom=null, status = 'CX' where active = 'yes' and IDStudent='"+id+"'";
-            statement = con.prepareStatement(query);
-            statement.execute();   
-        } catch (SQLException ex) {
-           
-            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                
-                if (statement != null) {
-                    statement.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-
-            } catch (SQLException ex) {
-                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
-                lgr.log(Level.WARNING, ex.getMessage(), ex);
-            }
-        }
-    
-    
-    }
+   
 }

@@ -164,7 +164,7 @@ public class AddRoomPaneController implements Initializable {
     private void addDataLable()  
     {    
         nostudentText.setText("0");
-        statusText.setText("Còn Chỗ");
+        statusText.setText("Còn chỗ");
     }
     private void DrawUI(){
         addDataToCombobox();
