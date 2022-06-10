@@ -101,7 +101,7 @@ protected int rentingPrice;
     public void setRentingPrice(int rentingPrice) {
         this.rentingPrice = rentingPrice;
     }
-    
+    //lấy dữ liệu phòng từ IDApartment 
     public ObservableList<Map<String, Object>> getRoom(String apartment, int option){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -109,9 +109,11 @@ protected int rentingPrice;
         Statement statement = null;
         ResultSet resultSet = null;
         Map<String, Object> item;
+        
         try {        
             statement = con.createStatement();
             String query ="" ;
+            //dựa vào tham số option truyền vào mà lấy dữ liệu tùy vào giá trị option
             switch (option) {
                 case 1:
                     query = "Select * from room where IDApartment ='"+ apartment+"' and active='yes'";
@@ -126,6 +128,7 @@ protected int rentingPrice;
                     query = "Select * from room where IDApartment ='"+ apartment+"' and active='yes'";
                     break;
             }
+            //thực hiện câu query và lưu kết quả vào items
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
             item = new HashMap<>();
@@ -156,6 +159,8 @@ protected int rentingPrice;
         }
         return items;
     }
+    
+    //lấy dữ liệu phòng dừa vào keyWord search người dùng nhập
 public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int option, String keyWord){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -163,6 +168,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         Statement statement = null;
         ResultSet resultSet = null;
         Map<String, Object> item;
+        //khởi tạo chuỗi query dựa vào 2 tham số option và keyword 
         try {        
             statement = con.createStatement();
             String query ="" ;
@@ -180,6 +186,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
                     query = "Select * from room where IDApartment ='"+ apartment+"'and IDRoom LIKE '%" + keyWord +"%' and active='yes'";
                     break;
             }
+            //thực hiện câu query và lưu kết quả vào items
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
             item = new HashMap<>();
@@ -210,16 +217,19 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         }
         return items;
     }
-
+    
+    // lấy dữ liệu tất cả các phòng trống
     public ArrayList<String> getRoomAvailable(String apartment){
         ArrayList<String> room = new ArrayList<String>();
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
         ResultSet resultSet = null;
+        //khởi tạo chuỗi query theo tham số idApartment
         try {        
             statement = con.createStatement();
 
-            String query = "Select IDRoom from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ' and active='yes'";
+            String query = "Select IDRoom from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ'";
+            //thực hiện câu query và lưu kết quả vào room
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               room.add(resultSet.getString(1));
@@ -245,7 +255,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         }
         return room;
     }
-    
+    // lấy dữ liệu phòng trống với giới tính
     public String getRoomAvailableWithGender(String gender){
         String room = null;
         Connection con = DataConnection.getConnection(); 
@@ -253,8 +263,9 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-
-            String query = "Select IDRoom from room, apartment where room.IDApartment = apartment.IDApartment and apartment.gender = '"+gender+"' and status = 'Còn chỗ' and active='yes' LIMIT 1";
+            //khởi tạo chuỗi query theo tham số gender
+            String query = "Select IDRoom from room, apartment where room.IDApartment = apartment.IDApartment and apartment.gender = '"+gender+"' and status = 'Còn chỗ' LIMIT 1";
+            //thực hiện câu query và lưu kết quả vào room
             resultSet = statement.executeQuery(query);
             if (resultSet.next())
                 room = resultSet.getString(1);
@@ -281,14 +292,16 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         }
         return room;
     }
-        
+    // lấy dữ liệu phòng bằng IDRoom
     public void getInfo(String room){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
+            //khởi tạo chuỗi query theo tham số room
             String query = "Select * from room where IDRoom ='"+room+"'";
+            //thực hiện câu query và lưu kết quả 
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               this.roomID = resultSet.getString(1);
@@ -318,13 +331,14 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
             }
         }        
     }
-    
+    //đếm tổng số lượng phòng
     public int getTotalRooms(){
         int total = 0;
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
         ResultSet resultSet = null;
         try {        
+            // thực hiện câu query lấy tất cả IDRoom và với mỗi IDRoom tiên hành đếm tổng số lượng
             statement = con.createStatement();
             String query ="select IDRoom from room and active='yes'" ;
             resultSet = statement.executeQuery(query);
@@ -352,7 +366,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         }
         return total;
     }
-    
+    //thêm thông tin số lượng sinh viên của phòng
 public void insertdatatoType(String room,String type, int rentingprice ){
         
         Connection con = DataConnection.getConnection(); 
@@ -382,6 +396,7 @@ public void insertdatatoType(String room,String type, int rentingprice ){
         }
         
     }
+// thêm dữ liệu phòng mới
 public void insertRoomdata(){
         
         Connection con = DataConnection.getConnection(); 
@@ -416,6 +431,8 @@ public void insertRoomdata(){
             }
         }
     }
+
+//lấy số thứ tự phòng cuối cùng của bảng dữ liệu
 public int getLastRoomIndex(String apartment ){
         String lastRoom = "";
         int index = 0;
@@ -456,7 +473,7 @@ public int getLastRoomIndex(String apartment ){
         return index;
     }
 
-
+//xóa dữ liệu trong database dựa vào IDRoom
 public void deleteData(String room ){
         
         Connection con = DataConnection.getConnection(); 

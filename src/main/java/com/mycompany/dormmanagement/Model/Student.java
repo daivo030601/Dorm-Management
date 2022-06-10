@@ -39,6 +39,7 @@ public class Student {
     private String syear;
     private String eyear;
     private String idRoom;
+    private String active;
     private InputStream image;
 
 
@@ -56,7 +57,7 @@ public class Student {
         this.eyear = "";
         this.idRoom = "";
         this.image = null;
-
+        this.active = "";
     }
 
     
@@ -76,6 +77,7 @@ public class Student {
         this.eyear = Eyear;
         this.idRoom = idRoom;
         this.image = image;
+        this.active = "yes";
     }
 
     public String getStudentID() {
@@ -182,6 +184,14 @@ public class Student {
     public void setImage(InputStream image) {
         this.image = image;
     }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
     
     
     public ObservableList<Map<String, Object>> getStudent(int option){
@@ -196,16 +206,16 @@ public class Student {
             String query ="" ;
             switch (option) {
                 case 1:
-                    query = "Select * from student";
+                    query = "Select * from student where active = 'yes'";
                     break;
                 case 2:
-                    query = "Select * from student where status = 'ĐX'";
+                    query = "Select * from student where status = 'ĐX' and active = 'yes'";
                     break;
                 case 3:
-                    query = "Select * from student where status = 'CX'";
+                    query = "Select * from student where status = 'CX' and active = 'yes'";
                     break;
                 default:
-                    query = "Select * from student";
+                    query = "Select * from student where active = 'yes'";
                     break;
             }
             resultSet = statement.executeQuery(query);
@@ -256,16 +266,16 @@ public class Student {
             String query ="" ;
             switch (option) {
                 case 1:
-                    query = "Select * from student where IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%'";
+                    query = "Select * from student where active = 'yes' and (IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%')";
                     break;
                 case 2:
-                    query = "Select * from student where status = 'ĐX' and (IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%')";
+                    query = "Select * from student where active = 'yes' and status = 'ĐX' and (IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%')";
                     break;
                 case 3:
-                    query = "Select * from student where status = 'CX' and (IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%')";
+                    query = "Select * from student where active = 'yes' and status = 'CX' and (IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%')";
                     break;
                 default:
-                    query = "Select * from student where IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%'";
+                    query = "Select * from student where active = 'yes' and (IDStudent LIKE '%" + keyWord +"%' or Fullname LIKE '%"+keyWord+"%')";
                     break;
             }
             resultSet = statement.executeQuery(query);
@@ -312,7 +322,7 @@ public class Student {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select Fullname from student";
+            String query = "Select Fullname from student where active = 'yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               listStudent.add(resultSet.getString(1));
@@ -347,7 +357,7 @@ public class Student {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select Fullname from student where status = 'CX'";
+            String query = "Select Fullname from student where status = 'CX' and active = 'yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               listStudent.add(resultSet.getString(1));
@@ -420,7 +430,7 @@ public class Student {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query ="select IDStudent from student" ;
+            String query ="select IDStudent from student where active = 'yes'" ;
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){           
                 total++;
@@ -455,7 +465,7 @@ public class Student {
         try {        
             statement = con.createStatement();
 
-            String query = "Select * from student where Fullname ='"+student+"'";
+            String query = "Select * from student where active = 'yes' and Fullname ='"+student+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               this.studentID = resultSet.getString(1);
@@ -500,7 +510,7 @@ public class Student {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select * from student where IDStudent ='"+studentID+"'";
+            String query = "Select * from student where active = 'yes' and IDStudent ='"+studentID+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               this.studentID = resultSet.getString(1);
@@ -544,7 +554,7 @@ public class Student {
         PreparedStatement statement = null;
         
         try {  
-            String query ="insert into student(IDStudent,Fullname,Birthday,Gender,IDCard,PhoneNumber,university,grade,status,sYear,eYear,IDRoom,Image)values(?,?,?,?,?,?,?,?,?,?,?,?,?)" ;
+            String query ="insert into student(IDStudent,Fullname,Birthday,Gender,IDCard,PhoneNumber,university,grade,status,sYear,eYear,IDRoom,Image,active)values(?,?,?,?,?,?,?,?,?,?,?,?,?,'yes')" ;
             statement = con.prepareStatement(query);
             statement.setString(1, this.studentID);
             statement.setString(2, this.fullName);
@@ -614,12 +624,12 @@ public class Student {
         PreparedStatement statement = null;
         try {  
             if(idRoom == null){
-                String query ="update student set Fullname = '"+fullName+"', Birthday = '"+birthday+"',Gender = '"+Gender+"', IDCard = '"+IDCard+"',phoneNumber = '"+phoneNum+"', University = '"+university+"',Grade = '"+grade+"', status = '"+status+"',Syear = '"+Syear+"', Eyear = '"+Eyear+"', Image=? where IDStudent ='"+studentID+"'" ;
+                String query ="update student set Fullname = '"+fullName+"', Birthday = '"+birthday+"',Gender = '"+Gender+"', IDCard = '"+IDCard+"',phoneNumber = '"+phoneNum+"', University = '"+university+"',Grade = '"+grade+"', status = '"+status+"',Syear = '"+Syear+"', Eyear = '"+Eyear+"', Image=? where active = 'yes' and IDStudent ='"+studentID+"'" ;
                 statement = con.prepareStatement(query);
                 statement.setBinaryStream(1, image, length);
                 statement.execute();
             } else {
-                String query ="update student set Fullname = '"+fullName+"', Birthday = '"+birthday+"',Gender = '"+Gender+"', IDCard = '"+IDCard+"',phoneNumber = '"+phoneNum+"', University = '"+university+"',Grade = '"+grade+"', status = '"+status+"',Syear = '"+Syear+"', Eyear = '"+Eyear+"', IDRoom = '"+idRoom+"', Image=? where IDStudent ='"+studentID+"'" ;
+                String query ="update student set Fullname = '"+fullName+"', Birthday = '"+birthday+"',Gender = '"+Gender+"', IDCard = '"+IDCard+"',phoneNumber = '"+phoneNum+"', University = '"+university+"',Grade = '"+grade+"', status = '"+status+"',Syear = '"+Syear+"', Eyear = '"+Eyear+"', IDRoom = '"+idRoom+"', Image=? where active = 'yes' and IDStudent ='"+studentID+"'" ;
                 statement = con.prepareStatement(query);
                 statement.setBinaryStream(1, image, length);
                 statement.execute();
@@ -652,7 +662,7 @@ public class Student {
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
         try {  
-            String query ="delete from student where IDStudent ='"+student+"'" ;
+            String query ="update student set active = 'no' where IDStudent ='"+student+"'" ;
             statement = con.prepareStatement(query);
             statement.execute();   
         } catch (SQLException ex) {
@@ -679,7 +689,7 @@ public class Student {
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
         try {  
-            String query ="update student set IDRoom=null, status = 'CX' where IDRoom='"+id+"'";
+            String query ="update student set IDRoom=null, status = 'CX' where active = 'yes' and IDRoom='"+id+"'";
             statement = con.prepareStatement(query);
             statement.execute();   
         } catch (SQLException ex) {
@@ -711,7 +721,7 @@ public class Student {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select IDStudent from student where status = 'CX'";
+            String query = "Select IDStudent from student where active = 'yes' and status = 'CX'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               listStudent.add(resultSet.getString(1));
@@ -744,7 +754,7 @@ public class Student {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select student.IDRoom from quanlyktx.student where student.IDStudent ='"+idstudent+"'";
+            String query = "Select student.IDRoom from quanlyktx.student where student.active = 'yes' and student.IDStudent ='"+idstudent+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               idroom = resultSet.getString(1);
@@ -778,7 +788,7 @@ public class Student {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select student.Fullname from quanlyktx.student where student.IDStudent ='"+idstudent+"'";
+            String query = "Select student.Fullname from quanlyktx.student where student.active = 'yes' and student.IDStudent ='"+idstudent+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               idroom = resultSet.getString(1);

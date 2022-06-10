@@ -192,8 +192,11 @@ public class EditStudentController implements Initializable {
         }
     
     }
+    
+    //xử lý khi nhấn nut cập nhập
     @FXML
     private void updateData(ActionEvent event) {
+        // lấy dữ liệu từ người dùng nhập vào
         String name = nameText.getText();
         String idStudent = idStudentText.getText();
         Date birthday = java.sql.Date.valueOf(birthdayDatePicker.getValue());
@@ -224,15 +227,16 @@ public class EditStudentController implements Initializable {
             closeStage(event);
         
     }
-    
+    //xử lý nút thêm ảnh
     @FXML
     public void handleAddImage(ActionEvent event) {
-        
+        // mở state mới để người dùng chọn ảnh và lưu ảnh đó vào file
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
         FileChooser chooser = new FileChooser();
         file = chooser.showOpenDialog(stage);
         System.out.println("file ne: " + file);
+        //kiểm tra nếu file khác null thì hiển thị trên ImageView
         if (file != null) {
             Image imageFile = new Image(file.toURI().toString(),175,225,true,true);
             System.out.println("file ne: " + imageFile);
@@ -247,7 +251,7 @@ public class EditStudentController implements Initializable {
     public void setDetailStudent (String  data) throws IOException{
         loadData(data);
     }
-    
+    // hiển thị thông báo
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
@@ -255,7 +259,7 @@ public class EditStudentController implements Initializable {
 	alert.setContentText(msg);
 	alert.showAndWait();
     }
-     
+    
      private void closeStage(ActionEvent event){
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
@@ -266,21 +270,21 @@ public class EditStudentController implements Initializable {
     {
         studentPaneController = parentController;
     }
-    
+    // thêm data vào gender combobox
     private void addDataToGenderComboBox(){
         ObservableList<String> items = FXCollections.<String>observableArrayList();       
         items.add("Nam");
         items.add("Nữ");
         genderComboBox.setItems(items);
     }
-    
+    // thêm data vào status combobox
     private void addDataToStatusComboBox(){
         ObservableList<String> items = FXCollections.<String>observableArrayList();       
         items.add("ĐX");
         items.add("CX");
         genderComboBox.setItems(items);
     }
-    
+    //hàm lấy dữ liệu và hiển thị lên màn hình
     public void loadData(String studentID) throws FileNotFoundException, IOException{
         student = new Student();
         student.getInfoByID(studentID);
@@ -299,25 +303,26 @@ public class EditStudentController implements Initializable {
         if (student.getIdRoom() == null) {
             idRoomText.setDisable(true);
         }
-        
+        // lấy dữ liệu ảnh tronng database
         try {
-           InputStream is = student.getImage();
-        OutputStream os = new FileOutputStream(new File("photo.jpg"));
-        byte[] content = new byte[1024];
-        int size = 0;
-        while((size = is.read(content)) != -1) {
-            os.write(content, 0, size);
-        }
-        os.close();
-        is.close();
-        
-        imageFile = new Image("file:photo.jpg", 175, 225,true, true);
-        file = new File("photo.jpg");
-        image.setImage(imageFile);
-        image.setFitWidth(175);
-        image.setFitHeight(225);
-        image.setPreserveRatio(true);
-        } catch (Exception e) {
+            InputStream is = student.getImage();
+            //lưu dữ liệu vào một file photo.jpg
+            OutputStream os = new FileOutputStream(new File("photo.jpg"));
+            byte[] content = new byte[1024];
+            int size = 0;
+            while((size = is.read(content)) != -1) {
+                os.write(content, 0, size);
+            }
+            os.close();
+            is.close();
+            //hiển thị file photo.jpg lên imageView
+            imageFile = new Image("file:photo.jpg", 175, 225,true, true);
+            file = new File("photo.jpg");
+            image.setImage(imageFile);
+            image.setFitWidth(175);
+            image.setFitHeight(225);
+            image.setPreserveRatio(true);
+            } catch (Exception e) {
         }
         
     }

@@ -47,12 +47,14 @@ public class AddRoomPaneController implements Initializable {
     
     @FXML
     private ComboBox apartmentComboBox, typeComboBox;
+    //hàm xử lý nút bấm quay lại
     @FXML
     void backbtn(ActionEvent event){
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+    //hàm xử lý khi văn bản thay đổi
     @FXML
     void TextChange(KeyEvent event){
         String cEndText;
@@ -78,14 +80,18 @@ public class AddRoomPaneController implements Initializable {
             insertBtn.setDisable(true);
         }   
     }
+    
+    //hàm xử lý thêm phòng mới khi nhấn nút thêm mới
     @FXML
     void insertdata(ActionEvent event){
+        //lấy dữ liệu từ các textfield người dùng nhập
         String apartmentName = apartmentComboBox.getValue().toString();
         String RoomText = roomText.getText();
         String NostudentText = nostudentText.getText();
         String roomstatus = statusText.getText();
         String roomtype = typeComboBox.getValue().toString();
         int RentingpriceText = (int)Double.parseDouble(rentingpriceText.getText()); 
+        //xử lý thêm dữ liệu vào database
         apartment = new Apartment();
         apartment.getInfo(apartmentName);
         String noRoom = Integer.toString(Integer.parseInt(apartment.getNoRoom()) + 1);
@@ -104,15 +110,19 @@ public class AddRoomPaneController implements Initializable {
         roomPaneController.refreshTable();
         closeStage(event);   
     }
+    
+    //hàm xử lý khi chọn giá trị combobox
     @FXML
     void selectApartment(ActionEvent event){
         addDataIDRomText();
     }
+    
+    
     public void receiveData (RoomPaneController parentController)
     {
         roomPaneController = parentController;
     }
-    
+    //hảm hiển thị thông báo
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
@@ -120,11 +130,13 @@ public class AddRoomPaneController implements Initializable {
 	alert.setContentText(msg);
 	alert.showAndWait();
     }
+    
+    //thêm dữ liệu vào combobox Type
     private void addDataTypeCombobox(){ 
         ObservableList<String> items = FXCollections.<String>observableArrayList("2","4","6","8");
         typeComboBox.getItems().addAll(items);
     }
-    
+    //thêm dữ liệu vào combobox
     private void addDataToCombobox(){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();       
@@ -135,6 +147,8 @@ public class AddRoomPaneController implements Initializable {
         apartmentComboBox.getSelectionModel().select(0);
         addDataIDRomText();
     }
+    
+    
     private void addDataIDRomText()  
     {
         apartment = new Apartment();

@@ -43,12 +43,15 @@ public class EditRoomPaneController implements Initializable {
     private ComboBox typeComboBox;
     @FXML
     private Button updateBtn;
+    //xử lý nút bấm quay lại
     @FXML
     void backbtn(ActionEvent event){
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+    
+    //xử lý lấy dữ liệu
     public void setDetailRoom (String  data){
         loadData(data);
     }
@@ -56,6 +59,8 @@ public class EditRoomPaneController implements Initializable {
     {
         roomPaneController = parentController;
     }
+    
+    //lấy dữ liệu phòng bằng ID
     public void loadData(String billID){
         room = new Room();
         room.getInfo(billID);
@@ -66,6 +71,8 @@ public class EditRoomPaneController implements Initializable {
         typeComboBox.setValue(room.getType());
         rentingpriceText.setText(String.valueOf(room.getRentingPrice()));
     }
+    
+    //xử lý nút cập nhập
     @FXML
     public void updatedata(ActionEvent event)
     {
@@ -82,6 +89,8 @@ public class EditRoomPaneController implements Initializable {
         roomPaneController.refreshTable();
         closeStage(event);
     }
+    
+    //xử lý sự kiện văn bản thay đổi
      @FXML
     void TextChange(KeyEvent event){
         String cEndText;
@@ -107,6 +116,8 @@ public class EditRoomPaneController implements Initializable {
             updateBtn.setDisable(true);
         }   
     }
+    
+    //hiển thị thông báo
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
@@ -119,6 +130,8 @@ public class EditRoomPaneController implements Initializable {
         final Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+    
+    //hàm xử lý thêm dữ liệu vào combobox
     private void addDataTypeCombobox(){ 
         ObservableList<String> items = FXCollections.<String>observableArrayList("2","4","6","8");
         typeComboBox.getItems().addAll(items);

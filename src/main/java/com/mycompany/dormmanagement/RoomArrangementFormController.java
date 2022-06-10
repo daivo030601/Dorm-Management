@@ -57,26 +57,30 @@ public class RoomArrangementFormController implements Initializable {
     private TextField nameText, genderText;
     @FXML
     private Button cancleBtn, addBtn;
+    //xử lý việc chọn combobox của người dùng
     @FXML
     void selectHandle(ActionEvent event){
         room = new Room();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
+        //kiểm tra nếu giá trị combobox khác null thì thêm vào items
         if (apartmentComboBox.getValue() != null) {
         for(var item : room.getRoomAvailable(apartmentComboBox.getValue().toString())){
             items.add(item);
         }
+        // lấy dữ liệu các phòng dựa vào giá trị của tòa
         roomComboBox.getItems().clear();
         roomComboBox.getItems().addAll(items);
         roomComboBox.getSelectionModel().select(0);
         }
     }
+    // xử lý nút quay trởi lại
     @FXML
     void backbtn(ActionEvent event){
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
-    
+    //xử lý sự kiện thay đổi văn bản
     @FXML
     void TextChange(KeyEvent event){
         String name = nameText.getText();
@@ -89,6 +93,7 @@ public class RoomArrangementFormController implements Initializable {
             genderText.setText(student.getGender());
         }
         String gender = genderText.getText();
+        //kiểm tra nếu gander khác rỗng thì render lại apartmentCombobox và roomCombobox
         if (!gender.isEmpty()) {
             try {
                 addApartmentToCombobox(apartmentComboBox);
@@ -101,9 +106,10 @@ public class RoomArrangementFormController implements Initializable {
             }
         }
     }
-    
+    //xử lý nút thêm sinh viên
     @FXML
     void insertData(ActionEvent event){
+        //lấy dữ liệu từ các text box
         String name = nameText.getText();
         String apartmentName = apartmentComboBox.getValue().toString();
         String roomName = roomComboBox.getValue().toString();
@@ -113,6 +119,7 @@ public class RoomArrangementFormController implements Initializable {
         room.getInfo(roomName);
         student = new Student();
         student.getInfo(name);
+        //gọi hàm addStudent và UpdateRoom
         try {
             student.updateRoom(room.getRoomID());
             room.addStudentToRoom();
@@ -120,6 +127,7 @@ public class RoomArrangementFormController implements Initializable {
             showNotification("Có lỗi xảy ra. Thêm không thành công.");
             closeStage(event);
         }
+        //render lại table sau khi thêm 
         studentPaneController.refreshTable();
         showNotification("Thêm thành công.");
         closeStage(event);
@@ -130,7 +138,7 @@ public class RoomArrangementFormController implements Initializable {
     {
         studentPaneController = parentController;
     }
-    
+    // hàm hiển thị thông báo
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
@@ -138,17 +146,18 @@ public class RoomArrangementFormController implements Initializable {
 	alert.setContentText(msg);
 	alert.showAndWait();
     }
-    
+    //hàm tự động điền tên sinh viên
     private void autoCompleteText(TextField textField) {
         student = new Student();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
+        //lấy tất cả các sinh viên chưa xếp phòng và có điều kiện hợp lệ
         for(var item : student.getAllEmptyStudent()){
             items.add(item);
         }
         
         TextFields.bindAutoCompletion(textField, items);
     }
-    
+    //hàm thêm dữ liệu tòa vào combobox
     private void addApartmentToCombobox(ComboBox comboBox){
         comboBox.getItems().clear();
         apartment = new Apartment();
@@ -162,7 +171,7 @@ public class RoomArrangementFormController implements Initializable {
         
         
     }
-    
+    //hàm thêm dữ liệu phòng vào combobox
     private void addRoomToCombobox(ComboBox comboBox){
         comboBox.getItems().clear();
         String crApartment = apartmentComboBox.getValue().toString();
