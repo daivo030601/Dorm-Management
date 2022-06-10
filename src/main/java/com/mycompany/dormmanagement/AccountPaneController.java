@@ -31,6 +31,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import Utils.DataValidation;
+import com.mycompany.dormmanagement.Model.ElectricAndWaterBill;
 import java.time.LocalDate;
 
 /**
