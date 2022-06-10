@@ -661,7 +661,7 @@ public ObservableList<Map<String, Object>> getStudentRoom(String room, int optio
         Map<String, Object> item;
         try {        
             statement = con.createStatement();
-            String query = "Select student.IDStudent, student.Fullname, student.Gender,student.University from quanlyktx.student,quanlyktx.room where student.IDRoom = room.IDRoom and room.IDRoom = '"+ room+"'";
+            String query = "Select student.IDStudent, student.Fullname, student.Gender,student.University from quanlyktx.student,quanlyktx.room where student.IDRoom = room.IDRoom and room.IDRoom = '"+ room+"' and student.active='yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
             item = new HashMap<>();
