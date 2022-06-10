@@ -264,7 +264,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         try {        
             statement = con.createStatement();
             //khởi tạo chuỗi query theo tham số gender
-            String query = "Select IDRoom from room, apartment where room.IDApartment = apartment.IDApartment and apartment.gender = '"+gender+"' and status = 'Còn chỗ' LIMIT 1";
+            String query = "Select room.IDRoom from room, apartment where room.IDApartment = apartment.IDApartment and apartment.gender = '"+gender+"' and Status = 'Còn chỗ' and room.active='yes' ORDER BY NoStudent DESC LIMIT 1";
             //thực hiện câu query và lưu kết quả vào room
             resultSet = statement.executeQuery(query);
             if (resultSet.next())
@@ -290,6 +290,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+        
         return room;
     }
     // lấy dữ liệu phòng bằng IDRoom
@@ -340,7 +341,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         try {        
             // thực hiện câu query lấy tất cả IDRoom và với mỗi IDRoom tiên hành đếm tổng số lượng
             statement = con.createStatement();
-            String query ="select IDRoom from room and active='yes'" ;
+            String query ="select IDRoom from room where active='yes'" ;
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){           
                 total++;
@@ -469,6 +470,7 @@ public int getLastRoomIndex(String apartment ){
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+        if(index==0){index = 100;}
         System.out.println(index);
         return index;
     }

@@ -14,6 +14,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -225,10 +226,8 @@ public class StudentPaneController implements Initializable {
     
     public void refreshTable(){
         if(searchText.getText().isEmpty()){
-            System.out.println("search ne");
             dataTableView.getItems().clear();
-            if(allBox.isSelected()){    
-                System.out.println("all ne");
+            if(allBox.isSelected()){             
                 addDataToTable(dataTableView,1);
             }
             if(doneBox.isSelected()){     
@@ -356,14 +355,23 @@ public class StudentPaneController implements Initializable {
     private void autoArrangement() {
         student = new Student();
         room = new Room();
-        for(var item : student.getIDEmptyStudent()){
-            student.getInfoByID(item);
+        ArrayList<String> listStudentID = student.getIDEmptyStudent();
+        try {
+            for(var item : listStudentID){
+               System.out.println(item);
+            student.getInfoByID(item);     
             room.getInfo(room.getRoomAvailableWithGender(student.getGender()));
             student.updateRoom(room.getRoomID());
             room.addStudentToRoom();
         }
         showtification("Tự động xếp phòng thành công");
-        refreshTable();
+        refreshTable(); 
+        } catch (Exception e) {
+            showtification("Tự động xếp phòng không thành công");
+        }
+           
+        
+        
     }
         
         

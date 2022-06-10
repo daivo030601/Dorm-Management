@@ -315,7 +315,10 @@ public class AccountPaneController implements Initializable {
      Employee crEmployee = new Employee();
      crEmployee.getInfoBaseAccountID(LoginFormController.currentUser.getIDAccount());
      String crPosition = crEmployee.getPosition();
-     if(permission.equals("user")){
+     if(LoginFormController.currentUser.getIDAccount().equals(idAccount)) {
+         showNotification("Tài khoản đang đăng nhập không thể xóa");
+     }
+     else if(permission.equals("user")){
          try {
              crEmployee.detele(idEmployee);
              LoginFormController.currentUser.detele(idAccount);

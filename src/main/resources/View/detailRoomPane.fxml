@@ -26,6 +26,7 @@
                   <TableColumn fx:id="nameCol" prefWidth="100.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Họ và tên" />
                   <TableColumn fx:id="genderCol" prefWidth="100.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Giới tính" />
                   <TableColumn fx:id="universityCol" prefWidth="100.0" style="-fx-background-color: transparent; -fx-alignment: center;" text="Trường học" />
+                  <TableColumn fx:id="toolCol" prefWidth="100.0" style="-fx-background-color: transparent; -fx-alignment: center;" />
                </columns>
                <styleClass>
                   <String fx:value="table" />

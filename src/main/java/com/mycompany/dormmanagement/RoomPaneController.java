@@ -282,14 +282,7 @@ public class RoomPaneController implements Initializable {
                         btnDelete.setOnAction((ActionEvent event) -> {
                             int index = getIndex();
                             String data = (String) indexCol.getCellObservableValue(index).getValue();
-                            try {
                                 changeRoomDelete(data);
-                                showNotification("Đã xóa");
-                                refreshTable();
-                            } catch (Exception e) {
-                                showNotification("Xóa không thành công");
-                            }
-
                         });
                         HBox btnManage = new HBox(btnDetail, btnEdit, btnDelete);
                         btnManage.setStyle("-fx-alignment:center");                   
@@ -326,7 +319,7 @@ public class RoomPaneController implements Initializable {
         stage.setTitle("Chi tiết thông tin phòng");
         //set Controller cho màn hình mới
         DetailRoomPaneController detailRoomPaneController = loader.getController();
-        detailRoomPaneController.setDetailRoom(data);
+        detailRoomPaneController.setDetailRoom(data,this);
         stage.setScene(new Scene(roomdetial));
         stage.show();
         } catch (IOException e) {
@@ -358,16 +351,15 @@ public class RoomPaneController implements Initializable {
     //xử lý sự kiện khi bấm vào nút delete của từng item
     private void changeRoomDelete(String data){
          Student student = new Student();
-        for (String item : room.getRoomNameBaseStudent(data)) {
-            student.updateStudentRemoveToIDRoom(item);
-        }
+            student.updateStudentRemoveFromRoom(data);
         try {
-            room.deleteData(data);     
+            room.deleteData(data);
+            showNotification("Xóa thành công");
+            refreshTable();
         } catch (Exception e) {
             showtification("Có lỗi xảy ra. Thêm không thành công.");
         }
-        showtification("Xoa thanh cong.");
-        refreshTable();
+        
         System.out.println("success");
     }
     

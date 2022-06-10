@@ -172,7 +172,7 @@
                   <Insets left="100.0" top="15.0" />
                </VBox.margin>
             </HBox>
-            <Button styleClass="appBtn-red"  mnemonicParsing="false" text="Quay lại">
+            <Button styleClass="appBtn-red" onAction="#back"  mnemonicParsing="false" text="Quay lại">
                <font>
                   <Font name="Segoe UI Bold" size="18.0" />
                </font>

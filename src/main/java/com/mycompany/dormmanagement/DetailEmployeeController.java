@@ -8,10 +8,13 @@ import com.mycompany.dormmanagement.Model.Account;
 import com.mycompany.dormmanagement.Model.Employee;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -41,7 +44,13 @@ public class DetailEmployeeController implements Initializable {
     private Label passwordText;
     @FXML
     private Label permissionText;
-    
+    @FXML
+    void back(ActionEvent event){
+        final Node source = (Node) event.getSource();
+        final Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+        
+    }
     public void receiveData(String idEmployee,String username){   
         showData(idEmployee, username);
     }

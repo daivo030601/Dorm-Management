@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.Event;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyEvent;
@@ -49,7 +50,10 @@ public class LoginFormController implements Initializable {
        String password = passwordText.getText().trim();
        account = new Account();
        account.GetDataByUsername(username);
-       if(!username.equals(account.getUsername())) usernameErrorLabel.setVisible(true);
+       if(username.isEmpty() || password.isEmpty()){
+           showtification("Vui lòng không để trống bất kì thông tin nào.");
+       }
+       else if(!username.equals(account.getUsername())) usernameErrorLabel.setVisible(true);
        else if (!password.equals(account.getPassword()) ) passwordErrorLabel.setVisible(true);
        else {
            try {
@@ -73,9 +77,13 @@ public class LoginFormController implements Initializable {
         usernameErrorLabel.setVisible(false);
         passwordErrorLabel.setVisible(false);
     }
-    @FXML
-    void action2(){
     
+    private void showtification(String msg){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+	alert.setContentText(msg);
+	alert.showAndWait();
     }
     private void DrawUi(){
         logoImageView.setImage(new Image(getClass().getResourceAsStream("/Image/logo.png")));
