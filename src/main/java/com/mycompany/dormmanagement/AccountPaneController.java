@@ -257,7 +257,9 @@ public class AccountPaneController implements Initializable {
                             String idEmployee = (String) IDCol.getCellObservableValue(index).getValue();
                             String username = (String) usernameCol.getCellObservableValue(index).getValue();                         
                             Account account = new Account();
+                            System.out.println(username);
                             account.GetDataByUsername(username);
+                            
                             deleteData(idEmployee, account.getIDAccount(), account.getPermission());
                             
 
@@ -308,6 +310,7 @@ public class AccountPaneController implements Initializable {
         
     }
      private void deleteData(String idEmployee, String idAccount,String permission){
+         System.out.println("1" + permission);
      String crUserPermission = LoginFormController.currentUser.getPermission();
      Employee crEmployee = new Employee();
      crEmployee.getInfoBaseAccountID(LoginFormController.currentUser.getIDAccount());

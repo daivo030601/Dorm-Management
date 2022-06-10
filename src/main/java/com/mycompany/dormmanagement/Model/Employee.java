@@ -115,7 +115,7 @@ public class Employee {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select IDEmployee from employee where Position= 'Trưởng nhà' ";
+            String query = "Select IDEmployee from employee where Position= 'Trưởng nhà' and active= 'yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
                 items.add(resultSet.getString(1));
@@ -148,7 +148,7 @@ public class Employee {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select * from employee where IDAccount ='"+IDAccount+"'";
+            String query = "Select * from employee where IDAccount ='"+IDAccount+"' and active='yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               this.employeeID = resultSet.getString(1);             
@@ -188,7 +188,7 @@ public class Employee {
         Map<String, Object> item;
         try {        
             statement = con.createStatement();
-            String query ="select * from employee,account where employee.IDAccount = account.IDAccount" ;
+            String query ="select * from employee,account where employee.IDAccount = account.IDAccount and employee.active='yes'" ;
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
             item = new HashMap<>();
@@ -196,8 +196,8 @@ public class Employee {
             item.put("name", resultSet.getString(2));
             item.put("birthday", resultSet.getString(3));
             item.put("position", resultSet.getString(5));
-            item.put("username", resultSet.getString(9));
-            item.put("pass", resultSet.getString(10));
+            item.put("username", resultSet.getString(10));
+            item.put("pass", resultSet.getString(11));
             items.add(item);
             }
         } catch (SQLException ex) {
@@ -231,7 +231,7 @@ public class Employee {
         Map<String, Object> item;
         try {        
             statement = con.createStatement();
-            String query ="select * from employee,account where employee.IDAccount = account.IDAccount and IDEmployee like '%"+keyWord+"%'" ;
+            String query ="select * from employee,account where employee.IDAccount = account.IDAccount and IDEmployee like '%"+keyWord+"%' and employee.active='yes'" ;
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
             item = new HashMap<>();
@@ -239,8 +239,8 @@ public class Employee {
             item.put("name", resultSet.getString(2));
             item.put("birthday", resultSet.getString(3));
             item.put("position", resultSet.getString(5));
-            item.put("username", resultSet.getString(9));
-            item.put("pass", resultSet.getString(10));
+            item.put("username", resultSet.getString(10));
+            item.put("pass", resultSet.getString(11));
             items.add(item);
             }
         } catch (SQLException ex) {
@@ -271,7 +271,7 @@ public class Employee {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select * from employee where IDEmployee ='"+IDEmployee+"'";
+            String query = "Select * from employee where IDEmployee ='"+IDEmployee+"' and active = 'yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               this.employeeID = resultSet.getString(1);             
@@ -346,7 +346,7 @@ public class Employee {
         PreparedStatement statement = null;
         
         try {  
-            String query ="insert into employee(IDEmployee,Fullname,Birthday,Address,Position,PhoneNumber,IDAccount)values(?,?,?,?,?,?,?)" ;
+            String query ="insert into employee(IDEmployee,Fullname,Birthday,Address,Position,PhoneNumber,IDAccount,active)values(?,?,?,?,?,?,?,'yes')" ;
             statement = con.prepareStatement(query);
             statement.setString(1, this.employeeID);
             statement.setString(2, this.fullname);
@@ -415,7 +415,7 @@ public class Employee {
         PreparedStatement statement = null;
         
         try {  
-            String query ="delete from employee where IDEmployee =?";
+            String query ="update employee set active='no' where IDEmployee =?";
             statement = con.prepareStatement(query);
             statement.setString(1, ID); 
             statement.execute();

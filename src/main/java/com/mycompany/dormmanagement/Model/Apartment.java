@@ -83,7 +83,7 @@ public class Apartment {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select IDApartment from apartment where gender = '"+gender+"'";
+            String query = "Select IDApartment from apartment where gender = '"+gender+"' and active='yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               listApartment.add(resultSet.getString(1));
@@ -121,16 +121,16 @@ public class Apartment {
             String query ="" ;
             switch (option) {
                 case 1:
-                    query = "Select IDApartment from apartment";
+                    query = "Select IDApartment from apartment where active ='yes'";
                     break;
                 case 2:
-                    query = "Select IDApartment from apartment where Gender = 'Nam'";
+                    query = "Select IDApartment from apartment where Gender = 'Nam' and active ='yes'";
                     break;
                 case 3:
-                    query = "Select IDApartment from apartment where Gender = 'Nữ'";
+                    query = "Select IDApartment from apartment where Gender = 'Nữ' and active ='yes'";
                     break;
                 default:
-                    query = "Select IDApartment from apartment";
+                    query = "Select IDApartment from apartment where active ='yes'";
                     break;
             }
             resultSet = statement.executeQuery(query);
@@ -171,16 +171,16 @@ public class Apartment {
             String query ="" ;
             switch (option) {
                 case 1:
-                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%'";
+                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%' and active='yes'";
                     break;
                 case 2:
-                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%' and Gender = 'Nam'";
+                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%' and Gender = 'Nam' and active='yes'";
                     break;
                 case 3:
-                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%' and Gender = 'Nữ'";
+                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%' and Gender = 'Nữ' and active='yes'";
                     break;
                 default:
-                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%'";
+                    query = "Select * from apartment where IDApartment like '%"+ keyWord+"%' and active='yes'";
                     break;
             }
             
@@ -223,7 +223,7 @@ public class Apartment {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select IDRoom from apartment,room where apartment.IDApartment = room.IDApartment and room.IDApartment = '"+apartment+"'";
+            String query = "Select IDRoom from apartment,room where apartment.IDApartment = room.IDApartment and room.IDApartment = '"+apartment+"' and room.active='yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               listRoom.add(resultSet.getString(1));
@@ -254,7 +254,7 @@ public class Apartment {
         PreparedStatement statement = null;
         
         try {  
-            String query ="insert into apartment (IDApartment,NoRoom,Gender,IDEmployee) values(?,?,?,?)";
+            String query ="insert into apartment (IDApartment,NoRoom,Gender,IDEmployee,active) values(?,?,?,?,'yes')";
             statement = con.prepareStatement(query);
             statement.setString(1, ID);
             statement.setString(2, "0");
@@ -287,7 +287,7 @@ public class Apartment {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select * from apartment where IDApartment ='"+apartment+"'";
+            String query = "Select * from apartment where IDApartment ='"+apartment+"' and active='yes'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               this.IDApartment = resultSet.getString(1);
@@ -420,7 +420,7 @@ public class Apartment {
         PreparedStatement statement = null;
         
         try {  
-            String query ="delete from apartment where IDApartment =?";
+            String query ="update apartment set active='no' where IDApartment =?";
             statement = con.prepareStatement(query);
             statement.setString(1, IDApartment);
             statement.execute();
