@@ -20,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
 import com.mycompany.dormmanagement.Model.Apartment;
 import com.mycompany.dormmanagement.Model.Room;
+import com.mycompany.dormmanagement.Model.Student;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -166,6 +167,14 @@ public class RoomPaneController implements Initializable {
         
     }
     
+    private void showNotification(String msg){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+	alert.setContentText(msg);
+	alert.showAndWait();
+    }
+    
     //hàm render lại table
     public void refreshTable(){
         //kiểm tra giá trị các checkbox và lấy dữ liệu theo giá trị đó
@@ -273,7 +282,13 @@ public class RoomPaneController implements Initializable {
                         btnDelete.setOnAction((ActionEvent event) -> {
                             int index = getIndex();
                             String data = (String) indexCol.getCellObservableValue(index).getValue();
-                            changeRoomDelete(data);
+                            try {
+                                changeRoomDelete(data);
+                                showNotification("Đã xóa");
+                                refreshTable();
+                            } catch (Exception e) {
+                                showNotification("Xóa không thành công");
+                            }
 
                         });
                         HBox btnManage = new HBox(btnDetail, btnEdit, btnDelete);
@@ -342,6 +357,10 @@ public class RoomPaneController implements Initializable {
     
     //xử lý sự kiện khi bấm vào nút delete của từng item
     private void changeRoomDelete(String data){
+         Student student = new Student();
+        for (String item : room.getRoomNameBaseStudent(data)) {
+            student.updateStudentRemoveToIDRoom(item);
+        }
         try {
             room.deleteData(data);     
         } catch (Exception e) {
