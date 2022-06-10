@@ -76,7 +76,7 @@ public class Account {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select * from account where Username = '" + username + "'";
+            String query = "Select * from account where Username = '" + username + "' and active ='yes'";
             resultSet = statement.executeQuery(query);
             if(resultSet.next()){
                 setIDAccount(resultSet.getString(1));
@@ -85,6 +85,7 @@ public class Account {
                 setPermission(resultSet.getString(4));
             }
         } catch (SQLException ex) {
+            System.out.println(ex);
             Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
@@ -111,7 +112,7 @@ public class Account {
         ResultSet resultSet = null;
         try {        
             statement = con.createStatement();
-            String query = "Select * from account where IDAccount = '" + ID + "'";
+            String query = "Select * from account where IDAccount = '" + ID + "' and active='yes'";
             resultSet = statement.executeQuery(query);
             if(resultSet.next()){
                 setIDAccount(resultSet.getString(1));
@@ -144,7 +145,7 @@ public class Account {
         PreparedStatement statement = null;
         
         try {  
-            String query ="insert into account(IDAccount,Username,Password,Permission)values(?,?,?,?)" ;
+            String query ="insert into account(IDAccount,Username,Password,Permission,active)values(?,?,?,?,'yes')" ;
             statement = con.prepareStatement(query);
             statement.setString(1, this.IDAccount);
             statement.setString(2, this.Username);
@@ -208,7 +209,7 @@ public class Account {
         PreparedStatement statement = null;
         
         try {  
-            String query ="delete from account where IDAccount=?" ;
+            String query ="update account set active='no' where IDAccount=?" ;
             statement = con.prepareStatement(query);
             statement.setString(1, ID);
             statement.execute();

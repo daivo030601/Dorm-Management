@@ -116,16 +116,16 @@ protected int rentingPrice;
             //dựa vào tham số option truyền vào mà lấy dữ liệu tùy vào giá trị option
             switch (option) {
                 case 1:
-                    query = "Select * from room where IDApartment ='"+ apartment+"'";
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and active='yes'";
                     break;
                 case 2:
-                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ'";
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ' and active='yes'";
                     break;
                 case 3:
-                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Đầy'";
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Đầy' and active='yes'";
                     break;
                 default:
-                    query = "Select * from room where IDApartment ='"+ apartment+"'";
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and active='yes'";
                     break;
             }
             //thực hiện câu query và lưu kết quả vào items
@@ -174,16 +174,16 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
             String query ="" ;
             switch (option) {
                 case 1:
-                    query = "Select * from room where IDApartment ='"+ apartment+"' and IDRoom LIKE '%" + keyWord +"%'";
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and IDRoom LIKE '%" + keyWord +"%' and active='yes'";
                     break;
                 case 2:
-                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ' and IDRoom LIKE '%" + keyWord +"%' ";
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Còn chỗ' and IDRoom LIKE '%" + keyWord +"%' and active='yes'";
                     break;
                 case 3:
-                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Đầy' and IDRoom LIKE '%" + keyWord +"%' ";
+                    query = "Select * from room where IDApartment ='"+ apartment+"' and status = 'Đầy' and IDRoom LIKE '%" + keyWord +"%' and active='yes'";
                     break;
                 default:
-                    query = "Select * from room where IDApartment ='"+ apartment+"'and IDRoom LIKE '%" + keyWord +"%'";
+                    query = "Select * from room where IDApartment ='"+ apartment+"'and IDRoom LIKE '%" + keyWord +"%' and active='yes'";
                     break;
             }
             //thực hiện câu query và lưu kết quả vào items
@@ -340,7 +340,7 @@ public ObservableList<Map<String, Object>> getSearchRoom(String apartment, int o
         try {        
             // thực hiện câu query lấy tất cả IDRoom và với mỗi IDRoom tiên hành đếm tổng số lượng
             statement = con.createStatement();
-            String query ="select IDRoom from room" ;
+            String query ="select IDRoom from room and active='yes'" ;
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){           
                 total++;
@@ -403,7 +403,7 @@ public void insertRoomdata(){
         PreparedStatement statement = null;
         
         try {  
-            String query ="insert into room(IDRoom,IDApartment,NoStudent,Status,Type,RentingPrice)values(?,?,?,?,?,?)" ;
+            String query ="insert into room(IDRoom,IDApartment,NoStudent,Status,Type,RentingPrice,active)values(?,?,?,?,?,?,'yes')" ;
             statement = con.prepareStatement(query);
             statement.setString(1, this.roomID);
             statement.setString(2, this.apartment.getIDApartment());
@@ -479,7 +479,7 @@ public void deleteData(String room ){
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
         try {  
-            String query ="delete from quanlyktx.room where IDRoom ='"+room+"'" ;
+            String query ="update quanlyktx.room set active='no' where IDRoom ='"+room+"'" ;
             statement = con.prepareStatement(query);
             statement.execute();   
         } catch (SQLException ex) {
@@ -507,7 +507,7 @@ public void deleteAllRoomInApartment(String apartment){
  Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
         try {  
-            String query ="delete from room where IDApartment = '"+apartment+"'" ;
+            String query ="update room set active='no' where IDApartment = '"+apartment+"'" ;
             statement = con.prepareStatement(query);
             statement.execute();   
         } catch (SQLException ex) {
