@@ -79,7 +79,7 @@ public class RoomPaneController implements Initializable {
     private TextField searchText;
     @FXML
     private Button showAllBtn;
-    
+    //xử lý khi chọn giá trị combobox
     @FXML
     void selectHandle(ActionEvent event){
         if(searchText.getText().isEmpty()){
@@ -98,6 +98,7 @@ public class RoomPaneController implements Initializable {
         }
         }else tableSearch();
     }
+    //xử lý khi chọn các checkbox
     @FXML
     void checkBoxHandles(ActionEvent event){
         String keyWord = searchText.getText();
@@ -106,6 +107,7 @@ public class RoomPaneController implements Initializable {
         if(event.getSource()== allBox){
             doneBox.setSelected(false);
             unDoneBox.setSelected(false);
+            //clear table sau đó thêm lại dữ liệu mới theo giá trị checkbox
             dataTableView.getItems().clear();
             if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,1);
@@ -114,6 +116,7 @@ public class RoomPaneController implements Initializable {
         if(event.getSource()== doneBox){
             allBox.setSelected(false);
             unDoneBox.setSelected(false);
+            //clear table sau đó thêm lại dữ liệu mới theo giá trị checkbox
             dataTableView.getItems().clear();
             if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,2);
@@ -122,18 +125,21 @@ public class RoomPaneController implements Initializable {
         if(event.getSource()==unDoneBox){
             doneBox.setSelected(false);
             allBox.setSelected(false);
+            //clear table sau đó thêm lại dữ liệu mới theo giá trị checkbox
             dataTableView.getItems().clear();
             if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,3);
             else dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 3, keyWord));
         } 
     }
+    //xử lý khi văn bản search thay đổi
     @FXML
     void textChange(KeyEvent event){
        tableSearch();
        showAllBtn.setVisible(true);
        
     }
+    //hàm lấy dữ liệu tất cả sinh viên
     @FXML
     void showAll(ActionEvent event){
           dataTableView.getItems().clear();
@@ -143,6 +149,7 @@ public class RoomPaneController implements Initializable {
           searchText.clear();
           showAllBtn.setVisible(false);
     }
+    //xử lý khi nhấn nút thêm phòng mới
     @FXML
     void addRoom(ActionEvent event){
         try {
@@ -158,7 +165,10 @@ public class RoomPaneController implements Initializable {
         }
         
     }
+    
+    //hàm render lại table
     public void refreshTable(){
+        //kiểm tra giá trị các checkbox và lấy dữ liệu theo giá trị đó
         if(searchText.getText().isEmpty()){
             dataTableView.getItems().clear();
         if(allBox.isSelected()){       
@@ -172,16 +182,21 @@ public class RoomPaneController implements Initializable {
         }
         }else tableSearch();   
     }
+    
+    //hàm xử lý khi tìm kiếm bằng thanh search
     private void tableSearch(){
        String keyWord = searchText.getText();
        dataTableView.getItems().clear();
        room = new Room();
+       //lấy dữ liệu tòa từ combobox
        String crApartment = apartmentComboBox.getValue().toString().substring(4);
+       //kiểm tra giá trị các checkbox và lấy dữ liệu dựa trên thanh search, checkbox và giá trị tòa
        if(allBox.isSelected()) { dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 1, keyWord));
        } else if(doneBox.isSelected()){ dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 2, keyWord));
        } else { dataTableView.getItems().addAll(room.getSearchRoom(crApartment, 3, keyWord));
        }
     }
+    //hàm tạo table
     private void initTableView(TableView table){
         
         indexCol.setCellValueFactory(new MapValueFactory<>("idroom"));
@@ -198,9 +213,12 @@ public class RoomPaneController implements Initializable {
         
         
     }
+    
+    //hàm thêm dữ liệu vào table (option là giá trị tương ứng của checkbox)
     private void addDataToTable(TableView table,int option){      
         room = new Room();
-        String crApartment = apartmentComboBox.getValue().toString().substring(4);    
+        String crApartment = apartmentComboBox.getValue().toString().substring(4);   
+        // lấy dữ liệu tùy vào các giá trị của checkbox
         switch (option) {
                 case 1:
                     table.getItems().addAll(room.getRoom(crApartment,option));
@@ -220,22 +238,27 @@ public class RoomPaneController implements Initializable {
                     break;
             }
     }
+    
+    //hàm thêm các nút vào từng hàng trên table
     private void addButtonToTable() {     
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
-            // make cell containing buttons
+            // tạo ra hàng chứa các nút
             final TableCell<Object, String> cell = new TableCell<Object, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
+                    //kiểm tra item có null hay không nếu không thì thêm các nút
                     if (empty) {
                         setGraphic(null);
                     } else {
+                        //tạo các nút bâm với các hình ảnh icon và background color
                         Button btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
                         btnDetail.setStyle("-fx-background-color: transparent;");
                         Button btnEdit = new Button("",new ImageView("/Image/edit.png"));
                         btnEdit.setStyle("-fx-background-color: transparent;");
                         Button btnDelete = new Button("",new ImageView("/Image/delete.png"));
                         btnDelete.setStyle("-fx-background-color: transparent;");
+                        //cài sự kiện khi nhấn nút cho từng nút bấm
                         btnDetail.setOnAction((ActionEvent event) -> {
                             int index = getIndex();
                             String data = (String) indexCol.getCellObservableValue(index).getValue();
@@ -264,40 +287,49 @@ public class RoomPaneController implements Initializable {
 
         toolCol.setCellFactory(cellFactory);
     }
+    
+    //lấy dữ liệu thêm vào combobox
     private void addDataToCombobox(ComboBox comboBox){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
+        //lấy dữ liệu tất cả các tòa rồi thêm vào combobox
         for(var item : apartment.getAllApartment(1)){
             items.add("Tòa "+ item);
         }
         comboBox.getItems().addAll(items);
         
     }
+    
+    //xử lý sự kiện khi bấm vào nút detail của từng item
     public void changeRoomDetail(String data)
     {
         try{
-   
+        //mở một màn hình thông tin mới
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailRoomPane.fxml"));
         Parent roomdetial = (Parent) loader.load();
         Stage stage = new Stage();
         stage.setTitle("Chi tiết thông tin phòng");
+        //set Controller cho màn hình mới
         DetailRoomPaneController detailRoomPaneController = loader.getController();
         detailRoomPaneController.setDetailRoom(data);
         stage.setScene(new Scene(roomdetial));
         stage.show();
         } catch (IOException e) {
             System.out.println(e);
-        }
-        System.out.println("success");
+        } 
     }
+    
+    //xử lý sự kiện khi bấm vào nút add của từng item
     private void changeRoomEdit(String data){
         try {
+        //mở một màn hình thông tin mới
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/editRoomPane.fxml"));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
         stage.setTitle("Chỉnh sửa thông tin phòng");
         EditRoomPaneController editRoomPaneController = loader.getController();
         editRoomPaneController.setDetailRoom(data);
+        //set Controller cho màn hình mới
         EditRoomPaneController controller= loader.getController();
         controller.receiveData(this);
         editRoomPaneController.receiveData(this);
@@ -306,8 +338,9 @@ public class RoomPaneController implements Initializable {
         } catch (IOException e) {
             System.out.println(e);
         }
-        System.out.println("success");
     }
+    
+    //xử lý sự kiện khi bấm vào nút delete của từng item
     private void changeRoomDelete(String data){
         try {
             room.deleteData(data);     
@@ -318,6 +351,8 @@ public class RoomPaneController implements Initializable {
         refreshTable();
         System.out.println("success");
     }
+    
+    //hàm hiển thị thông báo
     private void showtification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");

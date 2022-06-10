@@ -39,6 +39,7 @@ public class DetailRoomPaneController implements Initializable {
     private TableColumn idstudentCol, nameCol,genderCol,universityCol;
     @FXML
     private Label apartmentLable, roomLable, typeLable, nostudentLable, statusLable, rentingpriceLable;
+    //xử lý khi nhấn nút quay lại
     @FXML        
     void backbtn(ActionEvent event){
         final Node source = (Node) event.getSource();
@@ -49,6 +50,8 @@ public class DetailRoomPaneController implements Initializable {
         loadData(data);
         
     }
+    
+    //lấy dữ liệu và hiển thị ra các label
     public void loadData(String billID){
         
         room = new Room();
@@ -61,6 +64,8 @@ public class DetailRoomPaneController implements Initializable {
         rentingpriceLable.setText(String.valueOf(room.getRentingPrice()));
         initTableView(dataTableView); 
     }
+    
+    //tạo một table
     private void initTableView(TableView table){
         
         idstudentCol.setCellValueFactory(new MapValueFactory<>("IDStudent"));
@@ -74,6 +79,8 @@ public class DetailRoomPaneController implements Initializable {
         universityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.3)); 
         addDataToTable(table,1);     
     }
+    
+    //hàm thêm dữ liệu vào table
     private void addDataToTable(TableView table,int option){      
         room = new Room();
         String roomid = roomLable.getText().toString();

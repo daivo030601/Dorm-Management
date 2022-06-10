@@ -62,8 +62,9 @@ public class ReportPaneController implements Initializable {
         addDataToChart();
     }
     
-    
+    //hàm lấy dữ liệu thêm vào bảng thống kê
     private void addDataToChart() {
+        //tạo các thuộc tính cho biểu đồ
         double totalPaid = getRoomChargePaid() + getEWChargePaid() + getRoomChargeUnpaid() + getEWChargeUnpaid();
         ObservableList<PieChart.Data> pieChartData = 
             FXCollections.observableArrayList(
@@ -73,12 +74,14 @@ public class ReportPaneController implements Initializable {
                 new PieChart.Data("Tiền điện nước chưa thu", getEWChargeUnpaid()/totalPaid * 100)
                 
             );
+        //kiểm tra xem tháng này có dữ liệu hay không
         if(getRoomChargePaid() == 0 && getRoomChargeUnpaid() == 0 && getEWChargePaid() == 0 && getEWChargeUnpaid() == 0){
             pieChart.setData(pieChartData);
             pieChart.setTitle("Tháng này không có dữ liệu doanh thu");
         } else {
         pieChart.setData(pieChartData);
         pieChart.setTitle("Báo cáo doanh thu");
+        //Hiển thị số phần trăm của thuộc tính
         pieChart.getData().forEach(data -> {
             String percentage = String.format("%.2f%%", (data.getPieValue()));
             Tooltip toolTip = new Tooltip(percentage);
@@ -86,7 +89,7 @@ public class ReportPaneController implements Initializable {
         });
         }
     }
-    
+    //Hiển thị dữ liệu bằng label
     private void addDataToLabel() {
         double totalPaid = getRoomChargePaid() + getEWChargePaid();
         double totalUnpaid = getRoomChargeUnpaid() + getEWChargeUnpaid();
@@ -95,7 +98,7 @@ public class ReportPaneController implements Initializable {
         textDoanhThuDaThu.setText(nf.format(totalPaid));
         textDoanhThuChuaThu.setText(nf.format(totalUnpaid));
     }
-    
+    //tính tổng số tiền phòng
     private double getRoomCharge() {
         double total = 0.0;
         rentBill = new RentBill();
@@ -103,12 +106,13 @@ public class ReportPaneController implements Initializable {
         monthYear = picker.getValue().toString();
         month = monthYear.substring(5);
         year = monthYear.substring(0,4);
+        //tính tổng số tiền bằng các dữ liệu 
         for (var item: rentBill.getTotalRentBill(month, year,1)){
             total = total + item;
         };
         return total;
     }
-    
+    //tính tổng số tiền phòng đã trả
     private double getRoomChargePaid() {
         double total = 0.0;
         rentBill = new RentBill();
@@ -116,12 +120,13 @@ public class ReportPaneController implements Initializable {
         monthYear = picker.getValue().toString();
         month = monthYear.substring(5);
         year = monthYear.substring(0,4);
+        //tính tổng số tiền bằng cách lọc qua các dữ liệu 
         for (var item: rentBill.getTotalRentBill(month, year,2)){
             total = total + item;
         };
         return total;
     }
-    
+    //tính tổng số tiền phòng chưa trả
     private double getRoomChargeUnpaid() {
         double total = 0.0;
         rentBill = new RentBill();
@@ -129,13 +134,14 @@ public class ReportPaneController implements Initializable {
         monthYear = picker.getValue().toString();
         month = monthYear.substring(5);
         year = monthYear.substring(0,4);
+        //tính tổng số tiền bằng cách lọc qua các dữ liệu 
         for (var item: rentBill.getTotalRentBill(month, year,3)){
             total = total + item;
         };
         return total;
         
     }
-    
+    //tính tổng số tiền điên nước
     private double getEWCharge() {
         double total = 0.0;
         ewBill = new ElectricAndWaterBill();
@@ -143,13 +149,14 @@ public class ReportPaneController implements Initializable {
         monthYear = picker.getValue().toString();
         month = monthYear.substring(5);
         year = monthYear.substring(0,4);
+        //tính tổng số tiền bằng cách lọc qua các dữ liệu 
         for (var item: ewBill.getTotalEWBill(month, year,1)){
             
             total = total + item;
         };
         return total;
     }
-    
+    //tính tổng số tiền điện nước đã trả
     private double getEWChargePaid() {
         double total = 0.0;
         ewBill = new ElectricAndWaterBill();
@@ -157,13 +164,14 @@ public class ReportPaneController implements Initializable {
         monthYear = picker.getValue().toString();
         month = monthYear.substring(5);
         year = monthYear.substring(0,4);
+        //tính tổng số tiền bằng cách lọc qua các dữ liệu 
         for (var item: ewBill.getTotalEWBill(month, year,2)){
             
             total = total + item;
         };
         return total;
     }
-    
+    //tính tổng số tiền phòng chưa trả
     private double getEWChargeUnpaid() {
         double total = 0.0;
         ewBill = new ElectricAndWaterBill();
@@ -171,23 +179,24 @@ public class ReportPaneController implements Initializable {
         monthYear = picker.getValue().toString();
         month = monthYear.substring(5);
         year = monthYear.substring(0,4);
+        //tính tổng số tiền bằng cách lọc qua các dữ liệu 
         for (var item: ewBill.getTotalEWBill(month, year,3)){
             
             total = total + item;
         };
         return total;
     }
-    
+    // tính tổng số sinh viên
     private void getTotalStudent() {
         student = new Student();       
         totalLabel.setText(Integer.toString(student.getTotalStudents()));
     }
-    
+    // tính tổng số phòng
     private void getTotalRoom() {
         room = new Room();
         totalRoomLabel.setText(Integer.toString(room.getTotalRooms()));
     }
-    
+    //thêm vào nút chọn ngày tháng
     private void addYearMonthPicker(){
         picker = new YearMonthPicker();
         picker.getStylesheets().add("/styles/yearmonthpicker.css");

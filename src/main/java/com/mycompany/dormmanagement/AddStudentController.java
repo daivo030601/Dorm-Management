@@ -121,6 +121,8 @@ public class AddStudentController implements Initializable {
     private void back(ActionEvent event) {
         closeStage(event);
     }
+    
+    //hàm xử lý khi văn bản thay đổi
     @FXML
     void TextChange(){
         
@@ -218,6 +220,8 @@ public class AddStudentController implements Initializable {
             insertBtn.setDisable(true);
         }
     }
+    
+    //xử lý nút thêm mới
     @FXML
     private void insertData(ActionEvent event) {
         String name = nameText.getText();
@@ -230,13 +234,15 @@ public class AddStudentController implements Initializable {
         String sYear = sYearText.getText();
         String eYear = eYearText.getText();
         String gender = genderComboBox.getValue().toString();
+        //kiểm tra nếu người không thêm hình thì lấy file hình mặc định làm avatar
         if (file == null) {
             file = new File("avatar.jpg");
         }
-        
+        //kiểm tra thông tin nếu trông thì không cho thêm dữ liệu
         if (name.isEmpty() || idStudent.isEmpty() || birthday.toString().isEmpty() || idCard.isEmpty() || phone.isEmpty() || university.isEmpty() || grade.isEmpty() || sYear.isEmpty() || eYear.isEmpty()) {
             showNotification("Bạn chưa điền đầy đủ thông tin! Xin vui lòng điền đầy đủ trước khi thêm sinh viên.");
         } else {
+            // tạo InputStream từ file ảnh người dùng chọn để thêm vào database
             try {
                 fis = new FileInputStream(file);
             } catch (FileNotFoundException ex) {
@@ -255,7 +261,7 @@ public class AddStudentController implements Initializable {
             closeStage(event); 
         }
     }
-    
+    //hiển thị thông báo
      private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
@@ -274,14 +280,17 @@ public class AddStudentController implements Initializable {
     {
         studentPaneController = parentController;
     }
+    
+    //xử lý nút thêm ảnh
     @FXML
     public void handleAddImage(ActionEvent event) {
-        
+        //mở folder để người dùng chọn ảnh từ máy tính
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
         FileChooser chooser = new FileChooser();
         file = chooser.showOpenDialog(stage);
         System.out.println("file ne: " + file);
+        //kiểm tra nếu file khác null thì hiển thị trên ImageView
         if (file != null) {
             Image imageFile = new Image(file.toURI().toString(),175,225,true,true);
             System.out.println("file ne: " + imageFile);
@@ -291,7 +300,7 @@ public class AddStudentController implements Initializable {
             image.setPreserveRatio(true);
         }
     }
-    
+    //hàm thêm dữ liệu vào combobox
     private void addDataToComboBox(){
         ObservableList<String> items = FXCollections.<String>observableArrayList();       
         items.add("Nam");
@@ -299,7 +308,7 @@ public class AddStudentController implements Initializable {
         genderComboBox.setItems(items);
         genderComboBox.getSelectionModel().select(0);
     }
-    
+    //hàm thêm dữ liệu vào Textfield
     private void addDataToTextfield(){
         student = new Student();
         int lastIndex = student.getLastStudentIndex() + 1;

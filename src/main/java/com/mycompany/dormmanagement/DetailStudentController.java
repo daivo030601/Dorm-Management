@@ -67,7 +67,7 @@ public class DetailStudentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-
+    //xử lý nút quay lại
     @FXML
     private void back(ActionEvent event) {
         final Node source = (Node) event.getSource();
@@ -79,6 +79,8 @@ public class DetailStudentController implements Initializable {
         loadData(data);
         
     }
+    
+    //lấy dữ liệu từ database và hiển thị lên màn hình
     public void loadData(String studentID) throws FileNotFoundException, IOException{
         
         student = new Student();
