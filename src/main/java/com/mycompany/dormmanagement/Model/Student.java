@@ -814,5 +814,33 @@ public class Student {
         }        
         return idroom;
     }
+    
+    public void updateStudentRemoveToIDRoom(String id){
+        Connection con = DataConnection.getConnection(); 
+        PreparedStatement statement = null;
+        try {  
+            String query ="update student set IDRoom=null, status = 'CX' where active = 'yes' and IDStudent='"+id+"'";
+            statement = con.prepareStatement(query);
+            statement.execute();   
+        } catch (SQLException ex) {
+           
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                
+                if (statement != null) {
+                    statement.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
 
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(Runtime.Version.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    
+    
+    }
 }
