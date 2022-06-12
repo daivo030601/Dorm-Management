@@ -53,6 +53,7 @@ public class DetailRentBillController implements Initializable {
     private Label ID, apartment, room, idemployee, nameemployee, idstudent, namestudent,date, total,status;
     @FXML
     private Button markAsDonebtn, exportButton;
+    //xử lý khi nhấn nút quay lại
     @FXML
     void backbtn(ActionEvent event){
         final Node source = (Node) event.getSource();
@@ -60,6 +61,7 @@ public class DetailRentBillController implements Initializable {
         stage.close();
         
     }
+    //Cập nhật lại trạng thái
     @FXML
     void updateStatus(ActionEvent event){
         rentbill = new RentBill();
@@ -79,7 +81,7 @@ public class DetailRentBillController implements Initializable {
         
         
     }
-    
+    //lấy dữ liệu và hiển thị ra các label
     public void loadData(String billID){
         
         rentbill = new RentBill();
@@ -201,7 +203,7 @@ public class DetailRentBillController implements Initializable {
             paragraph.add(new Paragraph(" "));
         }
     }
-    
+    //Hàm hiên thi thông báo
     private void showtification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
@@ -209,6 +211,7 @@ public class DetailRentBillController implements Initializable {
 	alert.setContentText(msg);
 	alert.showAndWait();
     }
+    //Hàm mở file
     private void openFile() {
         try {
 
