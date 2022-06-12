@@ -36,6 +36,7 @@ import javafx.stage.Window;
  *
  * @author Mayy
  */
+//Lớp này xử lý giao diện chính của phần mềm
 public class DashboardController implements Initializable {
 
     /**
@@ -81,7 +82,7 @@ public class DashboardController implements Initializable {
                 } else {
                 }
             });
-    }
+    }//đăng xuất
     @FXML
     void handleClicks(ActionEvent event){
     if(event.getSource()== homeBtn){
@@ -168,7 +169,7 @@ public class DashboardController implements Initializable {
     accountBtn.setStyle("-fx-text-fill: #2CA8E9");
     }
      
-    }
+    }//chuyển đổi khi chọn các tab
     private Pane getPane(String path){
         try {
             view = FXMLLoader.load(getClass().getResource(path));
@@ -176,7 +177,7 @@ public class DashboardController implements Initializable {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
       return view;
-    }
+    }//load fxml 
     private void DrawUI(){
     logo.setImage(new Image(getClass().getResourceAsStream("/Image/logo.png")));
     crUsername.setText(LoginFormController.currentUser.getUsername());
@@ -191,7 +192,7 @@ public class DashboardController implements Initializable {
     homeMainView.getChildren().setAll(getPane("/View/roomPane.fxml"));
     homeBtn.setStyle("-fx-opacity: 100%");
     roomBtn.setStyle("-fx-text-fill: #2CA8E9");
-    }
+    }//hiển thị giao diện
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        DrawUI();

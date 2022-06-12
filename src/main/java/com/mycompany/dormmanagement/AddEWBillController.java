@@ -35,6 +35,7 @@ import Utils.DataValidation;
  *
  * @author Mayy
  */
+//Lớp này có chức năng thêm hóa đơn điện nước
 public class AddEWBillController implements Initializable {
     
     /**
@@ -56,7 +57,7 @@ public class AddEWBillController implements Initializable {
     @FXML
     void back(ActionEvent event){
         closeStage(event);
-    }
+    }//quay lại trang trước
    
     @FXML
     void TextChange(KeyEvent event){
@@ -108,7 +109,7 @@ public class AddEWBillController implements Initializable {
         }
         
         
-    }
+    }//Data Validation
     @FXML
     void insertData(ActionEvent event){
         String eEndText = eEnd.getText().trim();
@@ -141,11 +142,11 @@ public class AddEWBillController implements Initializable {
         closeStage(event);
         
         
-    }
+    }//thêm hóa đơn
     @FXML
     void selectApartment(ActionEvent event){
         addDataToRoomComboBox();
-    }
+    }//khi thay đổi tòa cập nhật lại các trường khác
     @FXML
     void selectRoom(ActionEvent event){
         try {
@@ -162,22 +163,22 @@ public class AddEWBillController implements Initializable {
         } catch (Exception e) {
         }
         
-    }
+    }//khi thay đổi phòng cập nhật lại các trường khác
     private void closeStage(ActionEvent event){
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
-    }
+    }//đóng cửa sổ hiện tại
     private void showNotification(String msg){
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText(null);
 	alert.setContentText(msg);
 	alert.showAndWait();
-    }
+    }//hiển thị thông báo
     public void receiveData(EwBillPaneController receiveController){
         eWBillController = receiveController;
-    }
+    }//nhận dữ liệu được truyền từ form trước
     private void addDataToComboBox(){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();       
@@ -188,7 +189,7 @@ public class AddEWBillController implements Initializable {
         apartmentComboBox.getSelectionModel().select(0);
         addDataToRoomComboBox();
                     
-    }
+    }//thêm dữ liệu vào combobox
     private void addDataToRoomComboBox(){
         ObservableList<String> items = FXCollections.<String>observableArrayList();
         String apartmentName = apartmentComboBox.getValue().toString().substring(4);
@@ -198,7 +199,7 @@ public class AddEWBillController implements Initializable {
         roomComboBox.setItems(items);
         roomComboBox.getSelectionModel().select(0);  
     
-    }
+    }//thêm dữ liệu vào room combobox
     private void autoFillEStartAndWStart(){
         ewBill = new ElectricAndWaterBill();
         String roomName = roomComboBox.getValue().toString();
@@ -208,7 +209,7 @@ public class AddEWBillController implements Initializable {
         wStart.setText(lastWStart);
         
         
-    }
+    }//tự động điền số điện đầu và số nước đầu
     
     private double autoFillTotalFee(){
         ewBill = new ElectricAndWaterBill();
@@ -219,11 +220,11 @@ public class AddEWBillController implements Initializable {
             double totalFee = ewBill.totalFee(ewBill.calElectricFee(eNumber), ewBill.calWaterFee(wNumber));
             return totalFee;
         }      
-    }
+    }//tự động tính tổng tiền
     private void DrawUI(){
         addDataToComboBox();
         autoFillEStartAndWStart();
-    }
+    }//hiển thị giao diện
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

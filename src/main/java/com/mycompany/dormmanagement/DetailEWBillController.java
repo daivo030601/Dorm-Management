@@ -34,6 +34,7 @@ import javafx.stage.Stage;
  *
  * @author Mayy
  */
+//chi tiết hóa đơn điện nước
 public class DetailEWBillController implements Initializable {
 
     /**
@@ -60,7 +61,7 @@ public class DetailEWBillController implements Initializable {
         final Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
         
-    }
+    }//quay lại trang trước
     @FXML
     void updateStatus(ActionEvent event){
         ewBill=new ElectricAndWaterBill();
@@ -68,17 +69,17 @@ public class DetailEWBillController implements Initializable {
         markAsDone.setDisable(true);
         eWBillController.refreshTable();
         
-    }
+    }//đánh dấu trạng thái là đã thu
     @FXML
     void exportFilePDF() {
         ExportPDF(ID.getText());
-    } 
+    } //xuất pdf
     public void reciveData(String data, EwBillPaneController parentController){
         loadData(data);
         eWBillController = parentController;
         
         
-    }
+    }//nhận dữ liệu từ form cha
     
     public void loadData(String billID){
         
@@ -99,7 +100,7 @@ public class DetailEWBillController implements Initializable {
         total.setText(ewBill.getTotal() + " VND");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         date.setText(formatter.format(ewBill.getCreateDay()));
-    }
+    }//load dữ liệu lên giao diện
     
     private void ExportPDF(String billID) {
         ewBill = new ElectricAndWaterBill();
@@ -134,7 +135,7 @@ public class DetailEWBillController implements Initializable {
             e.printStackTrace();
         }
         openFile();
-    }
+    }//xuất pdf
     
     private static void addMetaData(Document document) {
         document.addTitle("My first PDF");
@@ -142,7 +143,7 @@ public class DetailEWBillController implements Initializable {
         document.addKeywords("Java, PDF, iText");
         document.addAuthor("Lars Vogel");
         document.addCreator("Lars Vogel");
-    }
+    }//thêm các thuộc tính để xuất file pdf
     
     private static void addTitlePage(Document document, String roomID, String apartmentID, Double eStart, Double eEnd, Double eNum, Double eFee,Double wStart, Double wEnd, Double wNum, Double wFee,String total)
             throws DocumentException {
@@ -203,7 +204,7 @@ public class DetailEWBillController implements Initializable {
         document.add(preface);
         // Start a new page
         document.newPage();
-    }
+    }//định dạng nội dung cho pdf
     
     private static void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
@@ -217,7 +218,7 @@ public class DetailEWBillController implements Initializable {
         alert.setHeaderText(null);
 	alert.setContentText(msg);
 	alert.showAndWait();
-    }
+    }//hiển thị thông báo
     
     private void openFile() {
         try {
@@ -240,7 +241,7 @@ public class DetailEWBillController implements Initializable {
   	  } catch (Exception ex) {
 		ex.printStackTrace();
 	  }
-    }
+    }//mở kết nối để lưu file
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
