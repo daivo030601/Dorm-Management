@@ -70,6 +70,7 @@ public class DetailRentBillController implements Initializable {
         rentBillPaneController.refreshTable();
         
     }
+    // Xuất file
     @FXML
     void exportFilePDF(){
          ExportPDF(ID.getText());
@@ -99,7 +100,7 @@ public class DetailRentBillController implements Initializable {
         total.setText(rentbill.getTotal());
         status.setText(rentbill.getStatus());
     }
-    
+    //Xuất file PDF
     private void ExportPDF(String billID) {
         rentbill = new RentBill();
         rentbill.getInfoBaseIDRentBill(billID);
@@ -135,7 +136,7 @@ public class DetailRentBillController implements Initializable {
         }
         openFile();
     }
-    
+    // Thêm tên duôi file
     private static void addMetaData(Document document) {
         document.addTitle("My first PDF");
         document.addSubject("Using iText");

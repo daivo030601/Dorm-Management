@@ -24,7 +24,7 @@ import javafx.collections.ObservableList;
 /**
  *
  * @author Mayy
- */
+ *///Lớp này chứa các phướng thức và thuộc tính của hóa đơn quản lý tiền phòng
 public class RentBill extends Bill{
     private Student student;
     
