@@ -26,6 +26,8 @@ import javafx.collections.ObservableList;
  *
  * @author Mayy
  */
+
+//Lớp này chưa thuộc tính và các phương thức của sinh viên
 public class Student {
     private String studentID;
     private String fullName;

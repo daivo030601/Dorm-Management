@@ -24,6 +24,8 @@ import javafx.scene.image.ImageView;
  *
  * @author Mayy
  */
+
+// Lớp này chứa các thuộc tính và phương thức của phòng
 public class Room {
 protected String roomID;
 protected Apartment apartment;
