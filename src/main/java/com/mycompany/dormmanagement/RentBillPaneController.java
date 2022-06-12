@@ -62,11 +62,12 @@ public class RentBillPaneController implements Initializable {
 //    private Button showAllBtn;
     
     private YearMonthPicker picker;
-    //event of apartmentCombobox
+    //xử lý khi văn bản search thay đổi
     @FXML
     void selectHandle(ActionEvent event){ 
         refreshTable();
     }
+    //xử lý khi chọn các checkbox
     @FXML
     void checkBoxHandles(ActionEvent event){
         String keyWord = searchText.getText();
@@ -102,14 +103,14 @@ public class RentBillPaneController implements Initializable {
             else dataTableView.getItems().addAll(rentbill.getSearchRentBill(crApartment, 3, keyWord, month, year));
       } 
     }
-    
+    //xử lý khi văn bản search thay đổi
     @FXML
     void textChange(KeyEvent event){
        tableSearch();
       // showAllBtn.setVisible(true);
        
     }
-    
+    //hàm lấy dữ liệu tất cả  tiên phòng
     @FXML
     void showAll(ActionEvent event){
           dataTableView.getItems().clear();
@@ -119,7 +120,7 @@ public class RentBillPaneController implements Initializable {
           searchText.clear();
           //showAllBtn.setVisible(false);
     }
-    
+    //xử lý khi nhấn nút thêm tiên phòng mới
     @FXML
     void addRentBill(ActionEvent event){
         try {
@@ -134,7 +135,7 @@ public class RentBillPaneController implements Initializable {
         } catch (IOException e) {
         }
     }
-    
+    //hàm render lại table
     public void refreshTable(){
         if(searchText.getText().isEmpty()){
             dataTableView.getItems().clear();
@@ -149,7 +150,7 @@ public class RentBillPaneController implements Initializable {
         }
         }else tableSearch();   
     }
-    
+    //hàm xử lý khi tìm kiếm bằng thanh search
     private void tableSearch(){
        String keyWord = searchText.getText();
        dataTableView.getItems().clear();
@@ -164,7 +165,7 @@ public class RentBillPaneController implements Initializable {
        } else { dataTableView.getItems().addAll(rentbill.getSearchRentBill(crApartment, 3, keyWord, month, year));
        }
     }
-    
+    //hàm tạo table
     private void initTableView(TableView table){
         indexCol.setCellValueFactory(new MapValueFactory<>("id"));
         roomCol.setCellValueFactory(new MapValueFactory<>("room"));
@@ -182,13 +183,15 @@ public class RentBillPaneController implements Initializable {
         toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.13));
         addDataToTable(table,1);
     }
+    //hàm thêm dữ liệu vào table (option là giá trị tương ứng của checkbox
     private void addDataToTable(TableView table,int option){      
         rentbill = new RentBill();
         String monthYear, month, year;
         monthYear = picker.getValue().toString();
         month = monthYear.substring(5);
         year = monthYear.substring(0,4);
-        String crApartment = apartmentComboBox.getValue().toString().substring(4);    
+        String crApartment = apartmentComboBox.getValue().toString().substring(4);   
+        // lấy dữ liệu tùy vào các giá trị của checkbox
         switch (option) {
                 case 1:
                     table.getItems().addAll(rentbill.getRentBill(crApartment,option, month, year));
@@ -208,6 +211,7 @@ public class RentBillPaneController implements Initializable {
                     break;
             }
     }
+    //hàm thêm các nút vào từng hàng trên table
     private void addButtonToTable() {
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
             // make cell containing buttons
@@ -215,11 +219,14 @@ public class RentBillPaneController implements Initializable {
                 @Override
                 public void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
+                    //kiểm tra item có null hay không nếu không thì thêm các nút
                     if (empty) {
                         setGraphic(null);
                     } else {
+                        //tạo các nút bâm với các hình ảnh icon và background color
                         Button btnDetail = new Button("", new ImageView("/Image/viewdetails.png"));
                         btnDetail.setStyle("-fx-background-color: transparent;");
+                        //cài sự kiện khi nhấn nút cho từng nút bấm
                         btnDetail.setOnAction((ActionEvent event) -> {
                             int index = getIndex();
                             String data = (String) indexCol.getCellObservableValue(index).getValue();
@@ -235,13 +242,15 @@ public class RentBillPaneController implements Initializable {
         };
         toolCol.setCellFactory(cellFactory);
     }
-    
+    //xử lý sự kiện khi bấm vào nút detail của từng item
     private void sendDetailData(String data){
         try {
+            //mở một màn hình thông tin mới
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/detailRentBill.fxml"));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
         stage.setTitle("Xem thông tin tiền phòng");
+        //set Controller cho màn hình mới
         stage.setScene(new Scene(root));
         DetailRentBillController detailRentBillController = loader.getController(); 
         detailRentBillController.reciveData(data,this);
@@ -251,7 +260,7 @@ public class RentBillPaneController implements Initializable {
         }
         System.out.println("success");
     }
-    
+    //lấy dữ liệu thêm vào combobox
     private void addDataToCombobox(ComboBox comboBox){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();
@@ -261,7 +270,7 @@ public class RentBillPaneController implements Initializable {
         comboBox.getItems().addAll(items);
         
     }
-    
+    //hàm thêm thang nam
     private void addYearMonthPicker(){
         picker = new YearMonthPicker(); 
         picker.getStylesheets().add("/styles/yearmonthpicker.css");

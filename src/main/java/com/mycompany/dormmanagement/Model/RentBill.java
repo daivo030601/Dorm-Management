@@ -24,7 +24,7 @@ import javafx.collections.ObservableList;
 /**
  *
  * @author Mayy
- */
+ *///Lớp này chứa các phướng thức và thuộc tính của hóa đơn quản lý tiền phòng
 public class RentBill extends Bill{
     private Student student;
     
@@ -49,7 +49,7 @@ public class RentBill extends Bill{
     public void setStudent(Student student) {
         this.student = student;
     }
-    
+   //lấy dữ liệu phòng từ IDApartment  
 public ObservableList<Map<String, Object>> getRentBill(String apartment, int option, String month,String year){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -60,6 +60,7 @@ public ObservableList<Map<String, Object>> getRentBill(String apartment, int opt
         try {        
             statement = con.createStatement();
             String query ="" ;
+            //dựa vào tham số option truyền vào mà lấy dữ liệu tùy vào giá trị option
             switch (option) {
                 case 1:
                     query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"'";
@@ -74,6 +75,7 @@ public ObservableList<Map<String, Object>> getRentBill(String apartment, int opt
                     query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"'";
                     break;
             }
+            //thực hiện câu query và lưu kết quả vào items
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
             item = new HashMap<>();
@@ -106,7 +108,7 @@ public ObservableList<Map<String, Object>> getRentBill(String apartment, int opt
         }
         return items;
     }
-    
+    //lấy dữ liệu phòng dừa vào keyWord search người dùng nhập
 public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, int option, String keyWord, String month,String year){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -117,6 +119,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
         try {        
             statement = con.createStatement();
             String query ="" ;
+            //khởi tạo chuỗi query dựa vào tham số option và keyword, apartment, month, year
             switch (option) {
                 case 1:
                     query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+ "' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
@@ -131,7 +134,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
                     query = "Select IDRBill,IDEmployee,IDRoom,IDApartment,IDStudent,Createday,format(total,2),status from rentbill where IDApartment ='"+ apartment+"' and MONTH(Createday) = '"+month+"' and YEAR(Createday) = '"+ year+"' and (IDRoom LIKE '%" + keyWord +"%' or IDRBill LIKE '%"+keyWord+"%')";
                     break;
             }
-            
+            //thực hiện câu query và lưu kết quả vào items
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
             item = new HashMap<>();
@@ -164,19 +167,21 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
         }
         return items;
     }
-    
+    /// Lấy dữ liệu thông tin đầy đủ của hóa đơn tiền phòng
     public void getInfoBaseIDRentBill(String ID){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
         ResultSet resultSet = null;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {        
+        try {    
+            //khởi tạo chuỗi query theo tham số ID renbill tiên phòng
             statement = con.createStatement();
             String query = "SELECT rentbill.IDRBill,rentbill.IDApartment,rentbill.IDRoom,rentbill.IDEmployee,employee.Fullname,rentbill.IDStudent,student.Fullname,rentbill.Createday,rentbill.Total,rentbill.status\n" +
                            "FROM ((quanlyktx.rentbill\n" +
                            "INNER JOIN quanlyktx.employee ON rentbill.IDEmployee = employee.IDEmployee)\n" +
                            "INNER JOIN quanlyktx.student ON rentbill.IDStudent = student.IDStudent) \n" +
                            "where rentbill.IDRBill ='"+ID+"'";
+             //thực hiện câu query và lưu kết quả vào items
             resultSet = statement.executeQuery(query);
             while(resultSet.next()){
               this.billID = resultSet.getString(1);   
@@ -217,6 +222,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
         }      
     
     }
+    //Cập nhật dữ liệu thông tin chuyển trạng thái khi đã thu tiền phòng theo IDRBill
      public void updateStatusRentBill(String IDRBill){
         
         Connection con = DataConnection.getConnection(); 
@@ -244,6 +250,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
             }
         }
     }
+     //Thêm dữ liệu tiền phòng mới trong RentBill
      public void insertRentBilldata(){
         
         Connection con = DataConnection.getConnection(); 
@@ -282,6 +289,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
             }
         }
     }
+     //lấy số thứ tự IDBill cuối cùng của bảng dữ liệu
     public int getLastBillIDIndex(){
         String lastRentBill = "";
         int index = 0;
@@ -321,7 +329,7 @@ public ObservableList<Map<String, Object>> getSearchRentBill(String apartment, i
         System.out.println(index);
         return index;
     }
-    
+    //Hiển thị tất cả sô tiền phòng trong RentBill theo tháng năm và trạng thái của RentBill
     public ArrayList<Double> getTotalRentBill(String month,String year,int option){
         ArrayList<Double> items = new ArrayList<Double>();
         Connection con = DataConnection.getConnection(); 
