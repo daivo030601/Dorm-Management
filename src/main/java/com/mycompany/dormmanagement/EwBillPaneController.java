@@ -72,6 +72,7 @@ import javafx.stage.Window;
  *
  * @author Mayy
  */
+//quản lý hóa đơn điện nước
 public class EwBillPaneController implements Initializable {
 
     /**
@@ -109,7 +110,7 @@ public class EwBillPaneController implements Initializable {
     @FXML
     void selectHandle(ActionEvent event){ 
         refreshTable();
-    }
+    }//cập nhật thoogn tin bảng khi chọn filter
     @FXML
     void checkBoxHandles(ActionEvent event){
         String keyWord = searchText.getText();
@@ -145,13 +146,13 @@ public class EwBillPaneController implements Initializable {
             addDataToTable(dataTableView,3);
             else dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 3, keyWord, month, year));
       } 
-    }
+    }//cập nhật thông tin bảng khi chọn checkbox filter
     @FXML
     void textChange(KeyEvent event){
        tableSearch();
        showAllBtn.setVisible(true);
        
-    }
+    }//tìm kiếm
     @FXML
     void showAll(ActionEvent event){
           dataTableView.getItems().clear();
@@ -160,7 +161,7 @@ public class EwBillPaneController implements Initializable {
           else addDataToTable(dataTableView, 3);
           searchText.clear();
           showAllBtn.setVisible(false);
-    }
+    }//hiển thị tất cả
     @FXML
     void addEWBill(ActionEvent event){
  
@@ -177,7 +178,7 @@ public class EwBillPaneController implements Initializable {
         }
         
         
-    }
+    }//chuyển sang giao diện thêm hóa đơn
     public void refreshTable(){
         if(searchText.getText().isEmpty()){
             dataTableView.getItems().clear();
@@ -191,7 +192,7 @@ public class EwBillPaneController implements Initializable {
             addDataToTable(dataTableView,3);
         }
         }else tableSearch();   
-    }
+    }//cập nhật dữ liệu hiển thị lên bảng
     private void tableSearch(){
        String keyWord = searchText.getText();
        dataTableView.getItems().clear();
@@ -205,7 +206,7 @@ public class EwBillPaneController implements Initializable {
        } else if(doneBox.isSelected()){ dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 2, keyWord, month, year));
        } else { dataTableView.getItems().addAll(ewBill.getSearchEWBill(crApartment, 3, keyWord, month, year));
        }
-    }
+    }//cập nhật dữ liệu khi tìm kiếm
     private void initTableView(TableView table){
         
         indexCol.setCellValueFactory(new MapValueFactory<>("id"));
@@ -225,7 +226,7 @@ public class EwBillPaneController implements Initializable {
         addDataToTable(table,1);
         
         
-    }
+    }//hiển thị dữ liệu lên bảng
     private void addDataToTable(TableView table,int option){      
         ewBill = new ElectricAndWaterBill();
         String monthYear, month, year;
@@ -251,7 +252,7 @@ public class EwBillPaneController implements Initializable {
                     addButtonToTable();
                     break;
             }
-    }
+    }//thêm dữ liệu vào bảng
     private void addButtonToTable() {     
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
             // make cell containing buttons
@@ -279,7 +280,7 @@ public class EwBillPaneController implements Initializable {
         };
 
         toolCol.setCellFactory(cellFactory);
-    }
+    }//thêm nút xem chi tiết vào cột cuối của bảng
     private void sendDetailData(String data){
         
         try {
@@ -295,7 +296,7 @@ public class EwBillPaneController implements Initializable {
             System.out.println(e);
         }
         System.out.println("success");      
-    }
+    }//chuyển sang giao diện chi tiết hóa đơn điện nước
     
     private void addDataToCombobox(ComboBox comboBox){
         apartment = new Apartment();
@@ -305,7 +306,7 @@ public class EwBillPaneController implements Initializable {
         }
         comboBox.getItems().addAll(items);
         
-    }
+    }//thêm dữ liệu tòa vào combobox
     
     private void addYearMonthPicker(){
         picker = new YearMonthPicker(); 
@@ -327,7 +328,7 @@ public class EwBillPaneController implements Initializable {
         });
         box.getChildren().add(2, picker);
         
-    }
+    }//thêm yearmonthpicker vào giao diện
    
     private void DrawUI(){
         allBox.setSelected(true);
@@ -336,7 +337,7 @@ public class EwBillPaneController implements Initializable {
         addYearMonthPicker();
         initTableView(dataTableView); 
         
-    }
+    }//hiển thị giao diện
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

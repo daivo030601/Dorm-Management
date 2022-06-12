@@ -21,6 +21,7 @@ import javafx.stage.Stage;
  *
  * @author Mayy
  */
+//chi tiết thông tin tài khoản và thông tin nhân viên
 public class DetailEmployeeController implements Initializable {
 
     /**
@@ -50,10 +51,10 @@ public class DetailEmployeeController implements Initializable {
         final Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
         
-    }
+    }//quay lại trang trước
     public void receiveData(String idEmployee,String username){   
         showData(idEmployee, username);
-    }
+    }//nhận dữ liệu từ form cha
     private void showData(String idEmployee,String username){
         
         Account account = new Account();
@@ -85,7 +86,7 @@ public class DetailEmployeeController implements Initializable {
         
         permissionText.setText(account.getPermission());
     
-    }
+    }//hiển thị dữ liệu lên giao diện
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

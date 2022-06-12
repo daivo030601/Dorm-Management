@@ -39,6 +39,7 @@ import Utils.DataValidation;
  *
  * @author Mayy
  */
+//Lớp này thực hiện chức năng quản lý tòa
 public class ApartmentPaneController implements Initializable {
 
     /**
@@ -75,11 +76,11 @@ public class ApartmentPaneController implements Initializable {
         toolCol.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
         addDataToTable(table,1);
         
-    }
+    }//hiển thị thông tin bảng
     @FXML
     void clearText(){
     clearAll();
-    }
+    }//clear các trường
     @FXML
     void apartmentTextChange(){
         if(DataValidation.textFieldIsNull(idTextField, apartmentError, "Vui lòng không để trống")){
@@ -94,7 +95,7 @@ public class ApartmentPaneController implements Initializable {
             addBtn.setDisable(false);
         } else addBtn.setDisable(true);
     
-    }
+    }//input validation
     @FXML
     void checkHandle(ActionEvent event){
         String keyWord = searchText.getText();
@@ -122,12 +123,12 @@ public class ApartmentPaneController implements Initializable {
             if(searchText.getText().isEmpty())
             addDataToTable(dataTableView,3);
             else dataTableView.getItems().addAll(apartment.getSearchApartment(3, keyWord));
-      } }
+      } }//cập nhật dữ liệu hiển thị trong bảng khi nhấn vào checkbox filter
     @FXML
     void textChange(){
         tableSearch(dataTableView);
         showAllBtn.setVisible(true);
-    }
+    }//tìm kiếm
     @FXML
     void showAll(ActionEvent event){
           dataTableView.getItems().clear();
@@ -136,7 +137,7 @@ public class ApartmentPaneController implements Initializable {
           else addDataToTable(dataTableView, 3);
           searchText.clear();
           showAllBtn.setVisible(false);
-    }
+    }//hiển thị tất cả
     @FXML
     void addApartment(){
         apartment = new Apartment();
@@ -153,7 +154,7 @@ public class ApartmentPaneController implements Initializable {
             clearAll();
         }
         else showNotification("Tòa nhà này đã tồn tại");
-    }
+    }//thêm tòa
     @FXML
     void valueChange(){
         Employee employee = new Employee();
@@ -163,7 +164,7 @@ public class ApartmentPaneController implements Initializable {
         } catch (Exception e) {
         }
         
-    }
+    }//cập nhật tên nhân viên khi chọn id nhân viên khác trong combobox
     public void refreshTable(){
         if(searchText.getText().isEmpty()){
             dataTableView.getItems().clear();
@@ -177,21 +178,21 @@ public class ApartmentPaneController implements Initializable {
             addDataToTable(dataTableView,3);
         }
         }else tableSearch(dataTableView);   
-    }
+    }//cập nhật thông tin hiển thị trong bảng
     private void clearAll(){
     idTextField.clear();
     genderCombobox.getSelectionModel().selectFirst();
     employeeCombobox.getSelectionModel().selectFirst();
     valueChange(); 
     apartmentError.setVisible(false);
-    }
+    }//clear các trường
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText(null);
 	alert.setContentText(msg);
 	alert.showAndWait();
-    }
+    }//hiển thị thông báo
     private void addDataToTable(TableView table, int option){
         apartment = new Apartment();
         ObservableList<Map<String, Object>> items =
@@ -212,7 +213,7 @@ public class ApartmentPaneController implements Initializable {
         table.getItems().addAll(items);
         addButtonToTable();
     
-    }
+    }//thêm dữ liệu vào bảng
     private void addButtonToTable() {     
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
             // make cell containing buttons
@@ -248,7 +249,7 @@ public class ApartmentPaneController implements Initializable {
         };
 
         toolCol.setCellFactory(cellFactory);
-    }
+    }//thêm nút xóa vào cột cuối bảng
     private void deleteApartment(String ID){
         apartment = new Apartment();
         Room room = new Room();
@@ -260,7 +261,7 @@ public class ApartmentPaneController implements Initializable {
         apartment.delete(ID);
         
     
-    }
+    }//xóa tòa
     private void tableSearch(TableView table){
         String keyWord = searchText.getText();
         table.getItems().clear();
@@ -269,12 +270,12 @@ public class ApartmentPaneController implements Initializable {
        } else if(doneBox.isSelected()){ table.getItems().addAll(apartment.getSearchApartment(2, keyWord));
        } else { table.getItems().addAll(apartment.getSearchApartment(3, keyWord));
        }
-    }
+    }//tìm kiếm
     private void addDataToCombobox(){
         Employee employee = new Employee();
         genderCombobox.getItems().addAll("Nam","Nữ");
         employeeCombobox.getItems().addAll(employee.getHeadOfApartment());
-    }
+    }//thêm dữ liệu vào combobox giới tính
     private void DrawUI(){
     allBox.setSelected(true);
     initTableView(dataTableView); 
@@ -282,7 +283,7 @@ public class ApartmentPaneController implements Initializable {
     genderCombobox.getSelectionModel().selectFirst();
     employeeCombobox.getSelectionModel().selectFirst();
     valueChange();
-    }
+    }//hiển thị giao diện
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

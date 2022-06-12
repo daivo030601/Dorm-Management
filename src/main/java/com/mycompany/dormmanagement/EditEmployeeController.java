@@ -28,6 +28,7 @@ import javafx.stage.Stage;
  *
  * @author Mayy
  */
+//cập nhật thông tin tài khoản và thông tin nhân viên
 public class EditEmployeeController implements Initializable {
 
     /**
@@ -72,7 +73,7 @@ public class EditEmployeeController implements Initializable {
         } catch (Exception e) {
             showNotification("Cập nhật không thành công");
         }
-    }
+    }//cập nhật thông tin nhân viên
     @FXML
     void TextChange(){
     if(DataValidation.textFieldIsNull(nameText, nameError, "Vui lòng không để trống")) {
@@ -116,7 +117,7 @@ public class EditEmployeeController implements Initializable {
     accountUpdateBtn.setDisable(false);
     } else accountUpdateBtn.setDisable(true);
     
-    }
+    }//input validation
     @FXML
     void updateAccount(){
         String username,pass,permission;
@@ -135,25 +136,26 @@ public class EditEmployeeController implements Initializable {
             showNotification("Cập nhật không thành công");
             System.out.println(e);
         }
-    }
+    }//cập nhật thông tin tài khoản
     @FXML
     void back(ActionEvent event)
     {
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
-    }
+    }//quay lại trang trước
     public void receiveData(String idEmployee,String username, AccountPaneController parentController){
         showData(idEmployee, username);
         accountPaneController = parentController;
     }
+    //nhận dữ liệu từ form cha
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText(null);
 	alert.setContentText(msg);
 	alert.showAndWait();
-    }
+    }//hiển thị thông báo
     private void showData(String idEmployee,String username){
         
         
@@ -190,7 +192,7 @@ public class EditEmployeeController implements Initializable {
         permissionCombo.getItems().addAll("admin","user");
         permissionCombo.getSelectionModel().select(account.getPermission());
     
-    }
+    }//hiển thị giao diện
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
