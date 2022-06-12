@@ -10,9 +10,10 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- *
+ * 
  * @author Mayy
  */
+//Lớp cha của ElectricandWaterBill và Rentbill
 public class Bill {
    protected String  billID;
    protected Employee employee;

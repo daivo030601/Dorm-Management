@@ -39,6 +39,7 @@ import java.time.LocalDate;
  *
  * @author Mayy
  */
+//lớp này dùng để xử lý tương tác giao diện và model của chức năng quản lý tài khoản
 public class AccountPaneController implements Initializable {
 
     /**
@@ -63,7 +64,7 @@ public class AccountPaneController implements Initializable {
     void textChange(){
         tableSearch(dataTableView);
         showAllBtn.setVisible(true);
-    }
+    }//tìm kiếm
     @FXML
     void fieldValueChange(){
     if(DataValidation.textFieldIsNull(idTextField, nameError, "Vui lòng không để trống")) {
@@ -109,7 +110,7 @@ public class AccountPaneController implements Initializable {
     addBtn.setDisable(true);
     }
     
-    }
+    }//input validation
 
     @FXML
     void showAll(){
@@ -117,7 +118,7 @@ public class AccountPaneController implements Initializable {
         dataTableView.getItems().clear();
         addDataToTable(dataTableView);
         showAllBtn.setVisible(false);
-    }
+    }//hiển thị tất cả 
     @FXML
     void addEmployee(){
         Account account = new Account();
@@ -150,22 +151,22 @@ public class AccountPaneController implements Initializable {
         }
         } else showNotification("Tên tài khoản đã tồn tại");
         
-    }
+    }//thêm tài khoản
     @FXML
     void clearText(){
     clearAll();
-    }
+    }//clear tất cả các trường
     public void refreshTable(){
         dataTableView.getItems().clear();
         addDataToTable(dataTableView); 
-    }
+    }//cập nhật lại bảng
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText(null);
 	alert.setContentText(msg);
 	alert.showAndWait();
-    }
+    }//hiển thị thông báo
     private void initTable(TableView table){
         IDCol.setCellValueFactory(new MapValueFactory<>("id"));
         nameCol.setCellValueFactory(new MapValueFactory<>("name"));
@@ -195,18 +196,18 @@ public class AccountPaneController implements Initializable {
         }
         addDataToTable(table);
         addButtonToTable();
-    }
+    }//thiết lập và hiển thị thông tin lên bảng
     private void addDataToTable(TableView table){
         table.getItems().clear();
         table.getItems().addAll(employee.getAllEmployeeIncludeAccount());
           
-    }
+    }//thêm dữ liệu vào bảng
     private void tableSearch(TableView table){
     String keyWord = searchText.getText().trim();
     table.getItems().clear();
     table.getItems().addAll(employee.getSearchEmployeeIncludeAccount(keyWord));
     
-    }
+    }//thêm dữ liệu vào bảng khi tìm kiếm
     private void clearAll(){
     idTextField.clear();
     passwordText.clear();
@@ -222,7 +223,7 @@ public class AccountPaneController implements Initializable {
     phoneError.setVisible(false);
     nameError.setVisible(false);
     birthdayError.setVisible(false);
-    }
+    }//clear các trường
      private void addButtonToTable() {     
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
             // make cell containing buttons
@@ -274,7 +275,7 @@ public class AccountPaneController implements Initializable {
         };
 
         toolCol.setCellFactory(cellFactory);
-    }
+    }//thêm nút thêm xóa sửa vào cột cuối cùng của bảng
      private void sendDetailData(String idEmployee, String username){
         
         try {
@@ -291,7 +292,7 @@ public class AccountPaneController implements Initializable {
         }
         System.out.println("success");
         
-    }
+    }//chuyển sang giao diện detail account
      private void sendEditData(String idEmployee, String username){
         
         try {
@@ -308,7 +309,7 @@ public class AccountPaneController implements Initializable {
         }
         System.out.println("success");
         
-    }
+    }//chuyển sang giao diện edit
      private void deleteData(String idEmployee, String idAccount,String permission){
          System.out.println("1" + permission);
      String crUserPermission = LoginFormController.currentUser.getPermission();
@@ -342,17 +343,17 @@ public class AccountPaneController implements Initializable {
                 showNotification("Bạn không đủ quyền để xóa tài khoản này.");
          }
      }
-     }
+     }//xóa tài khoản
     private void addDataToCombobox(){
         positionCombobox.getItems().addAll("Người quản trị","Trưởng nhà","Nhân viên");
         positionCombobox.getSelectionModel().select(1);
-    }
+    }//thêm dữ liệu vào combobox
     private void DrawUI(){
         initTable(dataTableView);
         addDataToCombobox();
         birthdayPicker.setValue(LocalDate.now());
         
-    }
+    }//hiển thị giao diện
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

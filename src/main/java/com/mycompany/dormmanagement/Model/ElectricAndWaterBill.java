@@ -35,6 +35,7 @@ import java.util.Locale;
  *
  * @author Mayy
  */
+//Lớp này chứa các phướng thức và thuộc tính của hóa đơn Điện-nước
 public class ElectricAndWaterBill extends Bill {
    protected double ChiSoDauDien;
    protected double ChiSoCuoiDien;
@@ -109,6 +110,7 @@ public class ElectricAndWaterBill extends Bill {
     public void setChiSoCuoiNuoc(double ChiSoCuoiNuoc) {
         this.ChiSoCuoiNuoc = ChiSoCuoiNuoc;
     }
+    //Lấy thông tin từ CSDL dựa vào ID hóa đơn
     public void getInfoBaseID(String ID){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
@@ -157,6 +159,7 @@ public class ElectricAndWaterBill extends Bill {
         }      
     
     }
+    //Lấy thông tin của tất cả hóa đơn điện-nước trong 1 tòa theo thời gian tháng-năm
     public ObservableList<Map<String, Object>> getEWBill(String apartment, int option, String month,String year){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -213,7 +216,7 @@ public class ElectricAndWaterBill extends Bill {
         }
         return items;
     }
-    
+    //Lấy thông tin của tất cả hóa đơn điện nước trong 1 tòa dựa vào thời gian và từ khóa tìm kiếm
     public ObservableList<Map<String, Object>> getSearchEWBill(String apartment, int option, String keyWord, String month,String year){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -271,6 +274,7 @@ public class ElectricAndWaterBill extends Bill {
         }
         return items;
     }
+    //Lấy ra chỉ số điện mới nhất của phòng
     public double getLastEValueOfRoom(String room){
         double lastEValue = 0.0;
         Connection con = DataConnection.getConnection(); 
@@ -304,6 +308,7 @@ public class ElectricAndWaterBill extends Bill {
         }
         return lastEValue;
     }
+    //lấy ra chỉ số nước mới nhất của phòng
     public double getLastWValueOfRoom(String room){
         double lastWValue = 0.0;
         Connection con = DataConnection.getConnection(); 
@@ -337,6 +342,7 @@ public class ElectricAndWaterBill extends Bill {
         }
         return lastWValue;
     }
+    //lấy ra index cuối cùng của hóa đơn để tự động tạo ID hóa đơn mới
     public int getLastBillIDIndex(){
         String lastEWBill = "";
         int index = 0;
@@ -376,7 +382,7 @@ public class ElectricAndWaterBill extends Bill {
         System.out.println(index);
         return index;
     }
-    
+    //thêm thông tin 1 hóa đơn vào CSDL
     public void insertNewEWBill(){
         
         Connection con = DataConnection.getConnection(); 
@@ -417,7 +423,7 @@ public class ElectricAndWaterBill extends Bill {
             }
         }
     }
-    
+    //Cập nhật trạng thái đã thu cho hóa đơn
     public void updateStatusEWBill(String IDEWBill){
         
         Connection con = DataConnection.getConnection(); 
@@ -445,7 +451,7 @@ public class ElectricAndWaterBill extends Bill {
             }
         }
     }
-    
+    //lấy ra tổng tiền của hóa đơn
     public ArrayList<Double> getTotalEWBill(String month,String year, int option){
         ArrayList<Double> items = new ArrayList<Double>();
         Connection con = DataConnection.getConnection(); 
@@ -493,18 +499,23 @@ public class ElectricAndWaterBill extends Bill {
         }
         return items;
     }
+    //tính tổng tiền điện tiền điện = 2014*(chỉ số cuối - chỉ số đầu)
     public double calElectricFee(double chiSoDau, double chiSoCuoi){
     return 2014*(chiSoCuoi-chiSoDau);
     }
+    //tính tổng tiền điện eNumber = chỉ số cuối - chỉ số đầu
     public double calElectricFee(double eNumber){
     return 2014*eNumber;
     }
+    //tính tổng tiền nước tiền nước = 10000*(chỉ số cuối - chỉ số đầu)
     public double calWaterFee(double chiSoDau, double chiSoCuoi){
     return 10000*(chiSoCuoi-chiSoDau);
     }
+    //tính tổng tiền nước wNumber = chỉ số cuối - chỉ số đầu
     public double calWaterFee(double wNumber){
     return 10000*wNumber;
     }
+    //tính tổng phí = tiền điện + tiền nước
     public double totalFee(double electricFee,double waterFee){
     return electricFee + waterFee;
     }

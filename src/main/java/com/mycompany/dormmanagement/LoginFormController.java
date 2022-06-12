@@ -28,6 +28,7 @@ import javafx.scene.input.KeyEvent;
  *
  * @author Mayy
  */
+//đăng nhập
 public class LoginFormController implements Initializable {
     private Account account;
     public static Account currentUser;
@@ -63,20 +64,20 @@ public class LoginFormController implements Initializable {
            Logger.getLogger(LoginFormController.class.getName()).log(Level.SEVERE, null, ex);
        }
        }  
-    }  
+    }  //kiểm tra thoogn tin vào đăng nhập
     @FXML
     void mouseEnter(MouseEvent event){
         loginBtn.setStyle("-fx-background-color: #2893CB");
-    }
+    }//hiệu ứng hover
     @FXML
     void mouseExit(MouseEvent event){
         loginBtn.setStyle("-fx-background-color: #2CA8E9;");
-    }
+    }//hiệu ứng hover
     @FXML
     void action(MouseEvent event){
         usernameErrorLabel.setVisible(false);
         passwordErrorLabel.setVisible(false);
-    }
+    }//ẩn báo lỗi khi người dùng nhập lại
     
     private void showtification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -84,12 +85,12 @@ public class LoginFormController implements Initializable {
         alert.setHeaderText(null);
 	alert.setContentText(msg);
 	alert.showAndWait();
-    }
+    }//hiển thị thông báo
     private void DrawUi(){
         logoImageView.setImage(new Image(getClass().getResourceAsStream("/Image/logo.png")));
         usernameIcon.setImage(new Image(getClass().getResourceAsStream("/Image/usernameicon.png")));
         passwordIcon.setImage(new Image(getClass().getResourceAsStream("/Image/passwordicon.png")));
-    }
+    }//hiển thị giao diện
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         DrawUi();

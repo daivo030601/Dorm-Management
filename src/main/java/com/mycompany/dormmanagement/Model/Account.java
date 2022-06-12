@@ -19,6 +19,7 @@ import javax.sql.StatementEvent;
  *
  * @author Mayy
  */
+//Lớp này chứa các phương thức và thuộc tính của tài khoản nhân viên
 public class Account {
     protected String IDAccount;
     protected String Username;
@@ -70,6 +71,7 @@ public class Account {
     public void setPermission(String Permission) {
         this.Permission = Permission;
     }
+    //lấy thông tin tài khoản dựa trên username
     public void GetDataByUsername(String username) {
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
@@ -106,6 +108,7 @@ public class Account {
         }        
     
     }   
+    //lấy thông tin tài khoản dựa trên ID
     public void getDataByID(String ID){
     Connection con = DataConnection.getConnection(); 
         Statement statement = null;
@@ -140,6 +143,7 @@ public class Account {
             }
         }        
     }
+    //thêm tài khoản mới
      public void insertNewAccount(){
      Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
@@ -172,6 +176,7 @@ public class Account {
         }
      
      }
+     //cập nhật tài khoản
      public void update(Account account){
      Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
@@ -203,6 +208,7 @@ public class Account {
         }
      
      }
+     //xóa tài khoản
      public void detele(String ID){
      
         Connection con = DataConnection.getConnection(); 

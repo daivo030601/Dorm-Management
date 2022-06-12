@@ -23,6 +23,7 @@ import javafx.collections.ObservableList;
  *
  * @author Mayy
  */
+//Lớp này chứa phương thức và thuộc tính của tòa
 public class Apartment {
     protected String IDApartment;
     protected String NoRoom;
@@ -74,7 +75,7 @@ public class Apartment {
     public void setIDEmployee(String IDEmployee) {
         this.IDEmployee = IDEmployee;
     }
-    
+    //lấy tên tòa dựa theo giới tính
     public ArrayList<String> getApartmentWithGender(String gender){
     
         ArrayList<String> listApartment = new ArrayList<String>();
@@ -109,7 +110,7 @@ public class Apartment {
         }        
         return listApartment;
     }
-    
+    //lấy tên tất cả các tòa
     public ArrayList<String> getAllApartment(int option){
     
         ArrayList<String> listApartment = new ArrayList<String>();
@@ -158,7 +159,7 @@ public class Apartment {
         }        
         return listApartment;
     }
-    
+    //lấy tên của tất cả các tòa khớp với từ khóa
     public ObservableList<Map<String, Object>> getSearchApartment(int option, String keyWord){
         ObservableList<Map<String, Object>> items =
         FXCollections.<Map<String, Object>>observableArrayList();
@@ -216,6 +217,7 @@ public class Apartment {
         }
         return items;
     }
+    //lấy dữ liệu các phòng thuộc tòa
     public ArrayList<String> getRoomNameBaseApartment(String apartment){
     ArrayList<String> listRoom = new ArrayList<>();
         Connection con = DataConnection.getConnection(); 
@@ -249,6 +251,7 @@ public class Apartment {
         }        
         return listRoom;
     }
+    //thêm tòa mới
     public void insertNewApartment(String ID,String gender,String employeeID){
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
@@ -281,6 +284,7 @@ public class Apartment {
         }
     
     }
+    //lấy thông tin tòa
     public void getInfo(String apartment){
         Connection con = DataConnection.getConnection(); 
         Statement statement = null;
@@ -317,6 +321,7 @@ public class Apartment {
         
         
     }
+    //lấy dữ liệu sinh viên trong tòa
    public ArrayList<String> getStudentNameBaseRentBill(String apartment){
     ArrayList<String> listStudent = new ArrayList<>();
         Connection con = DataConnection.getConnection(); 
@@ -350,6 +355,7 @@ public class Apartment {
         }        
         return listStudent;
     }
+   //lấy tổng giá thuê của các phòng trong tòa
     public int getTotalRentBill(String apartment,String idroom){
         int Total = 0;
         Connection con = DataConnection.getConnection(); 
@@ -383,7 +389,7 @@ public class Apartment {
         }        
         return Total;
     }
-
+    //cập nhật số lượng phòng trong tòa
     public void updateNoRoom(String ID, String noRoom){
     Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;
@@ -415,6 +421,7 @@ public class Apartment {
     
     
     }
+    //xóa tòa
     public void delete(String IDApartment){
         Connection con = DataConnection.getConnection(); 
         PreparedStatement statement = null;

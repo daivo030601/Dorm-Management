@@ -18,6 +18,7 @@ import javafx.stage.WindowEvent;
 /**
  * JavaFX App
  */
+//main class của phần mềm
 public class App extends Application {
 
     private static Scene scene;
@@ -51,16 +52,16 @@ public class App extends Application {
             
     }
         });
-    }
+    }//set up và hiển thị phần mềm, cài đặt sự kiện hỏi khi muốn tắt phần mềm
 
     static public void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
-    }
+    }//set scene
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
         return fxmlLoader.load();
-    }
+    }//load fxml
 
     public static void main(String[] args) {
         launch();
