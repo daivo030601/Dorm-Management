@@ -73,6 +73,7 @@ public class DetailRoomPaneController implements Initializable {
         rentingpriceLable.setText(String.valueOf(room.getRentingPrice()));
         initTableView(dataTableView); 
     }
+    // thêm button kích sinh viên
     private void addButtonToTable() {     
         Callback<TableColumn<Object, String>, TableCell<Object, String>> cellFactory = (TableColumn<Object, String> param) -> {
             // make cell containing buttons
@@ -104,6 +105,7 @@ public class DetailRoomPaneController implements Initializable {
 
         toolCol.setCellFactory(cellFactory);
     }
+    //Hàm kich sinh viên ra khoi phòng
     private void leaveRoom(String IDRoom,String IDStudent){
         Room crRoom = new Room();
         crRoom.getInfo(IDRoom);
@@ -120,6 +122,7 @@ public class DetailRoomPaneController implements Initializable {
         
     
     }
+    //Hàm hiên thi thông báo
      private void showtification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");

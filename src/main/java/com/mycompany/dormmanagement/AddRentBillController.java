@@ -54,15 +54,17 @@ public class AddRentBillController implements Initializable {
     private TextField roomText,nameText,totalText;
     @FXML
     private ComboBox apartmentComboBox,studentComboBox;
+    // Ðóng from thêm bill
     @FXML
     void backbtn(ActionEvent event){
         closeStage(event);
     }
-    
+    //Hiên thi theo tòa chon
     @FXML
     void selectApartment(ActionEvent event){
         addDataStudentCombobox();
     }
+    //hien thi theo idstudent
     @FXML
     void selectStudent(ActionEvent event){
         
@@ -73,17 +75,17 @@ public class AddRentBillController implements Initializable {
                 addDataIDRomText(studentName);
         }
         catch(Exception e){}
-        
-        
-        
         addDataTotalText();
     }
+    //Thêm dữ liệu vào data khi ấn nút thêm
     @FXML
     void insertdata(ActionEvent event){
+        //lấy dữ liệu từ các textfield người dùng nhập
         String apartmentName = apartmentComboBox.getValue().toString();
         String roomname = roomText.getText();
         String studentid = studentComboBox.getValue().toString();
         String totaltext = totalText.getText(); 
+        //xử lý thêm dữ liệu vào database
         apartment = new Apartment();
         apartment.getInfo(apartmentName);
         room = new Room();
@@ -106,6 +108,7 @@ public class AddRentBillController implements Initializable {
         showNotification("Thêm thành công.");
         closeStage(event);   
     }
+    //Hàm hiên thi thông báo
     private void showNotification(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
@@ -117,7 +120,7 @@ public class AddRentBillController implements Initializable {
     {
         rentBillPaneController = parentController;
     }
-    
+    //Hàm thêm data id tòa vào combobox
     private void addDataToCombobox(){
         apartment = new Apartment();
         ObservableList<String> items = FXCollections.<String>observableArrayList();       
@@ -132,7 +135,7 @@ public class AddRentBillController implements Initializable {
         addDataIDRomText(studentName);
         addDataTotalText();
     }
-    
+    //Hàm thêm data id student vào combobox
     private void addDataStudentCombobox(){ 
         ObservableList<String> items = FXCollections.<String>observableArrayList();
         String apartmentName = apartmentComboBox.getValue().toString();
@@ -142,6 +145,7 @@ public class AddRentBillController implements Initializable {
         studentComboBox.setItems(items);
         studentComboBox.getSelectionModel().select(0);
     }
+    //Hàm thêm data id tòa vào Text
     private void addDataIDRomText(String studentName)  
     {
         student = new Student();
@@ -149,14 +153,14 @@ public class AddRentBillController implements Initializable {
         String roomtext = student.getToIDRoomStudent(studentName);
         roomText.setText(roomtext);
     }
-    
+    //Hàm thêm data tông tiên vào Text
     private void addDataTotalText(){ 
         String apartmentName = apartmentComboBox.getValue().toString();
         String studentName = roomText.getText();
         String totaltext = String.valueOf(apartment.getTotalRentBill(apartmentName,studentName));
         totalText.setText(totaltext);
     }
-    
+    //Hàm thêm data tên student vào Text
     private void addDataNameStudent(String studentName)  
     {
         student = new Student();
